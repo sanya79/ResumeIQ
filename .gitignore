@@ -1,0 +1,24 @@
+# Node modules
+node_modules/
+server/node_modules/
+resumeiq-frontend/node_modules/
+
+# Build outputs
+dist/
+.vite/
+
+# Environment
+.env
+.env.*
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Editor
+.vscode/
+.idea/
+
+# OS
+.DS_Store
