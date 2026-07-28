@@ -66,3 +66,24 @@ export async function restoreResumeVersion(id: string): Promise<Resume> {
   const { data } = await apiClient.post<ApiResponse<{ resume: Resume }>>(`/resumes/${id}/restore`);
   return data.data.resume;
 }
+
+export async function downloadOptimizedResumePdf(id: string, jobTitle?: string): Promise<void> {
+  const params = new URLSearchParams();
+  if (jobTitle) params.set("jobTitle", jobTitle);
+
+  const query = params.toString() ? `?${params.toString()}` : "";
+  const response = await apiClient.get(`/resumes/${id}/optimized-pdf${query}`, {
+    responseType: "blob",
+  });
+
+  const contentType = typeof response.headers["content-type"] === "string"
+    ? response.headers["content-type"]
+    : "application/pdf";
+  const blob = new Blob([response.data], { type: contentType });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `${(jobTitle || "optimized-resume").replace(/[^a-z0-9]+/gi, "-").toLowerCase()}-resume.pdf`;
+  link.click();
+  URL.revokeObjectURL(url);
+}

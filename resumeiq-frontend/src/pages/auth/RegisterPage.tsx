@@ -171,7 +171,16 @@ export function RegisterPage() {
               exit={{ opacity: 0, height: 0 }}
               className="rounded-lg bg-danger/10 px-3 py-2 text-xs text-danger"
             >
-              {registerMutation.error instanceof Error ? registerMutation.error.message : "Couldn't create your account."}
+              {(() => {
+                const err: any = registerMutation.error;
+                // Prefer structured server message (validation or general)
+                if (err?.response?.data?.message) return err.response.data.message;
+                // If validation details are provided, join them for clarity
+                if (err?.response?.data?.errors && Array.isArray(err.response.data.errors)) {
+                  return err.response.data.errors.map((e: any) => `${e.field}: ${e.message}`).join(" \n");
+                }
+                return err?.message ?? "Couldn't create your account.";
+              })()}
             </motion.p>
           )}
         </AnimatePresence>

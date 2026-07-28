@@ -1,5 +1,6 @@
 import { useState, lazy, Suspense } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useToast } from "@/hooks/useToast";
 import { RefreshCcw, Sparkles, UploadCloud } from "lucide-react";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { GradientBackground } from "@/components/animations/GradientBackground";
@@ -21,6 +22,7 @@ import { StrengthsWeaknessesPanel } from "@/features/resume/components/Strengths
 import { SuggestionsList } from "@/features/resume/components/SuggestionsList";
 import { AnalysisCategoryCard } from "@/features/resume/components/AnalysisCategoryCard";
 import { StructuredProfileComingSoon } from "@/features/resume/components/StructuredProfileComingSoon";
+import { downloadOptimizedResumePdf } from "@/services/resume.api";
 
 // Recharts is a heavy dependency (~250KB gzipped) — code-split so it only
 // loads once analysis results actually render, same pattern as the
@@ -59,6 +61,7 @@ function describeUploadError(error: unknown): { title: string; description: stri
 export function ResumeWorkspacePage() {
   const { data: latestResume, isLoading, isError, refetch } = useLatestResume();
   const uploadMutation = useUploadResume();
+  const toast = useToast();
   const { statuses } = useAnalysisPipeline(uploadMutation.isPending);
   const [showUploadFlow, setShowUploadFlow] = useState(false);
   const [clientError, setClientError] = useState<string | null>(null);
@@ -70,6 +73,16 @@ export function ResumeWorkspacePage() {
     setClientError(null);
     uploadMutation.reset();
     uploadMutation.mutate({ file, uploadSource: "Web Dashboard" }, { onSuccess: () => setShowUploadFlow(false) });
+  }
+
+  async function handleDownloadImprovedResume() {
+    if (!resume?._id) return;
+    try {
+      await downloadOptimizedResumePdf(resume._id, resume.atsScorecard?.atsVersion ? "target role" : undefined);
+      toast.success("Improved resume ready", "Your optimized PDF download has started.");
+    } catch {
+      toast.error("Download failed", "The improved resume PDF couldn't be generated right now.");
+    }
   }
 
   return (
@@ -135,9 +148,16 @@ export function ResumeWorkspacePage() {
                   <Sparkles size={18} className="text-accent-purple" />
                   <h1 className="text-fluid-xl font-bold tracking-tight">AI Resume Analysis</h1>
                 </div>
-                <Button variant="secondary" size="sm" onClick={() => setShowUploadFlow(true)}>
-                  <RefreshCcw size={14} /> Upload new version
-                </Button>
+                <div className="flex flex-wrap gap-2">
+                  {resume?.atsScorecard && (
+                    <Button variant="outline" size="sm" onClick={handleDownloadImprovedResume}>
+                      <Sparkles size={14} /> Download improved resume PDF
+                    </Button>
+                  )}
+                  <Button variant="secondary" size="sm" onClick={() => setShowUploadFlow(true)}>
+                    <RefreshCcw size={14} /> Upload new version
+                  </Button>
+                </div>
               </SlideUp>
 
               <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_420px]">

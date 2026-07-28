@@ -46,3 +46,37 @@ export async function saveMatchComparison(id: string): Promise<MatchResult> {
 export async function deleteMatchComparison(id: string): Promise<void> {
   await apiClient.delete(`/matching/${id}`);
 }
+
+export async function downloadOptimizedResumePdf(id: string): Promise<void> {
+  const response = await apiClient.get(`/matching/${id}/optimize-pdf`, {
+    responseType: "blob",
+  });
+
+  const contentType = typeof response.headers["content-type"] === "string"
+    ? response.headers["content-type"]
+    : "application/pdf";
+  const blob = new Blob([response.data], { type: contentType });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `optimized-resume.pdf`;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+export async function downloadGeneratedResumePdf(id: string): Promise<void> {
+  const response = await apiClient.get(`/matching/${id}/generate-pdf`, {
+    responseType: "blob",
+  });
+
+  const contentType = typeof response.headers["content-type"] === "string"
+    ? response.headers["content-type"]
+    : "application/pdf";
+  const blob = new Blob([response.data], { type: contentType });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `tailored-resume.pdf`;
+  link.click();
+  URL.revokeObjectURL(url);
+}

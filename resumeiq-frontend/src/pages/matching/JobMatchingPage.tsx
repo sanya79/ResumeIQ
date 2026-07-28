@@ -10,7 +10,9 @@ import { Skeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ErrorState } from "@/components/ui/ErrorState";
 import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/useToast";
 import { useLatestResume } from "@/features/resume/hooks";
+import { downloadGeneratedResumePdf } from "@/services/matching.api";
 import { useAnalyzeJobMatch } from "@/features/matching/hooks";
 import { useMatchPipeline } from "@/features/matching/useMatchPipeline";
 import { saveRecentJobDescription } from "@/features/matching/recentJobDescriptions";
@@ -69,6 +71,7 @@ function describeMatchError(error: unknown): { title: string; description: strin
 
 export function JobMatchingPage() {
   const { user } = useAuth();
+  const toast = useToast();
   const { data: resume, isLoading: isResumeLoading, isError: isResumeError, refetch: refetchResume } = useLatestResume();
 
   const [jobDescription, setJobDescription] = useState("");
@@ -111,6 +114,16 @@ export function JobMatchingPage() {
     setJobTitle("");
     setCompany("");
     setValidationError(null);
+  }
+
+  async function handleDownloadTailoredResume() {
+    if (!match) return;
+    try {
+      await downloadGeneratedResumePdf(match.id);
+      toast.success("Tailored resume ready", "Your PDF download has started.");
+    } catch {
+      toast.error("Download failed", "The tailored resume PDF couldn't be generated right now.");
+    }
   }
 
   return (
@@ -232,6 +245,18 @@ export function JobMatchingPage() {
               <SectionHeading title="Hiring Probability" />
               <HiringProbabilityPanel probability={match.hiringProbability} />
             </section>
+
+            <GlassCard className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <div>
+                <h3 className="text-sm font-semibold text-foreground">Tailored Resume Builder</h3>
+                <p className="mt-0.5 text-xs text-foreground-secondary">
+                  Turn this job description into a polished PDF resume that highlights the right keywords and gaps.
+                </p>
+              </div>
+              <Button variant="gradient" size="sm" onClick={handleDownloadTailoredResume}>
+                <Sparkles size={14} /> Download tailored resume PDF
+              </Button>
+            </GlassCard>
 
             <ActionPanel match={match} onAnalyzeAnother={handleAnalyzeAnother} />
           </FadeIn>
