@@ -11,6 +11,11 @@ interface ExportSectionProps {
 export function ExportSection({ resume }: ExportSectionProps) {
   const toast = useToast();
 
+  function handleDownloadPdf() {
+    window.open(`/api/v1/resumes/${resume._id}/report-pdf`, "_blank");
+    toast.success("Generating PDF", "Your ATS report PDF is being generated.");
+  }
+
   function handleDownloadJson() {
     const blob = new Blob([JSON.stringify(resume.atsScorecard, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -37,7 +42,7 @@ export function ExportSection({ resume }: ExportSectionProps) {
         <p className="mt-0.5 text-xs text-foreground-secondary">Save or share your ATS scorecard.</p>
       </div>
       <div className="flex flex-wrap gap-2.5">
-        <Button variant="outline" size="sm" onClick={() => handleComingSoon("PDF report")}>
+        <Button variant="outline" size="sm" onClick={handleDownloadPdf}>
           <Download size={14} /> PDF Report
         </Button>
         <Button variant="outline" size="sm" onClick={handleDownloadJson}>

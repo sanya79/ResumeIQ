@@ -2,6 +2,7 @@ import { Wand2, FileStack, Download, BookmarkCheck, RotateCcw, BookmarkPlus } fr
 import { GlassCard } from "@/components/cards/GlassCard";
 import { Button } from "@/components/ui/Button";
 import { useToast } from "@/hooks/useToast";
+import { downloadGeneratedResumePdf, downloadOptimizedResumePdf } from "@/services/matching.api";
 import { useSaveMatchComparison } from "../hooks";
 import type { MatchResult } from "@/types";
 
@@ -21,6 +22,24 @@ export function ActionPanel({ match, onAnalyzeAnother }: ActionPanelProps) {
     });
   }
 
+  async function handleOptimizeResume() {
+    try {
+      await downloadOptimizedResumePdf(match.id);
+      toast.success("Optimizing Resume", "Downloaded your optimized resume PDF.");
+    } catch {
+      toast.error("Download failed", "The optimized resume PDF couldn't be generated right now.");
+    }
+  }
+
+  async function handleGenerateResume() {
+    try {
+      await downloadGeneratedResumePdf(match.id);
+      toast.success("Tailoring Resume", "Downloaded your tailored resume PDF based on the job description.");
+    } catch {
+      toast.error("Download failed", "The tailored resume PDF couldn't be generated right now.");
+    }
+  }
+
   function handleExportReport() {
     const blob = new Blob([JSON.stringify(match, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -32,10 +51,6 @@ export function ActionPanel({ match, onAnalyzeAnother }: ActionPanelProps) {
     toast.success("Report exported", "Your match report was downloaded.");
   }
 
-  function handleComingSoon(label: string) {
-    toast.info(`${label} coming soon`, "This action isn't wired up to the backend yet.");
-  }
-
   const isSaved = match.isSaved || saveMutation.isSuccess;
 
   return (
@@ -45,10 +60,10 @@ export function ActionPanel({ match, onAnalyzeAnother }: ActionPanelProps) {
         <p className="mt-0.5 text-xs text-foreground-secondary">Act on this match — optimize, export, or compare another role.</p>
       </div>
       <div className="flex flex-wrap gap-2.5">
-        <Button variant="gradient" size="sm" onClick={() => handleComingSoon("Optimize Resume")}>
+        <Button variant="gradient" size="sm" onClick={handleOptimizeResume}>
           <Wand2 size={14} /> Optimize Resume
         </Button>
-        <Button variant="outline" size="sm" onClick={() => handleComingSoon("Generate New Resume")}>
+        <Button variant="outline" size="sm" onClick={handleGenerateResume}>
           <FileStack size={14} /> Generate New Resume
         </Button>
         <Button variant="outline" size="sm" onClick={handleExportReport}>

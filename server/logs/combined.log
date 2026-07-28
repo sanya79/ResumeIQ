@@ -1,0 +1,1038 @@
+[2026-07-26 17:10:11:1011] [INFO]: [Server] ResumeIQ backend active in [development] mode on port: 5000
+[2026-07-26 17:10:43:1043] [ERROR]: 404 - Cannot find requested route / on this server. - / - GET - ::1 
+Stack: Error: Cannot find requested route / on this server.
+    at file:///C:/Users/katiy/PGM/RA-JA/server/src/app.js:54:8
+    at Layer.handle [as handle_request] (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:149:13)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at Route.dispatch (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:284:15
+    at param (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:365:14)
+    at param (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:376:14)
+    at router.process_params (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:421:3)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:280:10)
+[2026-07-26 17:10:43:1043] [ERROR]: 404 - Cannot find requested route /favicon.ico on this server. - /favicon.ico - GET - ::1 
+Stack: Error: Cannot find requested route /favicon.ico on this server.
+    at file:///C:/Users/katiy/PGM/RA-JA/server/src/app.js:54:8
+    at Layer.handle [as handle_request] (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:149:13)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at Route.dispatch (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:284:15
+    at param (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:365:14)
+    at param (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:376:14)
+    at router.process_params (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:421:3)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:280:10)
+[2026-07-26 17:11:06:116] [ERROR]: 404 - Cannot find requested route / on this server. - / - GET - ::1 
+Stack: Error: Cannot find requested route / on this server.
+    at file:///C:/Users/katiy/PGM/RA-JA/server/src/app.js:54:8
+    at Layer.handle [as handle_request] (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:149:13)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at Route.dispatch (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:284:15
+    at param (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:365:14)
+    at param (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:376:14)
+    at router.process_params (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:421:3)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:280:10)
+[2026-07-26 17:11:06:116] [ERROR]: 404 - Cannot find requested route /favicon.ico on this server. - /favicon.ico - GET - ::1 
+Stack: Error: Cannot find requested route /favicon.ico on this server.
+    at file:///C:/Users/katiy/PGM/RA-JA/server/src/app.js:54:8
+    at Layer.handle [as handle_request] (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:149:13)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at Route.dispatch (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:284:15
+    at param (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:365:14)
+    at param (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:376:14)
+    at router.process_params (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:421:3)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:280:10)
+[2026-07-26 17:20:59:2059] [ERROR]: UNCAUGHT EXCEPTION! Shutting down server... 
+Error: listen EADDRINUSE: address already in use :::5000 
+Stack: Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at app.listen (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\application.js:635:24)
+    at startServer (file:///C:/Users/katiy/PGM/RA-JA/server/src/server.js:23:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-07-26 17:21:22:2122] [ERROR]: 404 - Cannot find requested route / on this server. - / - GET - ::1 
+Stack: Error: Cannot find requested route / on this server.
+    at file:///C:/Users/katiy/PGM/RA-JA/server/src/app.js:54:8
+    at Layer.handle [as handle_request] (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:149:13)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at Route.dispatch (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:284:15
+    at param (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:365:14)
+    at param (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:376:14)
+    at router.process_params (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:421:3)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:280:10)
+[2026-07-26 17:21:57:2157] [ERROR]: UNCAUGHT EXCEPTION! Shutting down server... 
+Error: listen EADDRINUSE: address already in use :::5000 
+Stack: Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at app.listen (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\application.js:635:24)
+    at startServer (file:///C:/Users/katiy/PGM/RA-JA/server/src/server.js:23:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-07-26 17:22:48:2248] [INFO]: [Server] ResumeIQ backend active in [development] mode on port: 5000
+[2026-07-26 17:23:24:2324] [INFO]: [Mail Service Fallback] Email Verification token for smoke.tester@example.com: f342c8206eb21411a990472e44b6c1053de3c3ba4b7943e3d4d75b1711cf5c8c. Link: http://localhost:5173/verify-email?token=f342c8206eb21411a990472e44b6c1053de3c3ba4b7943e3d4d75b1711cf5c8c
+[2026-07-26 17:24:18:2418] [ERROR]: UNCAUGHT EXCEPTION! Shutting down server... 
+Error: listen EADDRINUSE: address already in use :::5000 
+Stack: Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at app.listen (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\application.js:635:24)
+    at startServer (file:///C:/Users/katiy/PGM/RA-JA/server/src/server.js:23:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-07-26 17:26:01:261] [INFO]: [Server] ResumeIQ backend active in [development] mode on port: 5000
+[2026-07-26 17:27:17:2717] [ERROR]: 404 - Cannot find requested route /favicon.ico on this server. - /favicon.ico - GET - ::1 
+Stack: Error: Cannot find requested route /favicon.ico on this server.
+    at file:///C:/Users/katiy/PGM/RA-JA/server/src/app.js:60:8
+    at Layer.handle [as handle_request] (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:149:13)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:145:7)
+    at Route.dispatch (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:284:15
+    at param (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:365:14)
+    at param (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:376:14)
+    at router.process_params (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:421:3)
+    at next (C:\Users\katiy\PGM\RA-JA\server\node_modules\express\lib\router\index.js:280:10)
+[2026-07-28 13:11:12:1112] [INFO]: [Server] ResumeIQ backend active in [development] mode on port: 5000
+[2026-07-28 13:12:26:1226] [ERROR]: 401 - Invalid email or password. Access denied. - /api/v1/auth/login - POST - ::1 
+Stack: Error: Invalid email or password. Access denied.
+    at AuthService.login (file:///C:/Users/katiy/Downloads/resumeiq-frontend-interview-module/RA-JA/server/src/services/auth.service.js:70:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async login (file:///C:/Users/katiy/Downloads/resumeiq-frontend-interview-module/RA-JA/server/src/controllers/auth.controller.js:41:20)
+[2026-07-28 13:21:44:2144] [INFO]: [Server] ResumeIQ backend active in [development] mode on port: 5000
+[2026-07-28 13:35:59:3559] [INFO]: [Server] ResumeIQ backend active in [development] mode on port: 5000
+[2026-07-28 13:36:23:3623] [ERROR]: 400 - Expected property name or '}' in JSON at position 1 (line 1 column 2) - /api/v1/auth/login - POST - ::1 
+Stack: SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+    at JSON.parse (<anonymous>)
+    at parse (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\body-parser\lib\types\json.js:96:19)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\body-parser\lib\read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
+    at invokeCallback (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\raw-body\index.js:238:16)
+    at done (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:508:28)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+[2026-07-28 13:36:53:3653] [ERROR]: 404 - Cannot find requested route /api/v1 on this server. - /api/v1 - GET - ::1 
+Stack: Error: Cannot find requested route /api/v1 on this server.
+    at file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/app.js:60:8
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:149:13)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at Route.dispatch (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:284:15
+    at param (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:365:14)
+    at param (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:376:14)
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:421:3)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+[2026-07-28 13:37:17:3717] [ERROR]: 404 - Cannot find requested route /api/v1 on this server. - /api/v1 - GET - ::1 
+Stack: Error: Cannot find requested route /api/v1 on this server.
+    at file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/app.js:60:8
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:149:13)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at Route.dispatch (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:284:15
+    at param (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:365:14)
+    at param (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:376:14)
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:421:3)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+[2026-07-28 20:25:48:2548] [INFO]: [Server] ResumeIQ backend active in [development] mode on port: 5000
+[2026-07-28 20:26:11:2611] [INFO]: [Mail Service Fallback] Email Verification token for test_1785250571515@example.com: 4e89f7468323c5b77cdfa7d1f0883a2cc9842cf40bc227e96a6692cf68b1032d. Link: http://localhost:5173/verify-email?token=4e89f7468323c5b77cdfa7d1f0883a2cc9842cf40bc227e96a6692cf68b1032d
+[2026-07-28 20:26:20:2620] [INFO]: [Mail Service Fallback] Email Verification token for test_1785250580808@example.com: b7171c4d6ca97856db9dcd26e504e00e25a90feac0dd3fda1af19b31460bd921. Link: http://localhost:5173/verify-email?token=b7171c4d6ca97856db9dcd26e504e00e25a90feac0dd3fda1af19b31460bd921
+[2026-07-28 20:26:40:2640] [INFO]: [Server] ResumeIQ backend active in [development] mode on port: 5000
+[2026-07-28 20:26:43:2643] [INFO]: [Mail Service Fallback] Email Verification token for test_1785250602938@example.com: 80382ac6bd549ec2aed3dceac46ce56efebcd127820dfd763cde810dcadd633b. Link: http://localhost:5173/verify-email?token=80382ac6bd549ec2aed3dceac46ce56efebcd127820dfd763cde810dcadd633b
+[2026-07-28 20:26:50:2650] [INFO]: [Server] ResumeIQ backend active in [development] mode on port: 5000
+[2026-07-28 20:27:01:271] [INFO]: [Server] ResumeIQ backend active in [development] mode on port: 5000
+[2026-07-28 20:27:03:273] [INFO]: [Mail Service Fallback] Email Verification token for test_1785250623517@example.com: d73da8f68b5c974770ce6366f4a72852905aeec81107d1f9e598880decf073fc. Link: http://localhost:5173/verify-email?token=d73da8f68b5c974770ce6366f4a72852905aeec81107d1f9e598880decf073fc
+[2026-07-28 20:27:13:2713] [INFO]: [Server] ResumeIQ backend active in [development] mode on port: 5000
+[2026-07-28 20:27:19:2719] [INFO]: [Server] ResumeIQ backend active in [development] mode on port: 5000
+[2026-07-28 20:27:20:2720] [INFO]: [Mail Service Fallback] Email Verification token for test_1785250640839@example.com: 10b03de8d1a5c5a77ecd5a262c1014bf92a00fe49f42e559bd293e82a10a4252. Link: http://localhost:5173/verify-email?token=10b03de8d1a5c5a77ecd5a262c1014bf92a00fe49f42e559bd293e82a10a4252
+[2026-07-28 20:27:21:2721] [ERROR]: 500 - doc.moveTo(...).lineTo(...).strokeColor(...).strokeWidth is not a function - /api/v1/resumes/6a68c351b2d3e95d7db1cc63/report-pdf - GET - ::1 
+Stack: TypeError: doc.moveTo(...).lineTo(...).strokeColor(...).strokeWidth is not a function
+    at PdfService.generateAtsReport (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/services/pdf.service.js:33:63)
+    at downloadReportPdf (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/controllers/resume.controller.js:127:18)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-07-28 20:27:26:2726] [INFO]: [Server] ResumeIQ backend active in [development] mode on port: 5000
+[2026-07-28 20:28:23:2823] [ERROR]: 404 - Cannot find requested route /api/v1 on this server. - /api/v1 - GET - ::1 
+Stack: Error: Cannot find requested route /api/v1 on this server.
+    at file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/app.js:60:8
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:149:13)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at Route.dispatch (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:284:15
+    at param (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:365:14)
+    at param (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:376:14)
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:421:3)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+[2026-07-28 20:36:58:3658] [INFO]: [Server] ResumeIQ backend active in [development] mode on port: 5000
+[2026-07-28 20:38:13:3813] [INFO]: [Server] ResumeIQ backend active in [development] mode on port: 5000
+[2026-07-28 20:50:47:5047] [INFO]: [Server] ResumeIQ backend active in [development] mode on port: 5000
+[2026-07-28 20:56:58:5658] [INFO]: [Mail Service Fallback] Email Verification token for sanya.katiyar_cs.aiml23@gla.ac.in: e61baf2072acd84231a08277d8697827a1c675436f6fe658e4355afd9f349e5d. Link: http://localhost:5173/verify-email?token=e61baf2072acd84231a08277d8697827a1c675436f6fe658e4355afd9f349e5d
+[2026-07-28 21:00:03:03] [INFO]: [Server] ResumeIQ backend active in [development] mode on port: 5000
+[2026-07-28 21:01:28:128] [ERROR]: 401 - Access denied. No authentication credentials token provided. - /api/v1/auth/resend-verification - POST - ::1 
+Stack: Error: Access denied. No authentication credentials token provided.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:22:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:02:27:227] [ERROR]: 404 - Cannot find requested route /api/v1/auth/resend-verification on this server. - /api/v1/auth/resend-verification - POST - ::1 
+Stack: Error: Cannot find requested route /api/v1/auth/resend-verification on this server.
+    at file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/app.js:60:8
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:149:13)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+[2026-07-28 21:21:36:2136] [INFO]: [Server] ResumeIQ backend active in [development] mode on port: 5000
+[2026-07-28 21:22:14:2214] [ERROR]: Failed to send verification email to: mailtrap-test-1785253930960@example.com. Error: Invalid login: 535 5.7.0 Invalid credentials
+[2026-07-28 21:24:16:2416] [INFO]: [Server] ResumeIQ backend active in [development] mode on port: 5000
+[2026-07-28 21:24:57:2457] [ERROR]: Failed to send verification email to: mailtrap-test-1785254094124@example.com. Error: Invalid login: 535 5.7.0 Invalid credentials
+[2026-07-28 21:26:44:2644] [INFO]: [Server] ResumeIQ backend active in [development] mode on port: 5000
+[2026-07-28 21:27:12:2712] [ERROR]: Failed to send verification email to: mailtrap-test-1785254228389@example.com. Error: Invalid login: 535 5.7.0 Invalid credentials
+[2026-07-28 21:30:13:3013] [ERROR]: UNCAUGHT EXCEPTION! Shutting down server... 
+Error: listen EADDRINUSE: address already in use :::5000 
+Stack: Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at app.listen (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\application.js:635:24)
+    at startServer (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/server.js:23:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-07-28 21:31:45:3145] [ERROR]: UNCAUGHT EXCEPTION! Shutting down server... 
+Error: listen EADDRINUSE: address already in use :::5000 
+Stack: Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at app.listen (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\application.js:635:24)
+    at startServer (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/server.js:23:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-07-28 21:32:47:3247] [INFO]: [Server] ResumeIQ backend active in [development] mode on port: 5000
+[2026-07-28 21:35:32:3532] [ERROR]: 404 - Cannot find requested route /api/v1/resume/upload on this server. - /api/v1/resume/upload - POST - ::1 
+Stack: Error: Cannot find requested route /api/v1/resume/upload on this server.
+    at file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/app.js:60:8
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:149:13)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+[2026-07-28 21:35:45:3545] [ERROR]: 500 - Unexpected end of form - /api/v1/resumes/upload - POST - ::1 
+Stack: Error: Unexpected end of form
+    at Multipart._final (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:914:14)
+    at finishMaybe (node:internal/streams/writable:928:5)
+    at Writable.end (node:internal/streams/writable:843:5)
+    at IncomingMessage.onend (node:internal/streams/readable:946:10)
+    at Object.onceWrapper (node:events:622:28)
+    at IncomingMessage.emit (node:events:508:28)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+[2026-07-28 21:36:05:365] [INFO]: [Server] ResumeIQ backend active in [development] mode on port: 5000
+[2026-07-28 21:36:05:365] [ERROR]: UNCAUGHT EXCEPTION! Shutting down server... 
+Error: listen EADDRINUSE: address already in use :::5000 
+Stack: Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at app.listen (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\application.js:635:24)
+    at startServer (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/server.js:23:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-07-28 21:36:05:365] [ERROR]: UNCAUGHT EXCEPTION! Shutting down server... 
+Error: listen EADDRINUSE: address already in use :::5000 
+Stack: Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at app.listen (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\application.js:635:24)
+    at startServer (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/server.js:23:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-07-28 21:36:05:365] [ERROR]: UNCAUGHT EXCEPTION! Shutting down server... 
+Error: listen EADDRINUSE: address already in use :::5000 
+Stack: Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at app.listen (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\application.js:635:24)
+    at startServer (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/server.js:23:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-07-28 21:36:05:365] [ERROR]: UNCAUGHT EXCEPTION! Shutting down server... 
+Error: listen EADDRINUSE: address already in use :::5000 
+Stack: Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at app.listen (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\application.js:635:24)
+    at startServer (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/server.js:23:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-07-28 21:36:05:365] [ERROR]: UNCAUGHT EXCEPTION! Shutting down server... 
+Error: listen EADDRINUSE: address already in use :::5000 
+Stack: Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at app.listen (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\application.js:635:24)
+    at startServer (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/server.js:23:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-07-28 21:40:37:4037] [ERROR]: 401 - Access credentials token expired. Please renew your session. - /api/v1/auth/me - GET - ::1 
+Stack: Error: Access credentials token expired. Please renew your session.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:40:19)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:40:37:4037] [ERROR]: 401 - Access credentials token expired. Please renew your session. - /api/v1/auth/me - GET - ::1 
+Stack: Error: Access credentials token expired. Please renew your session.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:40:19)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:40:37:4037] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/auth/me - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:22:4122] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/resumes/latest - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:22:4122] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/resumes/latest - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:23:4123] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/resumes/latest - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:23:4123] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/resumes/latest - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:26:4126] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/resumes/latest - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:27:4127] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/resumes/latest - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:28:4128] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/resumes/latest - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:28:4128] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/resumes/latest - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:33:4133] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/resumes/latest - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:33:4133] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/resumes/history - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:34:4134] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/resumes/latest - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:34:4134] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/resumes/history - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:35:4135] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/resumes/latest - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:35:4135] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/resumes/history - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:35:4135] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/resumes/latest - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:37:4137] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/resumes/latest - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:37:4137] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/resumes/latest - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:38:4138] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/resumes/latest - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:39:4139] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/resumes/latest - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:41:4141] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/resumes/latest - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:42:4142] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/resumes/latest - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:43:4143] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/resumes/latest - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:43:4143] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/resumes/latest - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:44:4144] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/interview/history - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:44:4144] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/interview/recommendations - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:45:4145] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/interview/history - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:45:4145] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/interview/recommendations - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:46:4146] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/interview/history - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:46:4146] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/interview/recommendations - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:41:46:4146] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/interview/history - GET - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:42:16:4216] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/auth/logout - POST - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:42:16:4216] [ERROR]: 401 - Invalid authentication credentials token. Access denied. - /api/v1/auth/logout - POST - ::1 
+Stack: Error: Invalid authentication credentials token. Access denied.
+    at protect (file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/middleware/auth.middleware.js:42:17)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:286:9
+    at router.process_params (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:280:10)
+    at router.handle (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:175:3)
+    at router (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\index.js:47:12)
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+[2026-07-28 21:42:51:4251] [ERROR]: Failed to send verification email to: katiyarsanya6@gmail.com. Error: Invalid login: 535 5.7.0 Invalid credentials
+[2026-07-28 21:43:06:436] [ERROR]: 404 - Cannot find requested route /api/v1/auth/resend-verification on this server. - /api/v1/auth/resend-verification - POST - ::1 
+Stack: Error: Cannot find requested route /api/v1/auth/resend-verification on this server.
+    at file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/app.js:60:8
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:149:13)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+[2026-07-28 21:43:47:4347] [ERROR]: 404 - Cannot find requested route /api/v1/auth/resend-verification on this server. - /api/v1/auth/resend-verification - POST - ::1 
+Stack: Error: Cannot find requested route /api/v1/auth/resend-verification on this server.
+    at file:///C:/Users/katiy/Downloads/ResumeIQ/ResumeIQ/server/src/app.js:60:8
+    at Layer.handle [as handle_request] (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:149:13)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\katiy\Downloads\ResumeIQ\ResumeIQ\server\node_modules\express\lib\router\route.js:145:7)

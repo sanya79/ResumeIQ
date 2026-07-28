@@ -19,8 +19,9 @@ export function validateLoginPassword(value: string): string | undefined {
 
 export function validateNewPassword(value: string): string | undefined {
   if (!value) return "Password is required.";
-  if (value.length < 8) return "Use at least 8 characters.";
-  if (!/[A-Za-z]/.test(value) || !/[0-9]/.test(value)) return "Include at least one letter and one number.";
+  if (value.length < 6) return "Password must be at least 6 characters long.";
+  if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(value))
+    return "Password must contain at least one uppercase letter, one lowercase letter, and one number.";
   return undefined;
 }
 
