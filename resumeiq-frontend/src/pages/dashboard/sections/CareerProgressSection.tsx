@@ -2,11 +2,13 @@ import { Rocket } from "lucide-react";
 import { SlideUp } from "@/components/animations/SlideUp";
 import { AnalyticsCard } from "@/components/cards/AnalyticsCard";
 import { MetricCard } from "@/components/cards/MetricCard";
-import { careerProgress } from "../data";
+import type { CareerProgressDatum } from "../data";
 
 /** "Career roadmap" — reuses MetricCard (label + progress bar +
  * description) for each completion item rather than a bespoke component. */
-export function CareerProgressSection() {
+export function CareerProgressSection({ data = [], isLoading }: { data?: CareerProgressDatum[]; isLoading?: boolean }) {
+  if (isLoading && data.length === 0) return null;
+
   return (
     <SlideUp>
       <AnalyticsCard
@@ -15,7 +17,7 @@ export function CareerProgressSection() {
         actions={<Rocket size={18} className="text-accent-pink" />}
       >
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {careerProgress.map((item) => (
+          {data.map((item) => (
             <MetricCard key={item.label} label={item.label} value={item.value} description={item.description} />
           ))}
         </div>

@@ -8,9 +8,11 @@ import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { AuthCard } from "@/features/auth/components/AuthCard";
 import { useForgotPasswordMutation } from "@/features/auth/hooks";
 import { validateEmail } from "@/features/auth/validation";
+import { useToast } from "@/hooks/useToast";
 
 export function ForgotPasswordPage() {
   const mutation = useForgotPasswordMutation();
+  const toast = useToast();
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | undefined>();
   const [touched, setTouched] = useState(false);
@@ -21,7 +23,12 @@ export function ForgotPasswordPage() {
     setError(validationError);
     setTouched(true);
     if (validationError) return;
-    mutation.mutate({ email });
+    mutation.mutate({ email }, {
+      onError: (error) => {
+        const message = error instanceof Error ? error.message : "Couldn't send the reset link. Please try again.";
+        toast.error("Reset link unavailable", message);
+      },
+    });
   }
 
   if (mutation.isSuccess) {

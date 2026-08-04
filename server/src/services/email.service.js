@@ -8,33 +8,104 @@ import logger from "../utils/logger.js";
 export class EmailService {
   constructor() {
     this.from = process.env.FROM_EMAIL || "noreply@resumeiq.com";
-
-    // Create a basic transporter from env vars if provided. Some local
-    // development setups intentionally use placeholder values; fall back
-    // to an Ethereal test account to produce a real previewable message
-    // rather than silently logging a token.
-    const smtpUser = process.env.SMTP_USER || "dummy_user";
-    const smtpPass = process.env.SMTP_PASS || "dummy_pass";
+    const smtpUser = process.env.SMTP_USER;
+    const smtpPass = process.env.SMTP_PASS;
     const smtpHost = process.env.SMTP_HOST || "smtp.mailtrap.io";
     const smtpPort = parseInt(process.env.SMTP_PORT || "2525", 10);
 
-    // If placeholders are present, do not assume a working external SMTP
-    // — we'll create and use an Ethereal test account at send-time so that
-    // developers can open a preview link and validate email contents.
-    this.transporter = nodemailer.createTransport({
-      host: smtpHost,
-      port: smtpPort,
-      auth: { user: smtpUser, pass: smtpPass },
+    this.smtpHost = smtpHost;
+    this.smtpPort = smtpPort;
+    this.smtpUser = smtpUser;
+    this.smtpPass = smtpPass;
+    this.isPlaceholderTransport = !smtpUser || !smtpPass || smtpUser === "dummy_user" || smtpUser === "dummy_smtp_username";
+    this.allowFallback = process.env.NODE_ENV !== "production";
+
+    if (!this.isPlaceholderTransport) {
+      this.transporter = this.createSmtpTransport(smtpPort, smtpPort === 465);
+    }
+  }
+
+  createSmtpTransport(port, secure = false) {
+    return nodemailer.createTransport({
+      host: this.smtpHost,
+      port,
+      secure,
+      auth: { user: this.smtpUser, pass: this.smtpPass },
     });
   }
 
-  /**
-   * Dispatches email verification link
-   */
+  async createEtherealTransport() {
+    const testAccount = await nodemailer.createTestAccount();
+    return nodemailer.createTransport({
+      host: "smtp.ethereal.email",
+      port: 587,
+      auth: { user: testAccount.user, pass: testAccount.pass },
+    });
+  }
+
+  async sendMail({ to, subject, html }) {
+    let lastError = null;
+
+    if (this.transporter) {
+      try {
+        const info = await this.transporter.sendMail({ from: this.from, to, subject, html });
+        logger.info(`Email successfully sent to: ${to}. messageId=${info.messageId}`);
+        return { info, previewUrl: null };
+      } catch (error) {
+        lastError = error;
+        logger.warn(`Primary SMTP failed for ${to}: ${error?.message ?? error}.`);
+      }
+    }
+
+    if (!this.isPlaceholderTransport && this.smtpPort !== 587 && this.smtpPort !== 465) {
+      try {
+        logger.info(`Retrying SMTP send on port 587 for ${to}.`);
+        const fallbackTransporter = this.createSmtpTransport(587, false);
+        const info = await fallbackTransporter.sendMail({ from: this.from, to, subject, html });
+        logger.info(`Email successfully sent to: ${to} using fallback port 587. messageId=${info.messageId}`);
+        return { info, previewUrl: null };
+      } catch (error) {
+        lastError = error;
+        logger.warn(`Fallback SMTP port 587 failed for ${to}: ${error?.message ?? error}.`);
+      }
+    }
+
+    if (!this.isPlaceholderTransport && this.smtpPort !== 465) {
+      try {
+        logger.info(`Retrying SMTP send on port 465 for ${to}.`);
+        const secureTransporter = this.createSmtpTransport(465, true);
+        const info = await secureTransporter.sendMail({ from: this.from, to, subject, html });
+        logger.info(`Email successfully sent to: ${to} using fallback port 465. messageId=${info.messageId}`);
+        return { info, previewUrl: null };
+      } catch (error) {
+        lastError = error;
+        logger.warn(`Fallback SMTP port 465 failed for ${to}: ${error?.message ?? error}.`);
+      }
+    }
+
+    if (this.allowFallback) {
+      try {
+        const etherealTransporter = await this.createEtherealTransport();
+        const info = await etherealTransporter.sendMail({ from: this.from, to, subject, html });
+        const previewUrl = nodemailer.getTestMessageUrl(info);
+        logger.info(`Ethereal fallback email for ${to}: ${previewUrl}`);
+        return { info, previewUrl };
+      } catch (error) {
+        lastError = error;
+        logger.error(`Ethereal fallback failed for ${to}: ${error?.message ?? error}`);
+      }
+    }
+
+    throw lastError || new Error("Unable to send email.");
+  }
+
   async sendVerificationEmail(email, token) {
     const verificationUrl = `${process.env.FRONTEND_URL || "http://localhost:5173"}/verify-email?token=${token}`;
     const subject = "Verify your ResumeIQ Account";
-    
+
+    // Log verification link clearly in the server logs/console
+    logger.info(`\n==================================================\n[DEVELOPER INFO] Verification URL for ${email}:\n${verificationUrl}\n==================================================\n`);
+
     const html = `
       <div style="font-family: sans-serif; padding: 20px; max-width: 600px; border: 1px solid #eee; border-radius: 8px;">
         <h2 style="color: #6366f1;">Welcome to ResumeIQ!</h2>
@@ -49,25 +120,7 @@ export class EmailService {
     `;
 
     try {
-      // If running with placeholder SMTP credentials, use Ethereal to
-      // create a real previewable message instead of silently logging.
-      if (process.env.SMTP_USER === "dummy_smtp_username" || process.env.SMTP_USER === "dummy_user") {
-        const testAccount = await nodemailer.createTestAccount();
-        const testTransporter = nodemailer.createTransport({
-          host: "smtp.ethereal.email",
-          port: 587,
-          auth: { user: testAccount.user, pass: testAccount.pass },
-        });
-
-        const info = await testTransporter.sendMail({ from: this.from, to: email, subject, html });
-        const previewUrl = nodemailer.getTestMessageUrl(info);
-        logger.info(`[Ethereal Preview] Verification email for ${email}: ${previewUrl}`);
-        return true;
-      }
-
-      const info = await this.transporter.sendMail({ from: this.from, to: email, subject, html });
-      // If a non-placeholder SMTP is configured, log success + any returned id
-      logger.info(`Verification email successfully sent to: ${email}. messageId=${info.messageId}`);
+      await this.sendMail({ to: email, subject, html });
       return true;
     } catch (error) {
       logger.error(`Failed to send verification email to: ${email}. Error: ${error?.message ?? error}`);
@@ -75,9 +128,6 @@ export class EmailService {
     }
   }
 
-  /**
-   * Dispatches password reset link
-   */
   async sendPasswordResetEmail(email, token) {
     const resetUrl = `${process.env.FRONTEND_URL || "http://localhost:5173"}/reset-password?token=${token}`;
     const subject = "Reset your ResumeIQ Password";
@@ -96,22 +146,7 @@ export class EmailService {
     `;
 
     try {
-      if (process.env.SMTP_USER === "dummy_smtp_username" || process.env.SMTP_USER === "dummy_user") {
-        const testAccount = await nodemailer.createTestAccount();
-        const testTransporter = nodemailer.createTransport({
-          host: "smtp.ethereal.email",
-          port: 587,
-          auth: { user: testAccount.user, pass: testAccount.pass },
-        });
-
-        const info = await testTransporter.sendMail({ from: this.from, to: email, subject, html });
-        const previewUrl = nodemailer.getTestMessageUrl(info);
-        logger.info(`[Ethereal Preview] Password reset email for ${email}: ${previewUrl}`);
-        return true;
-      }
-
-      const info = await this.transporter.sendMail({ from: this.from, to: email, subject, html });
-      logger.info(`Password reset email successfully sent to: ${email}. messageId=${info.messageId}`);
+      await this.sendMail({ to: email, subject, html });
       return true;
     } catch (error) {
       logger.error(`Failed to send password reset email to: ${email}. Error: ${error?.message ?? error}`);

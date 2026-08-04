@@ -12,26 +12,49 @@ import { SocialAuthButtons } from "@/features/auth/components/SocialAuthButtons"
 import { SuccessCheck } from "@/features/auth/components/SuccessCheck";
 import { useRegisterMutation } from "@/features/auth/hooks";
 import { validateConfirmPassword, validateEmail, validateName, validateNewPassword } from "@/features/auth/validation";
+import { useToast } from "@/hooks/useToast";
 
 interface FormState {
   name: string;
   email: string;
   password: string;
   confirmPassword: string;
+  role: "Candidate" | "Recruiter" | "Admin";
   acceptTerms: boolean;
 }
 
 type FieldErrors = Partial<Record<keyof FormState, string>>;
 
+function getAuthErrorMessage(error: unknown, fallback: string): string {
+  if (typeof error === "object" && error !== null) {
+    const response = (error as { response?: { data?: { message?: string; errors?: Array<{ message?: string }> } } }).response;
+    if (typeof response?.data?.message === "string" && response.data.message.trim()) {
+      return response.data.message;
+    }
+    if (Array.isArray(response?.data?.errors)) {
+      const joined = response.data.errors.map((item) => item?.message).filter(Boolean).join(" \n");
+      if (joined) return joined;
+    }
+  }
+
+  if (error instanceof Error && error.message) {
+    return error.message;
+  }
+
+  return fallback;
+}
+
 export function RegisterPage() {
   const navigate = useNavigate();
   const registerMutation = useRegisterMutation();
+  const toast = useToast();
 
   const [form, setForm] = useState<FormState>({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
+    role: "Candidate",
     acceptTerms: false,
   });
   const [errors, setErrors] = useState<FieldErrors>({});
@@ -60,10 +83,11 @@ export function RegisterPage() {
     if (Object.values(allErrors).some(Boolean)) return;
 
     try {
-      await registerMutation.mutateAsync({ name: form.name, email: form.email, password: form.password });
+      await registerMutation.mutateAsync({ name: form.name, email: form.email, password: form.password, role: form.role.toLowerCase() as "candidate" | "recruiter" | "admin" });
       setTimeout(() => navigate("/verify-email", { replace: true }), 900);
-    } catch {
-      // Error surfaced via registerMutation.error below.
+    } catch (error) {
+      const message = getAuthErrorMessage(error, "Couldn't create your account.");
+      toast.error("Account creation failed", message);
     }
   }
 
@@ -120,6 +144,20 @@ export function RegisterPage() {
         />
 
         <div>
+          <label className="mb-1.5 block text-sm font-medium text-foreground-secondary">Account role</label>
+          <select
+            value={form.role}
+            onChange={(e) => updateField("role", e.target.value as FormState["role"])}
+            className="h-11 w-full rounded-xl border border-surface-border bg-white/[0.04] px-3 text-sm text-foreground outline-none transition-colors focus:border-accent-purple/60"
+          >
+            <option value="Candidate">Candidate</option>
+            <option value="Recruiter">Recruiter</option>
+            <option value="Admin">Admin</option>
+          </select>
+          <p className="mt-1.5 text-xs text-foreground-secondary">Choose the role that best describes how you’ll use ResumeIQ.</p>
+        </div>
+
+        <div>
           <PasswordInput
             value={form.password}
             onChange={(e) => updateField("password", e.target.value)}
@@ -172,14 +210,7 @@ export function RegisterPage() {
               className="rounded-lg bg-danger/10 px-3 py-2 text-xs text-danger"
             >
               {(() => {
-                const err: any = registerMutation.error;
-                // Prefer structured server message (validation or general)
-                if (err?.response?.data?.message) return err.response.data.message;
-                // If validation details are provided, join them for clarity
-                if (err?.response?.data?.errors && Array.isArray(err.response.data.errors)) {
-                  return err.response.data.errors.map((e: any) => `${e.field}: ${e.message}`).join(" \n");
-                }
-                return err?.message ?? "Couldn't create your account.";
+                return getAuthErrorMessage(registerMutation.error, "Couldn't create your account.");
               })()}
             </motion.p>
           )}

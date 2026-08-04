@@ -10,12 +10,14 @@ import { PasswordStrengthMeter } from "@/features/auth/components/PasswordStreng
 import { SuccessCheck } from "@/features/auth/components/SuccessCheck";
 import { useResetPasswordMutation } from "@/features/auth/hooks";
 import { validateConfirmPassword, validateNewPassword } from "@/features/auth/validation";
+import { useToast } from "@/hooks/useToast";
 
 export function ResetPasswordPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const token = searchParams.get("token") ?? "";
   const mutation = useResetPasswordMutation();
+  const toast = useToast();
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -40,8 +42,9 @@ export function ResetPasswordPage() {
     try {
       await mutation.mutateAsync({ token, password });
       setTimeout(() => navigate("/login", { replace: true }), 1200);
-    } catch {
-      // Error surfaced via mutation.error below.
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Couldn't reset your password. The link may have expired.";
+      toast.error("Password reset failed", message);
     }
   }
 

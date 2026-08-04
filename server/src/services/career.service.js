@@ -3,9 +3,11 @@ import { CareerRepository } from "../repositories/career.repository.js";
 import { ResumeRepository } from "../repositories/resume.repository.js";
 import { keywordsDb } from "../ats/config/keywords.db.js";
 import { AppError } from "../utils/appError.js";
+import { RulesBasedRoadmapPlannerService } from "./roadmapPlanner.service.js";
 
 const careerRepository = new CareerRepository();
 const resumeRepository = new ResumeRepository();
+const roadmapPlannerService = new RulesBasedRoadmapPlannerService();
 
 export class CareerService {
   async analyzeRoadmap(userId, resumeId, targetRole) {
@@ -75,12 +77,34 @@ export class CareerService {
       estimatedTimeToTarget = "2-4 months";
     }
 
+    const missingSkills = skillGap.filter(item => item.gap > 20).map(item => item.category);
+    const plannerOutput = await roadmapPlannerService.generatePlan({
+      targetRole,
+      missingSkills,
+      resumeText: resume.rawText || "",
+      skillGap,
+    });
+
     // 2. Build personalized Roadmap steps
     const roadmap = [];
-    const missingSkills = skillGap.filter(item => item.gap > 20).map(item => item.category);
-    
-    // Default steps
-    const defaultSteps = [
+    const monthlyPlan = plannerOutput.monthlyPlan || [];
+
+    monthlyPlan.forEach((step, idx) => {
+      roadmap.push({
+        id: `step_${idx + 1}`,
+        order: idx + 1,
+        title: step.focus,
+        description: `${step.focus} • ${step.resources.join(", ")}`,
+        estimatedDuration: step.month,
+        difficulty: idx === 0 ? "Beginner" : idx === 1 ? "Intermediate" : "Advanced",
+        priority: idx === 2 ? "High" : "Medium",
+        status: "not-started",
+        skillsCovered: step.resources.slice(0, 3),
+      });
+    });
+
+    if (roadmap.length === 0) {
+      const defaultSteps = [
       {
         title: "Review Foundational Concepts",
         description: `Strengthen core theory and basic syntax relating to your target role: ${targetRole}.`,
@@ -115,28 +139,29 @@ export class CareerService {
       }
     ];
 
-    defaultSteps.forEach((step, idx) => {
-      roadmap.push({
-        id: `step_${idx + 1}`,
-        order: idx + 1,
-        title: step.title,
-        description: step.description,
-        estimatedDuration: step.estimatedDuration,
-        difficulty: step.difficulty,
-        priority: step.priority,
-        status: "not-started",
-        skillsCovered: step.skillsCovered.length > 0 ? step.skillsCovered : ["General Alignment"]
+      defaultSteps.forEach((step, idx) => {
+        roadmap.push({
+          id: `step_${idx + 1}`,
+          order: idx + 1,
+          title: step.title,
+          description: step.description,
+          estimatedDuration: step.estimatedDuration,
+          difficulty: step.difficulty,
+          priority: step.priority,
+          status: "not-started",
+          skillsCovered: step.skillsCovered.length > 0 ? step.skillsCovered : ["General Alignment"]
+        });
       });
-    });
+    }
 
     // 3. Recommended Certifications
-    const certifications = this._generateCertifications(dbKey);
+    const certifications = plannerOutput.certifications || this._generateCertifications(dbKey);
 
     // 4. Learning Resources
-    const learningResources = this._generateLearningResources(dbKey, missingSkills);
+    const learningResources = plannerOutput.courses || this._generateLearningResources(dbKey, missingSkills);
 
     // 5. Portfolio Project Recommendations
-    const projectRecommendations = this._generateProjectRecommendations(dbKey, missingSkills);
+    const projectRecommendations = plannerOutput.projects || this._generateProjectRecommendations(dbKey, missingSkills);
 
     // 6. Career Timeline
     const careerTimeline = [
@@ -192,7 +217,17 @@ export class CareerService {
       projectRecommendations,
       careerTimeline,
       insights,
-      confidence: 0.95
+      confidence: 0.95,
+      skillGapSummary: {
+        targetRole,
+        missingSkills: missingSkills.map((skill) => ({ skill, confidence: 0.8, priority: missingSkills.indexOf(skill) === 0 ? "High" : "Medium" })),
+      },
+      roadmapPlan: {
+        monthlyPlan: plannerOutput.monthlyPlan || [],
+        practiceProblems: plannerOutput.practiceProblems || [],
+        interviewMilestones: plannerOutput.interviewMilestones || [],
+        jobReadinessScore: plannerOutput.jobReadinessScore ?? careerReadinessScore,
+      },
     };
 
     return await careerRepository.createRoadmap(roadmapData);

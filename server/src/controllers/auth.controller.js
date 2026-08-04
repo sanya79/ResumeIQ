@@ -23,10 +23,22 @@ export class AuthController {
         {
           user: { ...data.user, name: data.user.fullName || data.user.name || name || "User" },
           accessToken: data.accessToken,
-          refreshToken: data.refreshToken
+          refreshToken: data.refreshToken,
+          verificationUrl: data.verificationUrl
         },
         201
       );
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getConfig(req, res, next) {
+    try {
+      return sendSuccess(res, "Auth configurations loaded.", {
+        googleClientId: process.env.GOOGLE_CLIENT_ID || "",
+        githubClientId: process.env.GITHUB_CLIENT_ID || "",
+      });
     } catch (error) {
       next(error);
     }
@@ -47,6 +59,29 @@ export class AuthController {
         user: { ...data.user, name: data.user.fullName || data.user.name || "User" },
         accessToken: data.accessToken,
         refreshToken: data.refreshToken
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async socialLogin(req, res, next) {
+    try {
+      const { provider, email, fullName, name, avatarUrl, avatar, role, code, redirectUri } = req.body;
+      const data = await authService.socialLogin(provider, {
+        email,
+        fullName: fullName || name,
+        avatarUrl: avatarUrl || avatar,
+        role,
+        code,
+        redirectUri,
+      });
+
+      tokenService.setCookie(res, data.refreshToken);
+      return sendSuccess(res, "Social login successful.", {
+        user: { ...data.user, name: data.user.fullName || data.user.name || "User" },
+        accessToken: data.accessToken,
+        refreshToken: data.refreshToken,
       });
     } catch (error) {
       next(error);
@@ -118,7 +153,7 @@ export class AuthController {
 
   async verifyEmail(req, res, next) {
     try {
-      const { token } = req.query;
+      const token = req.body?.token ?? req.query?.token;
       if (!token) {
         return next(new AppError("Verification token parameter missing.", 400));
       }
@@ -126,6 +161,21 @@ export class AuthController {
       await authService.verifyEmail(token);
       
       return sendSuccess(res, "Email verified successfully! Your account is active.");
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async resendVerificationEmail(req, res, next) {
+    try {
+      const result = await authService.resendVerificationEmail(req.user);
+      if (result && result.success) {
+        return sendSuccess(res, "Verification email has been resent.", {
+          verificationUrl: result.verificationUrl
+        });
+      }
+
+      return sendSuccess(res, "Unable to resend verification email at this time. Please try again later.", null, 500);
     } catch (error) {
       next(error);
     }

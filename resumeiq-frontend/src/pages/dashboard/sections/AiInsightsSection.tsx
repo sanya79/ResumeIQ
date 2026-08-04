@@ -3,9 +3,9 @@ import { SlideUp } from "@/components/animations/SlideUp";
 import { AnalyticsCard } from "@/components/cards/AnalyticsCard";
 import { Accordion, type AccordionItemData } from "@/components/ui/Accordion";
 import { Badge } from "@/components/ui/Badge";
-import { insightGroups } from "../data";
+import type { InsightGroup } from "../data";
 
-const toneToBadge: Record<(typeof insightGroups)[number]["tone"], "emerald" | "danger" | "cyan" | "purple"> = {
+const toneToBadge: Record<InsightGroup["tone"], "emerald" | "danger" | "cyan" | "purple"> = {
   emerald: "emerald",
   danger: "danger",
   cyan: "cyan",
@@ -14,8 +14,10 @@ const toneToBadge: Record<(typeof insightGroups)[number]["tone"], "emerald" | "d
 
 /** Glass panel of expandable insight groups — strong skills, weak skills,
  * ATS issues, and resume suggestions, each collapsed by default. */
-export function AiInsightsSection() {
-  const items: AccordionItemData[] = insightGroups.map((group) => ({
+export function AiInsightsSection({ data = [], isLoading }: { data?: InsightGroup[]; isLoading?: boolean }) {
+  if (isLoading && data.length === 0) return null;
+
+  const items: AccordionItemData[] = data.map((group) => ({
     id: group.id,
     question: group.title,
     answer: (

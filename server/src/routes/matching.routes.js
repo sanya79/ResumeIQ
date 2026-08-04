@@ -9,6 +9,8 @@ const controller = new MatchingController();
 router.use(protect);
 
 router.post("/analyze", controller.analyzeJobMatch);
+router.post("/job-descriptions", controller.saveJobDescription);
+router.get("/job-descriptions", controller.getJobDescriptions);
 router.get("/history", controller.getMatchHistory);
 router.get("/:id", controller.getMatchDetails);
 router.post("/:id/save", controller.saveMatchComparison);

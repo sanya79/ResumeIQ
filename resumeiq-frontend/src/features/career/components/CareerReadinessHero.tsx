@@ -12,6 +12,7 @@ interface CareerReadinessHeroProps {
   careerReadinessScore: number;
   readinessStatus: CareerReadinessStatus;
   estimatedTimeToTarget: string;
+  projectedReadinessScore?: number;
 }
 
 /** Top hero: page title + the large animated circular Career Readiness
@@ -22,6 +23,7 @@ export function CareerReadinessHero({
   careerReadinessScore,
   readinessStatus,
   estimatedTimeToTarget,
+  projectedReadinessScore,
 }: CareerReadinessHeroProps) {
   const color = getReadinessColor(readinessStatus);
 
@@ -46,9 +48,16 @@ export function CareerReadinessHero({
             Target Role
           </span>
           <span className="text-fluid-lg font-semibold text-foreground">{targetRole}</span>
-          <div className="flex items-center gap-1.5 text-sm text-foreground-secondary">
-            <Clock size={14} className="text-accent-cyan" />
-            Estimated time to target: <span className="font-medium text-foreground">{estimatedTimeToTarget}</span>
+          <div className="flex flex-col gap-1.5 text-sm text-foreground-secondary">
+            <div className="flex items-center gap-1.5">
+              <Clock size={14} className="text-accent-cyan" />
+              Estimated time to target: <span className="font-medium text-foreground">{estimatedTimeToTarget}</span>
+            </div>
+            {typeof projectedReadinessScore === "number" && (
+              <div>
+                Projected plan readiness: <span className="font-medium text-foreground">{projectedReadinessScore}%</span>
+              </div>
+            )}
           </div>
           <Badge tone={getReadinessTone(readinessStatus)}>{readinessStatus}</Badge>
         </div>

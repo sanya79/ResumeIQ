@@ -78,6 +78,9 @@ export function CareerRoadmapPage() {
 
   const result = analyzeMutation.data;
   const roadmapSteps = localRoadmap ?? result?.roadmap ?? [];
+  const skillGapSubtitle = result?.skillGapSummary?.missingSkills?.length
+    ? `Priority gaps: ${result.skillGapSummary.missingSkills.slice(0, 3).map((item) => item.skill).join(", ")}`
+    : "Current level vs. required level, by category";
   const showResults = Boolean(result) && !analyzeMutation.isPending;
   const showProcessing = analyzeMutation.isPending;
   const showInput = !showResults && !showProcessing;
@@ -207,10 +210,11 @@ export function CareerRoadmapPage() {
               careerReadinessScore={result.careerReadinessScore}
               readinessStatus={result.readinessStatus}
               estimatedTimeToTarget={result.estimatedTimeToTarget}
+              projectedReadinessScore={result.roadmapPlan?.jobReadinessScore}
             />
 
             <section>
-              <SectionHeading title="Skill Gap Analysis" subtitle="Current level vs. required level, by category" />
+              <SectionHeading title="Skill Gap Analysis" subtitle={skillGapSubtitle} />
               <SkillGapAnalysisSection categories={result.skillGap} />
             </section>
 

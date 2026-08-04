@@ -33,17 +33,18 @@ interface BackendAuthSession {
   user: BackendUser;
   accessToken: string;
   refreshToken: string;
+  verificationUrl?: string;
 }
 
 function normalizeRole(role?: string): User["role"] {
-  switch (role?.toLowerCase()) {
-    case "admin":
+  switch (role?.trim().toUpperCase()) {
+    case "ADMIN":
       return "admin";
-    case "candidate":
-      return "candidate";
-    case "recruiter":
-    default:
+    case "RECRUITER":
       return "recruiter";
+    case "CANDIDATE":
+    default:
+      return "candidate";
   }
 }
 
@@ -80,12 +81,36 @@ export async function register(payload: RegisterPayload): Promise<AuthSession> {
   const { data } = await apiClient.post<ApiEnvelope<BackendAuthSession>>("/auth/register", {
     ...payload,
     fullName: payload.name,
+    role: payload.role ? payload.role.charAt(0).toUpperCase() + payload.role.slice(1).toLowerCase() : undefined,
   });
+  if (data.data?.verificationUrl) {
+    sessionStorage.setItem("dev_verification_url", data.data.verificationUrl);
+  }
   return unwrapAuthSession(data);
 }
 
 export async function login(payload: AuthCredentials): Promise<AuthSession> {
   const { data } = await apiClient.post<ApiEnvelope<BackendAuthSession>>("/auth/login", payload);
+  return unwrapAuthSession(data);
+}
+
+export async function socialLogin(
+  provider: "google" | "github",
+  code?: string,
+  redirectUri?: string
+): Promise<AuthSession> {
+  const payload: any = { provider };
+  if (code) {
+    payload.code = code;
+    payload.redirectUri = redirectUri;
+  } else {
+    // Mock user for local testing without OAuth configuration
+    payload.fullName = provider === "google" ? "Google User" : "GitHub User";
+    payload.email = `${provider}-user-${Date.now()}@resumeiq.local`;
+    payload.role = "candidate";
+  }
+
+  const { data } = await apiClient.post<ApiEnvelope<BackendAuthSession>>("/auth/social-login", payload);
   return unwrapAuthSession(data);
 }
 
@@ -115,7 +140,23 @@ export async function refreshAccessToken(refreshToken: string): Promise<{ access
   return data;
 }
 
-export async function resendVerificationEmail(): Promise<{ message: string }> {
-  const { data } = await apiClient.post<{ message: string }>("/auth/resend-verification");
+export async function verifyEmail(token: string): Promise<{ message: string }> {
+  const { data } = await apiClient.post<{ message: string }>('/auth/verify-email', { token });
   return data;
+}
+
+export async function resendVerificationEmail(): Promise<{ message: string; verificationUrl?: string }> {
+  const { data } = await apiClient.post<ApiEnvelope<{ verificationUrl?: string }>>("/auth/resend-verification");
+  if (data.data?.verificationUrl) {
+    sessionStorage.setItem("dev_verification_url", data.data.verificationUrl);
+  }
+  return {
+    message: data.message || "Verification email has been resent.",
+    verificationUrl: data.data?.verificationUrl
+  };
+}
+
+export async function getAuthConfig(): Promise<{ googleClientId: string; githubClientId: string }> {
+  const { data } = await apiClient.get<ApiEnvelope<{ googleClientId: string; githubClientId: string }>>("/auth/config");
+  return data.data;
 }

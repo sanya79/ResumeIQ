@@ -4,6 +4,7 @@ import { GradientBackground } from "@/components/animations/GradientBackground";
 import { ParticleField } from "@/components/animations/ParticleField";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { cn } from "@/utils/cn";
+import { useAnalyticsOverview } from "@/services/analytics.api";
 import { WelcomeSection } from "./sections/WelcomeSection";
 import { AnalyticsGridSection } from "./sections/AnalyticsGridSection";
 import { RightRailSection } from "./sections/RightRailSection";
@@ -43,6 +44,8 @@ function SectionFallback({ size = "md" }: { size?: keyof typeof fallbackHeights 
 }
 
 export function DashboardPage() {
+  const { data: overview, isLoading } = useAnalyticsOverview();
+
   return (
     <PageContainer className="relative overflow-hidden">
       <GradientBackground className="opacity-60" />
@@ -50,34 +53,49 @@ export function DashboardPage() {
 
       <div className="container-page relative z-10 flex flex-col gap-10 py-8">
         <WelcomeSection />
-        <AnalyticsGridSection />
+        <AnalyticsGridSection data={overview ?? undefined} isLoading={isLoading} />
 
         <div className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1fr)_320px]">
           <div className="flex flex-col gap-10">
             <Suspense fallback={<SectionFallback size="sm" />}>
-              <QuickActionsSection />
+              <QuickActionsSection data={overview?.quickActions ?? []} isLoading={isLoading} />
             </Suspense>
 
             <Suspense fallback={<SectionFallback size="lg" />}>
-              <AiInsightsSection />
+              <AiInsightsSection data={overview?.insightGroups ?? []} isLoading={isLoading} />
             </Suspense>
 
             <Suspense fallback={<SectionFallback size="2xl" />}>
-              <PerformanceChartsSection />
+              <PerformanceChartsSection
+                data={{
+                  resumeScoreHistory: overview?.resumeScoreHistory ?? [],
+                  atsTrend: overview?.atsTrend ?? [],
+                  applicationsSent: overview?.applicationsSent ?? [],
+                  interviewRate: overview?.interviewRate ?? [],
+                }}
+                isLoading={isLoading}
+              />
             </Suspense>
 
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
               <Suspense fallback={<SectionFallback size="xl" />}>
-                <CareerProgressSection />
+                <CareerProgressSection data={overview?.careerProgress ?? []} isLoading={isLoading} />
               </Suspense>
               <Suspense fallback={<SectionFallback size="xl" />}>
-                <RecentActivitySection />
+                <RecentActivitySection data={overview?.recentActivity ?? []} isLoading={isLoading} />
               </Suspense>
             </div>
           </div>
 
           <aside className="xl:sticky xl:top-24 xl:self-start">
-            <RightRailSection />
+            <RightRailSection
+              data={{
+                aiTip: overview?.aiTip ?? "",
+                careerQuote: overview?.careerQuote ?? { quote: "", author: "" },
+                upcomingInterview: overview?.upcomingInterview ?? { role: "", company: "", date: "" },
+              }}
+              isLoading={isLoading}
+            />
           </aside>
         </div>
       </div>

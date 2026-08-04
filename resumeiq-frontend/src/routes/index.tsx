@@ -12,7 +12,9 @@ import { ResumeWorkspacePage } from "@/pages/resume/ResumeWorkspacePage";
 import { AtsIntelligencePage } from "@/pages/ats/AtsIntelligencePage";
 import { JobMatchingPage } from "@/pages/matching/JobMatchingPage";
 import { CareerRoadmapPage } from "@/pages/career/CareerRoadmapPage";
+import { GitHubPortfolioPage } from "@/pages/portfolio/GitHubPortfolioPage";
 import { InterviewPage } from "@/pages/interview/InterviewPage";
+import { RecruiterDashboardPage } from "@/pages/recruiter/RecruiterDashboardPage";
 import { UnauthorizedPage } from "@/pages/errors/UnauthorizedPage";
 import { NotFoundPage } from "@/pages/errors/NotFoundPage";
 import { ProtectedRoute } from "./ProtectedRoute";
@@ -62,8 +64,18 @@ export const router = createBrowserRouter([
           { path: "/ats/:resumeId", element: <AtsIntelligencePage /> },
           { path: "/matching", element: <JobMatchingPage /> },
           { path: "/skill-gap", element: <CareerRoadmapPage /> },
+          { path: "/portfolio/github", element: <GitHubPortfolioPage /> },
           { path: "/interview", element: <InterviewPage /> },
         ],
+      },
+    ],
+  },
+  {
+    element: <ProtectedRoute allowedRoles={["RECRUITER"]} />,
+    children: [
+      {
+        element: <AppLayout />,
+        children: [{ path: "/recruiter/dashboard", element: <RecruiterDashboardPage /> }],
       },
     ],
   },

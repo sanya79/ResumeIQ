@@ -13,6 +13,7 @@ interface AuthState {
   error: string | null;
   login: (credentials: AuthCredentials) => Promise<void>;
   register: (payload: RegisterPayload) => Promise<void>;
+  socialLogin: (provider: "google" | "github", code?: string, redirectUri?: string) => Promise<void>;
   logout: () => Promise<void>;
   /** Re-fetches the current user with the stored token — call on app boot
    * to rehydrate a session, or after actions that change the user record. */
@@ -56,11 +57,31 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: true, error: null });
         try {
           const session = await authApi.register(payload);
+          if (session.user.isEmailVerified === false) {
+            localStorage.removeItem(STORAGE_KEYS.accessToken);
+            localStorage.removeItem(STORAGE_KEYS.refreshToken);
+            set({ user: session.user, token: null, isAuthenticated: false, isLoading: false });
+            return;
+          }
+
           localStorage.setItem(STORAGE_KEYS.accessToken, session.accessToken);
           localStorage.setItem(STORAGE_KEYS.refreshToken, session.refreshToken);
           set({ user: session.user, token: session.accessToken, isAuthenticated: true, isLoading: false });
         } catch (error) {
           set({ isLoading: false, error: extractErrorMessage(error, "Couldn't create your account. Please try again.") });
+          throw error;
+        }
+      },
+
+      socialLogin: async (provider, code, redirectUri) => {
+        set({ isLoading: true, error: null });
+        try {
+          const session = await authApi.socialLogin(provider, code, redirectUri);
+          localStorage.setItem(STORAGE_KEYS.accessToken, session.accessToken);
+          localStorage.setItem(STORAGE_KEYS.refreshToken, session.refreshToken);
+          set({ user: session.user, token: session.accessToken, isAuthenticated: true, isLoading: false });
+        } catch (error) {
+          set({ isLoading: false, error: extractErrorMessage(error, "Couldn't continue with social sign-in.") });
           throw error;
         }
       },

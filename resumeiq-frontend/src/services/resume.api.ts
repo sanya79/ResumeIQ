@@ -1,5 +1,5 @@
 import { apiClient } from "./apiClient";
-import type { ApiResponse, Resume } from "@/types";
+import type { ApiResponse, Resume, ResumeChatMessage, ResumeChatResponse, ResumeOptimization } from "@/types";
 
 /**
  * All calls here hit the real backend (server/src/routes/resume.routes.js):
@@ -7,6 +7,8 @@ import type { ApiResponse, Resume } from "@/types";
  *   GET    /resumes/latest
  *   GET    /resumes/history
  *   GET    /resumes/:id
+ *   GET    /resumes/:id/versions
+ *   GET    /resumes/compare?from=&to=
  *   DELETE /resumes/:id
  *   POST   /resumes/:id/restore
  *
@@ -53,6 +55,11 @@ export async function getResumeHistory(): Promise<Resume[]> {
   return data.data.history;
 }
 
+export async function getResumeAnalysis(id: string): Promise<Resume> {
+  const { data } = await apiClient.get<ApiResponse<{ resume: Resume }>>(`/resumes/${id}`);
+  return data.data.resume;
+}
+
 export async function getResumeDetails(id: string): Promise<Resume> {
   const { data } = await apiClient.get<ApiResponse<{ resume: Resume }>>(`/resumes/${id}`);
   return data.data.resume;
@@ -65,6 +72,56 @@ export async function deleteResume(id: string): Promise<void> {
 export async function restoreResumeVersion(id: string): Promise<Resume> {
   const { data } = await apiClient.post<ApiResponse<{ resume: Resume }>>(`/resumes/${id}/restore`);
   return data.data.resume;
+}
+
+export async function getResumeVersions(id: string): Promise<Resume[]> {
+  const { data } = await apiClient.get<ApiResponse<{ versions: Resume[] }>>(`/resumes/${id}/versions`);
+  return data.data.versions;
+}
+
+export async function compareResumeVersions(from: string, to: string): Promise<{
+  from: string;
+  to: string;
+  addedSkills: string[];
+  removedSkills: string[];
+  sectionDiffs: Array<{ section: string; changed: boolean }>;
+}> {
+  const { data } = await apiClient.get<ApiResponse<{ comparison: any }>>(`/resumes/compare?from=${from}&to=${to}`);
+  return data.data.comparison;
+}
+
+export async function optimizeResume(id: string, payload: { targetRole?: string; targetCompany?: string }): Promise<ResumeOptimization> {
+  const { data } = await apiClient.post<ApiResponse<{ optimization: ResumeOptimization }>>(`/resumes/${id}/optimize`, payload);
+  return data.data.optimization;
+}
+
+export async function getResumeOptimizations(id: string): Promise<ResumeOptimization[]> {
+  const { data } = await apiClient.get<ApiResponse<{ optimizations: ResumeOptimization[] }>>(`/resumes/${id}/optimizations`);
+  return data.data.optimizations;
+}
+
+export async function getResumeKnowledgeGraph(id: string): Promise<{ nodes: any[]; edges: any[] }> {
+  const { data } = await apiClient.get<ApiResponse<{ graph: { nodes: any[]; edges: any[] } }>>(`/resumes/${id}/knowledge-graph`);
+  return data.data.graph;
+}
+
+export async function applyResumeOptimization(id: string, rawText: string): Promise<Resume> {
+  const { data } = await apiClient.post<ApiResponse<{ resume: Resume }>>(`/resumes/${id}/apply-optimization`, { rawText });
+  return data.data.resume;
+}
+
+export async function getResumeChatHistory(id: string): Promise<ResumeChatMessage[]> {
+  const { data } = await apiClient.get<ApiResponse<{ messages: ResumeChatMessage[] }>>(`/resumes/${id}/chat`);
+  return data.data.messages;
+}
+
+export async function sendResumeChatMessage(id: string, payload: { message: string; conversationId?: string }): Promise<ResumeChatResponse> {
+  const { data } = await apiClient.post<ApiResponse<{ answer: string; sourceSnippets: ResumeChatResponse["sourceSnippets"]; conversationId?: string }>>(`/resumes/${id}/chat`, payload);
+  return {
+    answer: data.data.answer,
+    sourceSnippets: data.data.sourceSnippets,
+    conversationId: data.data.conversationId,
+  };
 }
 
 export async function downloadOptimizedResumePdf(id: string, jobTitle?: string): Promise<void> {

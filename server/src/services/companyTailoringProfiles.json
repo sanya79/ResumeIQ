@@ -1,0 +1,26 @@
+{
+  "Google": {
+    "keywords": ["scalable", "distributed systems", "platform", "high-impact"],
+    "tone": "thoughtful, impact-focused, and execution-oriented"
+  },
+  "Amazon": {
+    "keywords": ["customer obsession", "operational excellence", "ownership", "metrics"],
+    "tone": "results-driven, pragmatic, and customer-focused"
+  },
+  "Microsoft": {
+    "keywords": ["collaboration", "developer experience", "platform", "ship quality"],
+    "tone": "collaborative, product-minded, and reliability-focused"
+  },
+  "Adobe": {
+    "keywords": ["creativity", "design systems", "user experience", "innovation"],
+    "tone": "creative, user-centered, and polished"
+  },
+  "Uber": {
+    "keywords": ["mobility", "scale", "global operations", "user trust"],
+    "tone": "bold, mission-driven, and execution-heavy"
+  },
+  "Other": {
+    "keywords": ["adaptability", "ownership", "cross-functional delivery"],
+    "tone": "adaptable, confident, and tailored"
+  }
+}

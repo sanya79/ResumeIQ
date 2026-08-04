@@ -1,18 +1,52 @@
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
+import { useAuthStore } from "@/stores/authStore";
+import { getAuthConfig } from "@/services/auth.api";
 
-/** UI-only social auth entry points — no OAuth wiring yet. Swap onClick
- * handlers in for the real provider flow once it's available. */
 export function SocialAuthButtons() {
+  const socialLogin = useAuthStore((s) => s.socialLogin);
+  const isLoading = useAuthStore((s) => s.isLoading);
+  const [config, setConfig] = useState<{ googleClientId: string; githubClientId: string } | null>(null);
+
+  useEffect(() => {
+    getAuthConfig()
+      .then(setConfig)
+      .catch((err) => console.error("Error loading social auth config:", err));
+  }, []);
+
+  const handleSocialClick = async (provider: "google" | "github") => {
+    const googleId = config?.googleClientId;
+    const githubId = config?.githubClientId;
+    const redirectUri = `${window.location.origin}/login`;
+
+    if (provider === "google" && googleId) {
+      const scope = "email profile openid";
+      const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${googleId}&redirect_uri=${encodeURIComponent(
+        redirectUri
+      )}&response_type=code&scope=${encodeURIComponent(scope)}&state=google`;
+      window.location.href = authUrl;
+    } else if (provider === "github" && githubId) {
+      const scope = "user:email";
+      const authUrl = `https://github.com/login/oauth/authorize?client_id=${githubId}&redirect_uri=${encodeURIComponent(
+        redirectUri
+      )}&scope=${encodeURIComponent(scope)}&state=github`;
+      window.location.href = authUrl;
+    } else {
+      // Fallback to mock social login
+      await socialLogin(provider);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-4">
       <Divider label="or continue with" />
       <div className="grid grid-cols-2 gap-3">
-        <Button type="button" variant="outline" size="md">
+        <Button type="button" variant="outline" size="md" disabled={isLoading} onClick={() => handleSocialClick("google")}>
           <GoogleIcon />
           Google
         </Button>
-        <Button type="button" variant="outline" size="md">
+        <Button type="button" variant="outline" size="md" disabled={isLoading} onClick={() => handleSocialClick("github")}>
           <GitHubIcon />
           GitHub
         </Button>

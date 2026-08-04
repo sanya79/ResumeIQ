@@ -124,6 +124,30 @@ export interface CareerInsight {
 
 export type CareerReadinessStatus = "Needs Improvement" | "Almost Ready" | "Excellent Candidate";
 
+export interface CareerSkillGapSummaryItem {
+  skill: string;
+  confidence: number;
+  priority: "High" | "Medium" | "Low";
+}
+
+export interface CareerSkillGapSummary {
+  targetRole: string;
+  missingSkills: CareerSkillGapSummaryItem[];
+}
+
+export interface RoadmapPlanStep {
+  month: string;
+  focus: string;
+  resources: string[];
+}
+
+export interface RoadmapPlan {
+  monthlyPlan: RoadmapPlanStep[];
+  practiceProblems: string[];
+  interviewMilestones: string[];
+  jobReadinessScore: number;
+}
+
 /**
  * Full result of running a resume against a target role — the response
  * shape assumed for `POST /career/analyze`. One AI pipeline call returns
@@ -147,6 +171,8 @@ export interface CareerRoadmapResult {
   insights: CareerInsight[];
   confidence: number;
   createdAt: string;
+  skillGapSummary?: CareerSkillGapSummary;
+  roadmapPlan?: RoadmapPlan;
 }
 
 export interface AnalyzeCareerRoadmapPayload {

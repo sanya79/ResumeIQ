@@ -50,3 +50,12 @@ export interface AtsScorecard {
   timestamp: string;
   visualizationData: AtsVisualizationData;
 }
+
+export interface RecruiterSimulationResult {
+  firstImpression: string;
+  estimatedReadTime: number;
+  hireProbability: number;
+  strengths: AtsStrengthOrWeakness[];
+  weaknesses: AtsStrengthOrWeakness[];
+  explanationBullets: string[];
+}

@@ -111,6 +111,14 @@ export class TokenService {
   }
 
   /**
+   * Invalidates every stored refresh session for a user.
+   */
+  async invalidateAllTokens(user) {
+    user.activeRefreshTokens = [];
+    await user.save();
+  }
+
+  /**
    * Sets the HTTP-Only cookie header on the Express response
    */
   setCookie(res, token) {

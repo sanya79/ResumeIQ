@@ -13,6 +13,8 @@ export type InterviewType =
   | "Project Discussion"
   | "Mixed";
 
+export type InterviewSessionType = "TECHNICAL" | "HR" | "BEHAVIOURAL";
+
 export type InterviewDifficulty = "Easy" | "Medium" | "Hard" | "Expert";
 
 export type ExperienceLevel = "Fresher" | "1-2 Years" | "3-5 Years" | "5+ Years";
@@ -22,6 +24,7 @@ export interface InterviewConfig {
   difficulty: InterviewDifficulty;
   experienceLevel: ExperienceLevel;
   targetRole: string;
+  timed?: boolean;
 }
 
 export interface InterviewQuestion {
@@ -57,6 +60,17 @@ export interface AnsweredQuestion {
   evaluation: AnswerEvaluation;
 }
 
+export interface InterviewSessionSummary {
+  id: string;
+  resumeId?: string | null;
+  role: string;
+  type: InterviewSessionType;
+  timed: boolean;
+  status: "generating" | "in_progress" | "completed";
+  currentQuestionIndex: number;
+  questionCount: number;
+}
+
 export interface InterviewSession {
   id: string;
   config: InterviewConfig;
@@ -88,11 +102,15 @@ export interface PerformanceReport {
   confidenceLevel: number;
   technicalScore: number;
   communicationScore: number;
+  starScore?: number;
   averageResponseTimeSeconds: number;
   questionAccuracy: number;
   categoryScores: CategoryScore[];
   confidenceTimeline: ConfidenceTimelinePoint[];
   responseTimes: ResponseTimePoint[];
+  strengths?: string[];
+  weaknesses?: string[];
+  perQuestionBreakdown?: Array<{ questionId: string; questionPrompt: string; score: number; feedback: string }>;
   answers: AnsweredQuestion[];
 }
 

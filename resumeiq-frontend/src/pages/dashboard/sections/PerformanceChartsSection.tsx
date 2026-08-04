@@ -15,12 +15,31 @@ import {
 import { SlideUp } from "@/components/animations/SlideUp";
 import { AnalyticsCard } from "@/components/cards/AnalyticsCard";
 import { ChartTooltip } from "@/components/charts/ChartTooltip";
-import { resumeScoreHistory, atsTrend, applicationsSent, interviewRate } from "../data";
 
 const axisTick = { fill: "#B3B3B3", fontSize: 11 };
 const gridStroke = "rgba(255,255,255,0.06)";
 
-export function PerformanceChartsSection() {
+export function PerformanceChartsSection({
+  data,
+  isLoading,
+}: {
+  data?: {
+    resumeScoreHistory?: Array<{ month: string; score: number }>;
+    atsTrend?: Array<{ month: string; keyword: number; formatting: number; readability: number }>;
+    applicationsSent?: Array<{ week: string; applications: number }>;
+    interviewRate?: Array<{ week: string; rate: number }>;
+  };
+  isLoading?: boolean;
+}) {
+  const resumeScoreHistory = data?.resumeScoreHistory ?? [];
+  const atsTrend = data?.atsTrend ?? [];
+  const applicationsSent = data?.applicationsSent ?? [];
+  const interviewRate = data?.interviewRate ?? [];
+
+  if (isLoading && resumeScoreHistory.length === 0 && atsTrend.length === 0 && applicationsSent.length === 0 && interviewRate.length === 0) {
+    return null;
+  }
+
   return (
     <SlideUp>
       <div className="mb-4 flex items-center gap-2">

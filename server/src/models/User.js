@@ -26,14 +26,23 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Password is required"]
     },
+    authProvider: {
+      type: String,
+      enum: ["LOCAL", "GOOGLE", "GITHUB"],
+      default: "LOCAL"
+    },
+    providerId: {
+      type: String,
+      default: ""
+    },
     avatar: {
       type: String,
       default: ""
     },
     role: {
       type: String,
-      enum: ["Recruiter", "Admin", "Candidate"],
-      default: "Recruiter"
+      enum: ["CANDIDATE", "RECRUITER", "ADMIN"],
+      default: "CANDIDATE"
     },
     emailVerified: {
       type: Boolean,

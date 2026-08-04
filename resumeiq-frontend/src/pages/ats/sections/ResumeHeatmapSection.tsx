@@ -12,9 +12,10 @@ const heatStyles: Record<HeatLevel, string> = {
 
 interface ResumeHeatmapSectionProps {
   breakdown: AtsBreakdownItem[];
+  heatmap?: Array<{ section: string; score: number; confidence: number }>;
 }
 
-export function ResumeHeatmapSection({ breakdown }: ResumeHeatmapSectionProps) {
+export function ResumeHeatmapSection({ breakdown, heatmap }: ResumeHeatmapSectionProps) {
   return (
     <AnalyticsCard
       title="Resume Heatmap"
@@ -22,11 +23,11 @@ export function ResumeHeatmapSection({ breakdown }: ResumeHeatmapSectionProps) {
       actions={<Flame size={16} className="text-accent-pink" />}
     >
       <div className="grid grid-cols-3 gap-2.5 sm:grid-cols-5">
-        {breakdown.map((item) => {
-          const percentage = getBreakdownPercentage(item);
+        {(heatmap && heatmap.length > 0 ? heatmap : breakdown.map((item) => ({ section: item.name, score: getBreakdownPercentage(item), confidence: 1 }))).map((item) => {
+          const percentage = typeof item.score === "number" ? Math.round(item.score) : 0;
           const level = getHeatLevel(percentage);
           return (
-            <Tooltip key={item.id} content={`${item.name}: ${percentage}% — ${item.reason.slice(0, 80)}${item.reason.length > 80 ? "…" : ""}`}>
+            <Tooltip key={item.section} content={`${item.section}: ${percentage}%${item.confidence ? ` — confidence ${Math.round(item.confidence * 100)}%` : ""}`}>
               <div
                 className={`flex aspect-square w-full flex-col items-center justify-center rounded-xl text-center transition-colors cursor-default ${heatStyles[level]}`}
               >

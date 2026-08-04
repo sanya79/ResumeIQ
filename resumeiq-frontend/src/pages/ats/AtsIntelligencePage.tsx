@@ -9,8 +9,10 @@ import { Skeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ErrorState } from "@/components/ui/ErrorState";
 import { SuggestionsList } from "@/features/resume/components/SuggestionsList";
-import { AnalysisCategoryCard } from "@/features/resume/components/AnalysisCategoryCard";
+import { ResumeChatAssistant } from "@/features/resume/components/ResumeChatAssistant";
+import { ATSScoreCard } from "@/components/cards/ATSScoreCard";
 import { useLatestResume, useResumeDetails, useResumeHistory } from "@/features/resume/hooks";
+import { useAtsAnalysis, useAtsHistory } from "@/services/ats.api";
 import { buildScoreHistory, getComparisonPair } from "./data";
 import { ScoreHeroSection } from "./sections/ScoreHeroSection";
 import { KeywordAnalysisSection } from "./sections/KeywordAnalysisSection";
@@ -73,13 +75,17 @@ export function AtsIntelligencePage() {
   const latestQuery = useLatestResume();
   const detailsQuery = useResumeDetails(resumeId);
   const historyQuery = useResumeHistory();
+  const activeResumeId = resumeId ?? latestQuery.data?._id;
+  const atsQuery = useAtsAnalysis(activeResumeId);
+  const atsHistoryQuery = useAtsHistory(activeResumeId);
 
   const activeQuery = resumeId ? detailsQuery : latestQuery;
   const resume = activeQuery.data;
-  const isLoading = activeQuery.isLoading || historyQuery.isLoading;
-  const isError = activeQuery.isError || historyQuery.isError;
+  const analysis = atsQuery.data;
+  const isLoading = activeQuery.isLoading || historyQuery.isLoading || atsQuery.isLoading || atsHistoryQuery.isLoading;
+  const isError = activeQuery.isError || historyQuery.isError || atsQuery.isError || atsHistoryQuery.isError;
 
-  const scoreHistory = useMemo(() => buildScoreHistory(historyQuery.data ?? []), [historyQuery.data]);
+  const scoreHistory = useMemo(() => atsHistoryQuery.data ?? buildScoreHistory(historyQuery.data ?? []), [atsHistoryQuery.data, historyQuery.data]);
   const { previous, current } = useMemo(() => getComparisonPair(historyQuery.data ?? []), [historyQuery.data]);
   const previousScorecard = useMemo(() => {
     if (!resume || !historyQuery.data) return null;
@@ -107,7 +113,14 @@ export function AtsIntelligencePage() {
         )}
 
         {isError && !isLoading && (
-          <ErrorState {...describeFetchError(activeQuery.error ?? historyQuery.error)} onRetry={() => activeQuery.refetch()} />
+          <ErrorState
+            {...describeFetchError(activeQuery.error ?? historyQuery.error ?? atsQuery.error ?? atsHistoryQuery.error)}
+            onRetry={() => {
+              activeQuery.refetch();
+              atsQuery.refetch();
+              atsHistoryQuery.refetch();
+            }}
+          />
         )}
 
         {!isLoading && !isError && !resume && (
@@ -119,54 +132,62 @@ export function AtsIntelligencePage() {
           />
         )}
 
-        {!isLoading && !isError && resume && !resume.atsScorecard && (
+        {!isLoading && !isError && resume && !analysis && !resume.atsScorecard && (
           <ErrorState
             title="Analysis failed"
             description="This resume couldn't be fully analyzed. Try re-uploading it from Resume Analysis."
           />
         )}
 
-        {!isLoading && !isError && resume?.atsScorecard && (
+        {!isLoading && !isError && analysis && (
           <FadeIn className="flex flex-col gap-10">
-            <ScoreHeroSection scorecard={resume.atsScorecard} previousScore={previousScorecard?.overallScore ?? null} />
+            <ScoreHeroSection scorecard={analysis.scorecard} previousScore={previousScorecard?.overallScore ?? null} />
 
             <section>
               <SectionHeading title="Score Breakdown" subtitle="Every rule the ATS engine scores this resume on" />
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {resume.atsScorecard.breakdown.map((item) => (
-                  <AnalysisCategoryCard key={item.id} item={item} />
+                {analysis.scorecard.breakdown.map((item) => (
+                  <ATSScoreCard
+                    key={item.id}
+                    result={{
+                      overallScore: item.score,
+                      breakdown: [item],
+                      reasons: item.reason ? [item.reason] : [],
+                      top10Improvements: item.suggestions.length > 0 ? item.suggestions : analysis.scorecard.top10Improvements,
+                    }}
+                  />
                 ))}
               </div>
             </section>
 
             <section>
               <SectionHeading title="Keyword Analysis" subtitle="What the engine found vs. what it recommends adding" />
-              <KeywordAnalysisSection breakdown={resume.atsScorecard.breakdown} />
+              <KeywordAnalysisSection breakdown={analysis.scorecard.breakdown} />
             </section>
 
             <section>
               <SectionHeading title="Section Analysis" subtitle="Strengths, weaknesses and fixes per scoring category" />
-              <SectionAnalysisSection scorecard={resume.atsScorecard} />
+              <SectionAnalysisSection scorecard={analysis.scorecard} />
             </section>
 
             <section>
               <SectionHeading title="ATS Problems" subtitle="Issues worth fixing first, ranked by severity" />
-              <AtsProblemsSection scorecard={resume.atsScorecard} />
+              <AtsProblemsSection scorecard={analysis.scorecard} />
             </section>
 
             <section>
               <SectionHeading title="AI Improvement Suggestions" />
-              <SuggestionsList suggestions={resume.atsScorecard.top10Improvements} />
+              <SuggestionsList suggestions={analysis.scorecard.top10Improvements} />
             </section>
 
-            <ResumeHeatmapSection breakdown={resume.atsScorecard.breakdown} />
+            <ResumeHeatmapSection breakdown={analysis.scorecard.breakdown} heatmap={analysis.heatmap} />
 
             <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
               <Suspense fallback={<ChartFallback />}>
-                <RadarScoreChart data={resume.atsScorecard.visualizationData.radarChartData} />
+                <RadarScoreChart data={analysis.scorecard.visualizationData.radarChartData} />
               </Suspense>
               <Suspense fallback={<ChartFallback />}>
-                <CategoryComparisonChart data={resume.atsScorecard.visualizationData.categoryComparison} />
+                <CategoryComparisonChart data={analysis.scorecard.visualizationData.categoryComparison} />
               </Suspense>
             </div>
 
@@ -187,13 +208,15 @@ export function AtsIntelligencePage() {
             <section>
               <SectionHeading title="Recruiter View" />
               <Suspense fallback={<ChartFallback />}>
-                <RecruiterViewSection scorecard={resume.atsScorecard} />
+                <RecruiterViewSection scorecard={analysis.scorecard} resumeId={activeResumeId} />
               </Suspense>
             </section>
 
-            <ExportSection resume={resume} />
+            {resume && <ExportSection resume={resume} />}
           </FadeIn>
         )}
+
+        {resume?._id && <ResumeChatAssistant resumeId={resume._id} className="fixed bottom-6 right-6 z-40" />}
       </div>
     </PageContainer>
   );
