@@ -8,6 +8,24 @@ const interviewSessionSchema = new mongoose.Schema(
       required: true,
       index: true
     },
+    resumeId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Resume",
+      default: null
+    },
+    role: {
+      type: String,
+      default: "Software Engineer"
+    },
+    type: {
+      type: String,
+      enum: ["TECHNICAL", "HR", "BEHAVIOURAL"],
+      default: "TECHNICAL"
+    },
+    timed: {
+      type: Boolean,
+      default: false
+    },
     config: {
       type: { type: String, required: true },
       difficulty: { type: String, required: true },
@@ -21,6 +39,14 @@ const interviewSessionSchema = new mongoose.Schema(
     answers: {
       type: Array,
       default: []
+    },
+    currentQuestionIndex: {
+      type: Number,
+      default: 0
+    },
+    elapsedSeconds: {
+      type: Number,
+      default: 0
     },
     status: {
       type: String,

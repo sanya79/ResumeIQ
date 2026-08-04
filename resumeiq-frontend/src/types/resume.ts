@@ -26,10 +26,56 @@ export interface Resume {
   isLatest: boolean;
   uploadSource: string;
   rawText?: string;
+  parsedProfile?: Record<string, unknown>;
+  comparisonSummary?: string;
   language?: string;
   isDeleted: boolean;
   deletedAt?: string;
   atsScorecard?: import("./ats").AtsScorecard;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface ResumeOptimization {
+  _id: string;
+  resumeId?: string;
+  targetRole?: string;
+  targetCompany?: string;
+  rewrittenSummary: string;
+  rewrittenBullets: string[];
+  quantifiedImpactSuggestions: string[];
+  tailoringNotes: string[];
+  createdAt?: string;
+}
+
+export interface KnowledgeGraphNode {
+  id: string;
+  label: string;
+  type: "skill" | "project" | "experience" | "certification";
+  size?: number;
+}
+
+export interface KnowledgeGraphEdge {
+  source: string;
+  target: string;
+  type: "uses";
+}
+
+export interface KnowledgeGraph {
+  nodes: KnowledgeGraphNode[];
+  edges: KnowledgeGraphEdge[];
+}
+
+export interface ResumeChatMessage {
+  _id: string;
+  resumeId: string;
+  role: "user" | "assistant";
+  content: string;
+  createdAt: string;
+}
+
+export interface ResumeChatResponse {
+  answer: string;
+  sourceSnippets: Array<{ title: string; text: string }>;
+  conversationId?: string;
 }

@@ -4,6 +4,16 @@ import { UserRepository } from "../repositories/user.repository.js";
 import { TokenService } from "./token.service.js";
 import { EmailService } from "./email.service.js";
 
+const normalizeRole = (role) => {
+  const rawRole = typeof role === "string" ? role.trim() : "";
+  if (!rawRole) return "CANDIDATE";
+
+  const normalized = rawRole.toUpperCase();
+  if (normalized === "ADMIN") return "ADMIN";
+  if (normalized === "RECRUITER") return "RECRUITER";
+  return "CANDIDATE";
+};
+
 const userRepository = new UserRepository();
 const tokenService = new TokenService();
 const emailService = new EmailService();
@@ -16,7 +26,9 @@ export class AuthService {
   /**
    * Registers a new user account
    */
-  async register(fullName, email, password, role = "Recruiter") {
+  async register(fullName, email, password, role = "Candidate") {
+    const normalizedRole = normalizeRole(role);
+
     // Check for duplicate account registrations
     const existing = await userRepository.findByEmail(email);
     if (existing) {
@@ -32,13 +44,191 @@ export class AuthService {
       fullName,
       email,
       passwordHash: password, // Mongoose pre-save hook will hash this
-      role,
+      role: normalizedRole,
       emailVerificationToken: verificationToken,
       emailVerificationExpires: verificationExpires
     });
 
-    // Send email verification notification
-    await emailService.sendVerificationEmail(user.email, verificationToken);
+    // Send email verification notification asynchronously so it doesn't block the request
+    emailService.sendVerificationEmail(user.email, verificationToken)
+      .catch((err) => console.error("Failed to send verification email:", err));
+
+    const accessToken = tokenService.generateAccessToken(user);
+    const refreshToken = tokenService.generateRefreshToken(user);
+    await tokenService.saveRefreshToken(user, refreshToken);
+
+    const verificationUrl = `${process.env.FRONTEND_URL || "http://localhost:5173"}/verify-email?token=${verificationToken}`;
+
+    return {
+      user: {
+        id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+        role: user.role,
+        emailVerified: user.emailVerified,
+        resumeCredits: user.resumeCredits,
+        subscriptionPlan: user.subscriptionPlan
+      },
+      accessToken,
+      refreshToken,
+      verificationUrl: process.env.NODE_ENV === "development" ? verificationUrl : undefined
+    };
+  }
+
+  /**
+   * Authenticates user credentials
+   */
+  async socialLogin(provider, payload = {}) {
+    const normalizedProvider = String(provider || "").trim().toUpperCase();
+    let email = payload.email;
+    let fullName = payload.fullName || payload.name;
+    let avatarUrl = payload.avatarUrl || payload.avatar;
+
+    if (!["GOOGLE", "GITHUB"].includes(normalizedProvider)) {
+      throw new AppError("Unsupported social provider. Use Google or GitHub.", 400);
+    }
+
+    // Check if OAuth authorization code is provided for exchange
+    if (payload.code) {
+      if (normalizedProvider === "GOOGLE") {
+        const client_id = process.env.GOOGLE_CLIENT_ID;
+        const client_secret = process.env.GOOGLE_CLIENT_SECRET;
+        if (!client_id || !client_secret) {
+          throw new AppError("Google OAuth is not configured on the server. Missing credentials in env.", 500);
+        }
+
+        const tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams({
+            code: payload.code,
+            client_id,
+            client_secret,
+            redirect_uri: payload.redirectUri,
+            grant_type: "authorization_code",
+          }),
+        });
+
+        if (!tokenResponse.ok) {
+          const errText = await tokenResponse.text();
+          throw new AppError(`Failed to exchange Google OAuth code: ${errText}`, 400);
+        }
+
+        const tokens = await tokenResponse.json();
+        
+        const userResponse = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+          headers: { Authorization: `Bearer ${tokens.access_token}` },
+        });
+
+        if (!userResponse.ok) {
+          throw new AppError("Failed to fetch user info from Google.", 400);
+        }
+
+        const profile = await userResponse.json();
+        email = profile.email;
+        fullName = profile.name;
+        avatarUrl = profile.picture;
+
+      } else if (normalizedProvider === "GITHUB") {
+        const client_id = process.env.GITHUB_CLIENT_ID;
+        const client_secret = process.env.GITHUB_CLIENT_SECRET;
+        if (!client_id || !client_secret) {
+          throw new AppError("GitHub OAuth is not configured on the server. Missing credentials in env.", 500);
+        }
+
+        const tokenResponse = await fetch("https://github.com/login/oauth/access_token", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            code: payload.code,
+            client_id,
+            client_secret,
+            redirect_uri: payload.redirectUri,
+          }),
+        });
+
+        if (!tokenResponse.ok) {
+          const errText = await tokenResponse.text();
+          throw new AppError(`Failed to exchange GitHub OAuth code: ${errText}`, 400);
+        }
+
+        const tokens = await tokenResponse.json();
+        if (!tokens.access_token) {
+          throw new AppError("GitHub OAuth failed, no access token returned.", 400);
+        }
+
+        const userResponse = await fetch("https://api.github.com/user", {
+          headers: {
+            Authorization: `Bearer ${tokens.access_token}`,
+            "User-Agent": "ResumeIQ-Server",
+          },
+        });
+
+        if (!userResponse.ok) {
+          throw new AppError("Failed to fetch user profile from GitHub.", 400);
+        }
+
+        const profile = await userResponse.json();
+        fullName = profile.name || profile.login;
+        avatarUrl = profile.avatar_url;
+        email = profile.email;
+
+        // GitHub user profiles can have private emails, retrieve list if necessary
+        if (!email) {
+          const emailsResponse = await fetch("https://api.github.com/user/emails", {
+            headers: {
+              Authorization: `Bearer ${tokens.access_token}`,
+              "User-Agent": "ResumeIQ-Server",
+            },
+          });
+
+          if (emailsResponse.ok) {
+            const emailsList = await emailsResponse.json();
+            const primaryEmail = emailsList.find((e) => e.primary) || emailsList[0];
+            if (primaryEmail) {
+              email = primaryEmail.email;
+            }
+          }
+        }
+      }
+    }
+
+    email = String(email || "").trim().toLowerCase();
+    fullName = String(fullName || "Social User").trim();
+
+    if (!email || !fullName) {
+      throw new AppError("Social sign-in requires a valid email and name.", 400);
+    }
+
+    const providerId = `${normalizedProvider}:${email}`;
+    let user = await userRepository.findByProvider(normalizedProvider, providerId);
+
+    if (!user) {
+      user = await userRepository.findByEmail(email);
+    }
+
+    if (!user) {
+      user = await userRepository.createUser({
+        fullName,
+        email,
+        passwordHash: crypto.randomBytes(24).toString("hex"),
+        authProvider: normalizedProvider,
+        providerId,
+        avatar: avatarUrl || "",
+        role: normalizeRole(payload.role || "Candidate"),
+        emailVerified: true
+      });
+    } else {
+      user.authProvider = normalizedProvider;
+      user.providerId = providerId;
+      user.avatar = avatarUrl || user.avatar || "";
+      user.emailVerified = true;
+      if (!user.fullName) user.fullName = fullName;
+      await userRepository.save(user);
+    }
 
     const accessToken = tokenService.generateAccessToken(user);
     const refreshToken = tokenService.generateRefreshToken(user);
@@ -59,15 +249,17 @@ export class AuthService {
     };
   }
 
-  /**
-   * Authenticates user credentials
-   */
   async login(email, password, ipAddress, userAgent) {
     const user = await userRepository.findByEmail(email);
     
     // Verify user exists and credentials are correct
     if (!user || !(await user.comparePassword(password))) {
       throw new AppError("Invalid email or password. Access denied.", 401);
+    }
+
+    // Enforce email verification before granting a full session
+    if (!user.emailVerified) {
+      throw new AppError("Please verify your email address before logging in.", 403);
     }
 
     // Log this login session in the history log
@@ -107,6 +299,8 @@ export class AuthService {
   async logout(user, refreshToken) {
     if (refreshToken) {
       await tokenService.invalidateToken(user, refreshToken);
+    } else {
+      await tokenService.invalidateAllTokens(user);
     }
   }
 
@@ -189,6 +383,33 @@ export class AuthService {
     user.emailVerificationToken = undefined;
     user.emailVerificationExpires = undefined;
     await userRepository.save(user);
+  }
+
+  async resendVerificationEmail(user) {
+    if (!user) {
+      throw new AppError("Unable to resend verification email. User session not found.", 401);
+    }
+
+    if (user.emailVerified) {
+      return { success: true };
+    }
+
+    if (!user.emailVerificationToken || !user.emailVerificationExpires || user.emailVerificationExpires < new Date()) {
+      user.emailVerificationToken = crypto.randomBytes(32).toString("hex");
+      user.emailVerificationExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
+      await userRepository.save(user);
+    }
+
+    // Send email verification notification asynchronously so it doesn't block the request
+    emailService.sendVerificationEmail(user.email, user.emailVerificationToken)
+      .catch((err) => console.error("Failed to resend verification email:", err));
+
+    const verificationUrl = `${process.env.FRONTEND_URL || "http://localhost:5173"}/verify-email?token=${user.emailVerificationToken}`;
+
+    return {
+      success: true,
+      verificationUrl: process.env.NODE_ENV === "development" ? verificationUrl : undefined
+    };
   }
 
   /**

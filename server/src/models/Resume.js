@@ -55,6 +55,14 @@ const resumeSchema = new mongoose.Schema(
     rawText: {
       type: String
     },
+    parsedProfile: {
+      type: Object,
+      default: {}
+    },
+    comparisonSummary: {
+      type: String,
+      default: ""
+    },
     language: {
       type: String,
       default: "en"

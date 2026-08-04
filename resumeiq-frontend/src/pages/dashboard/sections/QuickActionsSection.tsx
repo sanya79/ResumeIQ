@@ -1,7 +1,7 @@
 import { UploadCloud, ScanSearch, Sparkles, Target, MessagesSquare } from "lucide-react";
 import { SlideUp } from "@/components/animations/SlideUp";
 import { QuickActionCard } from "../components/QuickActionCard";
-import { quickActions } from "../data";
+import type { QuickActionDatum } from "../data";
 
 const iconMap: Record<string, JSX.Element> = {
   upload: <UploadCloud size={20} />,
@@ -11,13 +11,15 @@ const iconMap: Record<string, JSX.Element> = {
   interview: <MessagesSquare size={20} />,
 };
 
-export function QuickActionsSection() {
+export function QuickActionsSection({ data = [], isLoading }: { data?: QuickActionDatum[]; isLoading?: boolean }) {
+  if (isLoading && data.length === 0) return null;
+
   return (
     <SlideUp>
       <h2 className="mb-4 text-fluid-lg font-semibold">Quick actions</h2>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-        {quickActions.map((datum) => (
-          <QuickActionCard key={datum.id} datum={datum} icon={iconMap[datum.id]} />
+        {data.map((datum) => (
+          <QuickActionCard key={datum.id} datum={datum} icon={iconMap[datum.id] ?? <Sparkles size={20} />} />
         ))}
       </div>
     </SlideUp>

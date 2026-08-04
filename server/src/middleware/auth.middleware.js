@@ -4,6 +4,10 @@ import { UserRepository } from "../repositories/user.repository.js";
 
 const userRepository = new UserRepository();
 
+function normalizeRoleValue(role) {
+  return typeof role === "string" ? role.trim().toUpperCase() : "";
+}
+
 /**
  * Access Token Authentication Guard
  * Extracts Bearer token from headers, validates expiry, and sets user references.
@@ -49,8 +53,15 @@ export const protect = async (req, res, next) => {
  * @param {...String} roles - Allowed roles list (e.g. 'Admin', 'Recruiter')
  */
 export const restrictTo = (...roles) => {
+  const allowedRoles = roles.map(normalizeRoleValue);
+
   return (req, res, next) => {
-    if (!req.user || !roles.includes(req.user.role)) {
+    if (!req.user) {
+      return next(new AppError("You do not have permission to perform this action.", 403));
+    }
+
+    const userRole = normalizeRoleValue(req.user.role);
+    if (!allowedRoles.includes(userRole)) {
       return next(new AppError("You do not have permission to perform this action.", 403));
     }
     next();

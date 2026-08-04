@@ -30,7 +30,8 @@ export const registerValidator = [
 
   body("role")
     .optional()
-    .isIn(["Recruiter", "Admin", "Candidate"])
+    .trim()
+    .isIn(["Recruiter", "Admin", "Candidate", "recruiter", "admin", "candidate"])
     .withMessage("Invalid account role specified")
 ];
 

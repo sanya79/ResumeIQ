@@ -16,12 +16,26 @@ const app = express();
 app.use(helmet());
 
 // 2. Configure Cross-Origin Resource Sharing (CORS)
-const allowedOrigins = [process.env.FRONTEND_URL || "http://localhost:5173"];
+const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+const allowedOrigins = [frontendUrl];
+const isLocalhostDev = (origin) => {
+  try {
+    const host = new URL(origin).hostname;
+    return host === "localhost" || host === "127.0.0.1";
+  } catch {
+    return false;
+  }
+};
 app.use(
   cors({
     origin: (origin, callback) => {
       // Allow requests with no origin (like mobile apps, curl, postman)
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (!origin) {
+        callback(null, true);
+        return;
+      }
+
+      if (allowedOrigins.includes(origin) || (process.env.NODE_ENV !== "production" && isLocalhostDev(origin))) {
         callback(null, true);
       } else {
         callback(new Error("Blocked by CORS security policies."));

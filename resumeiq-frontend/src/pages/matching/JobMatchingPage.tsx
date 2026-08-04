@@ -6,9 +6,12 @@ import { ParticleField } from "@/components/animations/ParticleField";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { GlassCard } from "@/components/cards/GlassCard";
 import { Button } from "@/components/ui/Button";
+import { Badge } from "@/components/ui/Badge";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ErrorState } from "@/components/ui/ErrorState";
+import { ScoreRing } from "@/components/charts/ScoreRing";
+import { MetricCard } from "@/components/cards/MetricCard";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/useToast";
 import { useLatestResume } from "@/features/resume/hooks";
@@ -208,6 +211,58 @@ export function JobMatchingPage() {
             <MatchScoreHero match={match} jobTitle={jobTitle} company={company} />
 
             <section>
+              <SectionHeading title="Match Signals" subtitle="Semantic alignment and keyword coverage side by side" />
+              <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1.1fr_0.9fr]">
+                <GlassCard className="flex flex-col gap-5">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div className="flex flex-col items-center gap-3 rounded-2xl border border-surface-border/70 bg-background/60 p-4 text-center">
+                      <ScoreRing score={Math.round(match.semanticScore)} size={112} label="Semantic" />
+                      <div>
+                        <p className="text-sm font-semibold text-foreground">Semantic alignment</p>
+                        <p className="text-xs text-foreground-secondary">How closely your resume language matches the role narrative</p>
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-center gap-3 rounded-2xl border border-surface-border/70 bg-background/60 p-4 text-center">
+                      <ScoreRing score={Math.round(match.keywordScore)} size={112} label="Keyword" />
+                      <div>
+                        <p className="text-sm font-semibold text-foreground">Keyword coverage</p>
+                        <p className="text-xs text-foreground-secondary">How well your resume hits the role's requested terms</p>
+                      </div>
+                    </div>
+                  </div>
+                </GlassCard>
+
+                <div className="flex flex-col gap-4">
+                  <GlassCard className="flex flex-col gap-3">
+                    <div className="text-sm font-semibold text-foreground">Missing keywords</div>
+                    <div className="flex flex-wrap gap-2">
+                      {match.missingKeywords.length > 0 ? (
+                        match.missingKeywords.map((keyword) => (
+                          <Badge key={keyword.term} tone="danger">{keyword.term}</Badge>
+                        ))
+                      ) : (
+                        <p className="text-sm text-foreground-secondary">No critical keyword gaps detected.</p>
+                      )}
+                    </div>
+                  </GlassCard>
+
+                  <GlassCard className="flex flex-col gap-3">
+                    <div className="text-sm font-semibold text-foreground">Skill overlap</div>
+                    <div className="flex flex-wrap gap-2">
+                      {match.skillOverlap.length > 0 ? (
+                        match.skillOverlap.map((skill) => (
+                          <Badge key={skill} tone="emerald">{skill}</Badge>
+                        ))
+                      ) : (
+                        <p className="text-sm text-foreground-secondary">No overlap signals surfaced from this analysis.</p>
+                      )}
+                    </div>
+                  </GlassCard>
+                </div>
+              </div>
+            </section>
+
+            <section>
               <SectionHeading title="Match Breakdown" subtitle="Every category the AI scores this match on" />
               <MatchBreakdownGrid items={match.categoryBreakdown} />
             </section>
@@ -243,7 +298,14 @@ export function JobMatchingPage() {
 
             <section>
               <SectionHeading title="Hiring Probability" />
-              <HiringProbabilityPanel probability={match.hiringProbability} />
+              <div className="grid grid-cols-1 gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+                <MetricCard
+                  label="Hiring probability"
+                  value={Math.round(match.hiringProbability.interviewChance)}
+                  description={match.recommendations[0] ?? "Your resume is aligned well enough to make a strong case for this role."}
+                />
+                <HiringProbabilityPanel probability={match.hiringProbability} />
+              </div>
             </section>
 
             <GlassCard className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">

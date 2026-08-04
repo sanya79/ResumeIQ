@@ -1,5 +1,5 @@
 import { apiClient } from "./apiClient";
-import type { ApiResponse, AnalyzeJobMatchPayload, MatchResult, SavedMatchComparison } from "@/types";
+import type { ApiResponse, AnalyzeJobMatchPayload, JobDescriptionRecord, MatchResult, SavedMatchComparison } from "@/types";
 
 /**
  * Assumed endpoints for the AI Job Matching Engine — mirrors the real
@@ -26,6 +26,16 @@ export async function analyzeJobMatch(
     signal: options.signal,
   });
   return data.data.match;
+}
+
+export async function saveJobDescription(payload: { title?: string; company?: string; text: string; source?: string }): Promise<JobDescriptionRecord> {
+  const { data } = await apiClient.post<ApiResponse<{ jobDescription: JobDescriptionRecord }>>("/matching/job-descriptions", payload);
+  return data.data.jobDescription;
+}
+
+export async function getJobDescriptions(): Promise<JobDescriptionRecord[]> {
+  const { data } = await apiClient.get<ApiResponse<{ jobDescriptions: JobDescriptionRecord[] }>>("/matching/job-descriptions");
+  return data.data.jobDescriptions;
 }
 
 export async function getMatchHistory(): Promise<SavedMatchComparison[]> {

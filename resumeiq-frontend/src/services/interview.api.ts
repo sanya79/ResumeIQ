@@ -7,6 +7,7 @@ import type {
   PerformanceReport,
   InterviewHistoryEntry,
   RecommendedPracticeItem,
+  InterviewSessionSummary,
 } from "@/types";
 
 /**
@@ -31,36 +32,58 @@ import type {
  */
 
 export interface GenerateQuestionsResult {
-  sessionId: string;
-  questions: InterviewQuestion[];
+  session: InterviewSessionSummary;
+  question: InterviewQuestion | null;
+}
+
+export async function createInterviewSession(
+  payload: {
+    resumeId: string;
+    role: string;
+    type: string;
+    timed?: boolean;
+    config?: InterviewConfig;
+  },
+  options: { signal?: AbortSignal } = {}
+): Promise<GenerateQuestionsResult> {
+  const { data } = await apiClient.post<ApiResponse<GenerateQuestionsResult>>(
+    "/interview/sessions",
+    payload,
+    { signal: options.signal }
+  );
+  return data.data;
 }
 
 export async function generateInterviewQuestions(
   config: InterviewConfig,
   options: { signal?: AbortSignal } = {}
 ): Promise<GenerateQuestionsResult> {
-  const { data } = await apiClient.post<ApiResponse<GenerateQuestionsResult>>(
-    "/interview/questions",
-    { config },
-    { signal: options.signal }
+  return createInterviewSession(
+    {
+      resumeId: "",
+      role: config.targetRole,
+      type: config.type.toUpperCase(),
+      timed: config.timed ?? false,
+      config,
+    },
+    options
   );
-  return data.data;
 }
 
 export async function submitInterviewAnswer(
   sessionId: string,
   payload: { questionId: string; answerText: string; responseTimeSeconds: number }
-): Promise<AnswerEvaluation> {
-  const { data } = await apiClient.post<ApiResponse<{ evaluation: AnswerEvaluation }>>(
+): Promise<{ evaluation: AnswerEvaluation; nextQuestion: InterviewQuestion | null }> {
+  const { data } = await apiClient.post<ApiResponse<{ evaluation: AnswerEvaluation; nextQuestion: InterviewQuestion | null }>>(
     `/interview/sessions/${sessionId}/answer`,
     payload
   );
-  return data.data.evaluation;
+  return data.data;
 }
 
 export async function completeInterviewSession(sessionId: string): Promise<PerformanceReport> {
   const { data } = await apiClient.post<ApiResponse<{ report: PerformanceReport }>>(
-    `/interview/sessions/${sessionId}/complete`
+    `/interview/sessions/${sessionId}/finish`
   );
   return data.data.report;
 }

@@ -4,7 +4,9 @@ import { MetricCard } from "./MetricCard";
 import type { AtsScorecard } from "@/types";
 
 interface ATSScoreCardProps {
-  result: AtsScorecard;
+  result: Pick<AtsScorecard, "overallScore" | "breakdown" | "top10Improvements"> & {
+    reasons?: string[];
+  };
 }
 
 /**
@@ -41,11 +43,11 @@ export function ATSScoreCard({ result }: ATSScoreCardProps) {
         ))}
       </div>
 
-      {result.top10Improvements.length > 0 && (
+      {(result.reasons?.length || result.top10Improvements.length > 0) && (
         <div>
-          <h4 className="mb-2 text-sm font-medium text-foreground-secondary">Top Suggestions</h4>
+          <h4 className="mb-2 text-sm font-medium text-foreground-secondary">{result.reasons?.length ? "Why this score" : "Top Suggestions"}</h4>
           <ul className="flex flex-col gap-2">
-            {result.top10Improvements.map((s, i) => (
+            {(result.reasons?.length ? result.reasons : result.top10Improvements).map((s, i) => (
               <li key={i} className="rounded-lg bg-white/[0.04] px-3 py-2 text-sm text-foreground">
                 {s}
               </li>

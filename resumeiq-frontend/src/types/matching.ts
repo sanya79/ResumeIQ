@@ -106,8 +106,12 @@ export interface MatchResult {
   jobTitle: string;
   company: string;
   matchScore: number;
+  semanticScore: number;
+  keywordScore: number;
   matchedKeywords: MatchKeyword[];
   missingKeywords: MatchKeyword[];
+  skillOverlap: string[];
+  experienceGap: string;
   categoryBreakdown: MatchCategoryScore[];
   skillGap: SkillGapCategory[];
   experienceMatch: ExperienceMatch;
@@ -132,7 +136,17 @@ export interface SavedMatchComparison {
 
 export interface AnalyzeJobMatchPayload {
   resumeId: string;
-  jobDescription: string;
+  jobDescription?: string;
+  jobDescriptionText?: string;
   jobTitle?: string;
   company?: string;
+}
+
+export interface JobDescriptionRecord {
+  _id: string;
+  title: string;
+  company: string;
+  text: string;
+  source: string;
+  createdAt?: string;
 }

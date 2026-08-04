@@ -11,20 +11,44 @@ const pdfService = new PdfService();
 export class MatchingController {
   async analyzeJobMatch(req, res, next) {
     try {
-      const { resumeId, jobDescription, jobTitle, company } = req.body;
-      if (!resumeId || !jobDescription) {
+      const { resumeId, jobDescriptionText, jobDescription, jobTitle, company } = req.body;
+      const jdText = jobDescriptionText || jobDescription;
+      if (!resumeId || !jdText) {
         return next(new AppError("Resume ID and job description are required parameters.", 400));
       }
 
       const match = await matchingService.analyzeJobMatch(
         req.user._id,
         resumeId,
-        jobDescription,
+        jdText,
         jobTitle,
         company
       );
 
       return sendSuccess(res, "Job match analysis completed successfully.", { match }, 201);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async saveJobDescription(req, res, next) {
+    try {
+      const { title = "", company = "", text, source = "manual" } = req.body;
+      if (!text) {
+        return next(new AppError("Job description text is required.", 400));
+      }
+
+      const saved = await matchingService.saveJobDescription(req.user._id, { title, company, text, source });
+      return sendSuccess(res, "Job description saved.", { jobDescription: saved }, 201);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getJobDescriptions(req, res, next) {
+    try {
+      const jobDescriptions = await matchingService.getJobDescriptions(req.user._id);
+      return sendSuccess(res, "Job descriptions loaded.", { jobDescriptions });
     } catch (error) {
       next(error);
     }

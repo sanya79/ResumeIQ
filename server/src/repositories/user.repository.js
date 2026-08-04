@@ -13,6 +13,10 @@ export class UserRepository {
     return await User.findOne({ email: email.toLowerCase().trim() });
   }
 
+  async findByProvider(provider, providerId) {
+    return await User.findOne({ authProvider: provider.toUpperCase(), providerId });
+  }
+
   async findByResetToken(token) {
     return await User.findOne({
       passwordResetToken: token,

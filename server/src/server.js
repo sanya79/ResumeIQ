@@ -14,23 +14,37 @@ process.on("uncaughtException", (err) => {
   process.exit(1);
 });
 
-const port = process.env.PORT || 5000;
+const preferredPort = Number(process.env.PORT || 5000);
 
-// Initialize MongoDB and start Express listener
-const startServer = async () => {
-  await connectDb();
-
+const startServerOnPort = (port) => {
   const server = app.listen(port, () => {
     logger.info(`[Server] ResumeIQ backend active in [${process.env.NODE_ENV}] mode on port: ${port}`);
   });
 
-  // Handle unhandled promise rejections gracefully
+  server.on("error", (error) => {
+    if (error.code === "EADDRINUSE") {
+      const fallbackPort = port + 1;
+      logger.warn(`[Server] Port ${port} is busy. Retrying on port ${fallbackPort}...`);
+      server.close(() => startServerOnPort(fallbackPort));
+      return;
+    }
+
+    logger.error(`SERVER STARTUP ERROR! Shutting down... \nError: ${error.message} \nStack: ${error.stack}`);
+    process.exit(1);
+  });
+
   process.on("unhandledRejection", (err) => {
     logger.error(`UNHANDLED PROMISE REJECTION! Shutting down server... \nError: ${err.message} \nStack: ${err.stack}`);
     server.close(() => {
       process.exit(1);
     });
   });
+};
+
+// Initialize MongoDB and start Express listener
+const startServer = async () => {
+  await connectDb();
+  startServerOnPort(preferredPort);
 };
 
 startServer();

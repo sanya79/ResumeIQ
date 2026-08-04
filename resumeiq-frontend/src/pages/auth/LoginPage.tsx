@@ -1,5 +1,5 @@
-import { useState, type FormEvent } from "react";
-import { Link, useLocation, useNavigate, type Location } from "react-router-dom";
+import { useState, useEffect, type FormEvent } from "react";
+import { Link, useLocation, useNavigate, useSearchParams, type Location } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { LogIn, Mail } from "lucide-react";
 import { Input } from "@/components/ui/Input";
@@ -11,6 +11,8 @@ import { SocialAuthButtons } from "@/features/auth/components/SocialAuthButtons"
 import { SuccessCheck } from "@/features/auth/components/SuccessCheck";
 import { useLoginMutation } from "@/features/auth/hooks";
 import { validateEmail, validateLoginPassword } from "@/features/auth/validation";
+import { useToast } from "@/hooks/useToast";
+import { useAuthStore } from "@/stores/authStore";
 
 interface FormState {
   email: string;
@@ -23,14 +25,65 @@ interface FormErrors {
   password?: string;
 }
 
+function getAuthErrorMessage(error: unknown, fallback: string): string {
+  if (typeof error === "object" && error !== null) {
+    const response = (error as { response?: { data?: { message?: string; errors?: Array<{ message?: string }> } } }).response;
+    if (typeof response?.data?.message === "string" && response.data.message.trim()) {
+      return response.data.message;
+    }
+    if (Array.isArray(response?.data?.errors)) {
+      const joined = response.data.errors.map((item) => item?.message).filter(Boolean).join(" \n");
+      if (joined) return joined;
+    }
+  }
+
+  if (error instanceof Error && error.message) {
+    return error.message;
+  }
+
+  return fallback;
+}
+
 export function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const loginMutation = useLoginMutation();
+  const toast = useToast();
+  const socialLogin = useAuthStore((s) => s.socialLogin);
+
+  const [searchParams] = useSearchParams();
+  const code = searchParams.get("code");
+  const state = searchParams.get("state");
+  const [socialLoading, setSocialLoading] = useState(false);
 
   const [form, setForm] = useState<FormState>({ email: "", password: "", rememberMe: false });
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    if (code && state) {
+      const provider = state === "google" || state === "github" ? state : null;
+      if (provider) {
+        handleSocialCallback(provider, code);
+      }
+    }
+  }, [code, state]);
+
+  async function handleSocialCallback(provider: "google" | "github", authCode: string) {
+    setSocialLoading(true);
+    try {
+      const redirectUri = `${window.location.origin}/login`;
+      await socialLogin(provider, authCode, redirectUri);
+      toast.success("Welcome back!", `Signed in successfully via ${provider}.`);
+      navigate("/dashboard", { replace: true });
+    } catch (err: any) {
+      const message = getAuthErrorMessage(err, `Failed to authenticate via ${provider}.`);
+      toast.error("Social Sign-In Failed", message);
+      navigate("/login", { replace: true });
+    } finally {
+      setSocialLoading(false);
+    }
+  }
 
   function validateField(field: keyof FormErrors, value: string) {
     const message = field === "email" ? validateEmail(value) : validateLoginPassword(value);
@@ -49,15 +102,17 @@ export function LoginPage() {
       await loginMutation.mutateAsync({ email: form.email, password: form.password, rememberMe: form.rememberMe });
       const redirectTo = (location.state as { from?: Location })?.from?.pathname ?? "/dashboard";
       setTimeout(() => navigate(redirectTo, { replace: true }), 900);
-    } catch {
-      // Error surfaced via loginMutation.error below — nothing else to do here.
+    } catch (error) {
+      const message = getAuthErrorMessage(error, "Couldn't log in. Please try again.");
+      const title = message.toLowerCase().includes("verify") ? "Email verification required" : "Sign-in failed";
+      toast.error(title, message);
     }
   }
 
-  if (loginMutation.isSuccess) {
+  if (socialLoading || loginMutation.isSuccess) {
     return (
       <AuthCard>
-        <SuccessCheck label="Welcome back — redirecting..." />
+        <SuccessCheck label="Authenticating session — redirecting..." />
       </AuthCard>
     );
   }
@@ -126,7 +181,7 @@ export function LoginPage() {
               exit={{ opacity: 0, height: 0 }}
               className="rounded-lg bg-danger/10 px-3 py-2 text-xs text-danger"
             >
-              {loginMutation.error instanceof Error ? loginMutation.error.message : "Couldn't log in. Please try again."}
+              {getAuthErrorMessage(loginMutation.error, "Couldn't log in. Please try again.")}
             </motion.p>
           )}
         </AnimatePresence>

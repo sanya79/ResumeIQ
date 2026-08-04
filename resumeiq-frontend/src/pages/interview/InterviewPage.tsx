@@ -19,12 +19,10 @@ import {
 import { useQuestionGenPipeline } from "@/features/interview/useQuestionGenPipeline";
 import { InterviewConfigPanel } from "@/features/interview/components/InterviewConfigPanel";
 import { QuestionGenTimeline } from "@/features/interview/components/QuestionGenTimeline";
-import { QuestionGeneratorList } from "@/features/interview/components/QuestionGeneratorList";
 import { QuestionPanel } from "@/features/interview/components/QuestionPanel";
 import { AnswerEditor } from "@/features/interview/components/AnswerEditor";
 import { EvaluationScoresPanel } from "@/features/interview/components/EvaluationScoresPanel";
 import { FeedbackPanel } from "@/features/interview/components/FeedbackPanel";
-import { PerformanceReportHero } from "@/features/interview/components/PerformanceReportHero";
 import { InterviewHistoryTimeline } from "@/features/interview/components/InterviewHistoryTimeline";
 import { RecommendedPracticeGrid } from "@/features/interview/components/RecommendedPracticeGrid";
 import { ExportBar } from "@/features/interview/components/ExportBar";
@@ -45,6 +43,7 @@ const defaultConfig: InterviewConfig = {
   difficulty: "Medium",
   experienceLevel: "1-2 Years",
   targetRole: "Frontend Developer",
+  timed: false,
 };
 
 type Stage = "config" | "questions" | "live" | "report";
@@ -74,42 +73,52 @@ export function InterviewPage() {
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [currentEvaluation, setCurrentEvaluation] = useState<AnswerEvaluation | null>(null);
   const [report, setReport] = useState<PerformanceReport | null>(null);
-
+  const [sessionId, setSessionId] = useState<string | null>(null);
   const generateQuestions = useGenerateQuestions();
   const { statuses } = useQuestionGenPipeline(generateQuestions.isPending);
-  const submitAnswer = useSubmitAnswer(generateQuestions.data?.sessionId);
+  const submitAnswer = useSubmitAnswer(sessionId ?? undefined);
   const completeSession = useCompleteSession();
   const historyQuery = useInterviewHistory();
   const recommendationsQuery = useRecommendedPractice();
 
   const session = generateQuestions.data;
-  const questions: InterviewQuestion[] = session?.questions ?? [];
-  const currentQuestion = questions[currentIndex];
-  const isLastQuestion = currentIndex === questions.length - 1;
+  const questions: InterviewQuestion[] = session?.question ? [session.question] : [];
+  const currentQuestion = questions[currentIndex] ?? null;
+  const isLastQuestion = currentIndex >= questions.length - 1;
 
   function handleGenerate() {
-    generateQuestions.mutate(config, { onSuccess: () => setStage("questions") });
-  }
-
-  function handleStartInterview() {
-    setCurrentIndex(0);
-    setCurrentEvaluation(null);
-    setStage("live");
+    generateQuestions.mutate(config, {
+      onSuccess: (result) => {
+        setSessionId(result.session.id);
+        setCurrentIndex(0);
+        setElapsedSeconds(0);
+        setCurrentEvaluation(null);
+        setStage("live");
+      },
+    });
   }
 
   function handleSubmitAnswer(answerText: string) {
-    if (!currentQuestion) return;
+    if (!currentQuestion || !sessionId) return;
     submitAnswer.mutate(
       { questionId: currentQuestion.id, answerText, responseTimeSeconds: elapsedSeconds },
-      { onSuccess: (evaluation) => setCurrentEvaluation(evaluation) }
+      {
+        onSuccess: (result) => {
+          setCurrentEvaluation(result.evaluation);
+          if (result.nextQuestion) {
+            setCurrentIndex((i) => i + 1);
+          }
+        },
+      }
     );
   }
 
   function handleNextOrFinish() {
     setCurrentEvaluation(null);
+    setElapsedSeconds(0);
     if (isLastQuestion) {
-      if (!session) return;
-      completeSession.mutate(session.sessionId, {
+      if (!sessionId) return;
+      completeSession.mutate(sessionId, {
         onSuccess: (result) => {
           setReport(result);
           setStage("report");
@@ -122,10 +131,12 @@ export function InterviewPage() {
 
   function handleRestart() {
     generateQuestions.reset();
+    setSessionId(null);
     setStage("config");
     setCurrentIndex(0);
     setCurrentEvaluation(null);
     setReport(null);
+    setElapsedSeconds(0);
   }
 
   return (
@@ -184,12 +195,6 @@ export function InterviewPage() {
             </motion.div>
           )}
 
-          {stage === "questions" && questions.length > 0 && (
-            <motion.div key="questions" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-              <QuestionGeneratorList questions={questions} onStart={handleStartInterview} />
-            </motion.div>
-          )}
-
           {stage === "live" && currentQuestion && (
             <motion.div key="live" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="flex flex-col gap-6">
               {!currentEvaluation ? (
@@ -197,7 +202,7 @@ export function InterviewPage() {
                   <QuestionPanel
                     question={currentQuestion}
                     index={currentIndex}
-                    total={questions.length}
+                    total={Math.max(1, questions.length)}
                     onPrevious={() => setCurrentIndex((i) => Math.max(0, i - 1))}
                     onNext={() => setCurrentIndex((i) => Math.min(questions.length - 1, i + 1))}
                     onEnd={handleRestart}
@@ -244,7 +249,20 @@ export function InterviewPage() {
                 </div>
               </div>
 
-              <PerformanceReportHero report={report} />
+              <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+                <div className="rounded-2xl border border-surface-border bg-white/[0.03] p-5">
+                  <p className="text-xs uppercase tracking-[0.2em] text-foreground-secondary">Overall Score</p>
+                  <p className="mt-2 text-fluid-2xl font-semibold text-foreground">{report.overallScore}/100</p>
+                </div>
+                <div className="rounded-2xl border border-surface-border bg-white/[0.03] p-5">
+                  <p className="text-xs uppercase tracking-[0.2em] text-foreground-secondary">Communication</p>
+                  <p className="mt-2 text-fluid-2xl font-semibold text-foreground">{report.communicationScore}/100</p>
+                </div>
+                <div className="rounded-2xl border border-surface-border bg-white/[0.03] p-5">
+                  <p className="text-xs uppercase tracking-[0.2em] text-foreground-secondary">STAR Score</p>
+                  <p className="mt-2 text-fluid-2xl font-semibold text-foreground">{report.starScore ?? report.overallScore}/100</p>
+                </div>
+              </div>
 
               <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
                 <Suspense fallback={<ChartFallback />}>
@@ -257,6 +275,21 @@ export function InterviewPage() {
               <Suspense fallback={<ChartFallback />}>
                 <ResponseTimeChart data={report.responseTimes} />
               </Suspense>
+
+              <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+                <div className="rounded-2xl border border-surface-border bg-white/[0.03] p-5">
+                  <h3 className="text-sm font-semibold text-foreground">Strengths</h3>
+                  <ul className="mt-3 flex list-disc flex-col gap-2 pl-5 text-sm text-foreground-secondary">
+                    {(report.strengths ?? []).map((item) => <li key={item}>{item}</li>)}
+                  </ul>
+                </div>
+                <div className="rounded-2xl border border-surface-border bg-white/[0.03] p-5">
+                  <h3 className="text-sm font-semibold text-foreground">Weaknesses</h3>
+                  <ul className="mt-3 flex list-disc flex-col gap-2 pl-5 text-sm text-foreground-secondary">
+                    {(report.weaknesses ?? []).map((item) => <li key={item}>{item}</li>)}
+                  </ul>
+                </div>
+              </div>
 
               {recommendationsQuery.data && recommendationsQuery.data.length > 0 && (
                 <RecommendedPracticeGrid items={recommendationsQuery.data} />
