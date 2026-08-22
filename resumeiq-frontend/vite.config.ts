@@ -2,6 +2,11 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 
+const allowedHosts = [
+  "resumeiq-frontend-3kg2.onrender.com",
+  process.env.RENDER_EXTERNAL_HOSTNAME,
+].filter((host): host is string => Boolean(host));
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
@@ -12,6 +17,7 @@ export default defineConfig({
   },
   server: {
     port: 5173,
+    allowedHosts,
     proxy: {
       "/api": {
         target: "http://localhost:5000",
@@ -19,5 +25,8 @@ export default defineConfig({
         secure: false,
       },
     },
+  },
+  preview: {
+    allowedHosts,
   },
 });
