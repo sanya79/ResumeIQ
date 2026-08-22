@@ -90,9 +90,11 @@ export class AuthController {
 
   async oauthCallback(req, res, next) {
     try {
+      const defaultFrontend = process.env.NODE_ENV === "production" ? "https://resumeiq-frontend1.onrender.com" : "http://localhost:5173";
+      const targetFrontend = (process.env.FRONTEND_URL || defaultFrontend).replace(/\/$/, "");
       const user = req.user;
       if (!user) {
-        return res.redirect(`${process.env.FRONTEND_URL || "http://localhost:5173"}/login?error=AuthenticationFailed`);
+        return res.redirect(`${targetFrontend}/login?error=AuthenticationFailed`);
       }
 
       const accessToken = tokenService.generateAccessToken(user);
@@ -101,7 +103,7 @@ export class AuthController {
       await tokenService.saveRefreshToken(user, refreshToken);
       tokenService.setCookie(res, refreshToken);
 
-      const redirectUrl = `${process.env.FRONTEND_URL || "http://localhost:5173"}/login?token=${accessToken}&refreshToken=${refreshToken}`;
+      const redirectUrl = `${targetFrontend}/login?token=${accessToken}&refreshToken=${refreshToken}`;
       return res.redirect(redirectUrl);
     } catch (error) {
       next(error);

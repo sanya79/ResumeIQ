@@ -33,9 +33,14 @@ router.post("/dev-verify-account", controller.devVerifyAccount);
 const isRealGoogleId = (id) => Boolean(id && !id.startsWith("dummy") && !id.includes("your_google") && id.includes(".apps.googleusercontent.com"));
 const isRealGithubId = (id) => Boolean(id && !id.startsWith("dummy") && !id.includes("your_github") && id.length >= 10);
 
+const getDefaultFrontendUrl = () => {
+  const fallback = process.env.NODE_ENV === "production" ? "https://resumeiq-frontend1.onrender.com" : "http://localhost:5173";
+  return (process.env.FRONTEND_URL || fallback).replace(/\/$/, "");
+};
+
 // Passport OAuth Routes
 router.get("/google", (req, res, next) => {
-  const redirectUri = req.query.redirect_uri || `${process.env.FRONTEND_URL || "http://localhost:5173"}/login`;
+  const redirectUri = req.query.redirect_uri || `${getDefaultFrontendUrl()}/login`;
   const googleClientId = process.env.GOOGLE_CLIENT_ID || "";
   
   if (!isRealGoogleId(googleClientId)) {
@@ -55,7 +60,7 @@ router.get(
   (req, res, next) => {
     passport.authenticate("google", { session: false }, (err, user, info) => {
       if (err || !user) {
-        const redirectUri = `${process.env.FRONTEND_URL || "http://localhost:5173"}/login`;
+        const redirectUri = `${getDefaultFrontendUrl()}/login`;
         return res.redirect(`${redirectUri}?social_fallback=google`);
       }
       req.user = user;
@@ -66,7 +71,7 @@ router.get(
 );
 
 router.get("/github", (req, res, next) => {
-  const redirectUri = req.query.redirect_uri || `${process.env.FRONTEND_URL || "http://localhost:5173"}/login`;
+  const redirectUri = req.query.redirect_uri || `${getDefaultFrontendUrl()}/login`;
   const githubClientId = process.env.GITHUB_CLIENT_ID || "";
 
   if (!isRealGithubId(githubClientId)) {
@@ -85,7 +90,7 @@ router.get(
   (req, res, next) => {
     passport.authenticate("github", { session: false }, (err, user, info) => {
       if (err || !user) {
-        const redirectUri = `${process.env.FRONTEND_URL || "http://localhost:5173"}/login`;
+        const redirectUri = `${getDefaultFrontendUrl()}/login`;
         return res.redirect(`${redirectUri}?social_fallback=github`);
       }
       req.user = user;
