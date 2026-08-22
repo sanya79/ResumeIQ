@@ -139,13 +139,20 @@ export function ResumeWorkspacePage() {
     compareMutation.mutate({ from: compareFrom, to: compareTo });
   }
 
+  const [isDownloadingImprovedPdf, setIsDownloadingImprovedPdf] = useState(false);
+
   async function handleDownloadImprovedResume() {
     if (!resume?._id) return;
     try {
-      await downloadOptimizedResumePdf(resume._id, resume.atsScorecard?.atsVersion ? "target role" : undefined);
-      toast.success("Improved resume ready", "Your optimized PDF download has started.");
-    } catch {
-      toast.error("Download failed", "The improved resume PDF couldn't be generated right now.");
+      setIsDownloadingImprovedPdf(true);
+      toast.info("Building Overleaf-Style Resume...", "Applying ATS fixes and generating your improved resume PDF...");
+      await downloadOptimizedResumePdf(resume._id, "Software Engineer");
+      toast.success("Improved Resume Downloaded!", "Your ATS-optimized, Overleaf-style resume PDF is ready.");
+    } catch (error: any) {
+      console.error("Improved resume download error:", error);
+      toast.error("Download Failed", "The improved resume PDF couldn't be generated right now.");
+    } finally {
+      setIsDownloadingImprovedPdf(false);
     }
   }
 
@@ -247,8 +254,16 @@ export function ResumeWorkspacePage() {
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {resume?.atsScorecard && (
-                    <Button variant="outline" size="sm" onClick={handleDownloadImprovedResume}>
-                      <Sparkles size={14} /> Download improved resume PDF
+                    <Button variant="outline" size="sm" onClick={handleDownloadImprovedResume} disabled={isDownloadingImprovedPdf}>
+                      {isDownloadingImprovedPdf ? (
+                        <>
+                          <Sparkles size={14} className="animate-spin" /> Generating PDF...
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles size={14} /> Download improved resume PDF
+                        </>
+                      )}
                     </Button>
                   )}
                   <Button variant="secondary" size="sm" onClick={() => setShowUploadFlow(true)}>

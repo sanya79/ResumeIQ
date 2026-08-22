@@ -27,13 +27,16 @@ type FieldErrors = Partial<Record<keyof FormState, string>>;
 
 function getAuthErrorMessage(error: unknown, fallback: string): string {
   if (typeof error === "object" && error !== null) {
-    const response = (error as { response?: { data?: { message?: string; errors?: Array<{ message?: string }> } } }).response;
+    const response = (error as { response?: { data?: { message?: string; error?: string; errors?: Array<{ message?: string; msg?: string }> } } }).response;
+    if (Array.isArray(response?.data?.errors) && response.data.errors.length > 0) {
+      const joined = response.data.errors.map((item) => item?.message || item?.msg).filter(Boolean).join(". ");
+      if (joined) return joined;
+    }
     if (typeof response?.data?.message === "string" && response.data.message.trim()) {
       return response.data.message;
     }
-    if (Array.isArray(response?.data?.errors)) {
-      const joined = response.data.errors.map((item) => item?.message).filter(Boolean).join(" \n");
-      if (joined) return joined;
+    if (typeof response?.data?.error === "string" && response.data.error.trim()) {
+      return response.data.error;
     }
   }
 

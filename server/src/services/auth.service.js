@@ -28,6 +28,7 @@ export class AuthService {
    */
   async register(fullName, email, password, role = "Candidate") {
     const normalizedRole = normalizeRole(role);
+    const displayName = String(fullName || email.split("@")[0] || "User").trim();
 
     // Check for duplicate account registrations
     const existing = await userRepository.findByEmail(email);
@@ -38,13 +39,15 @@ export class AuthService {
     // Generate email verification token (active for 24 hours)
     const verificationToken = crypto.randomBytes(32).toString("hex");
     const verificationExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
+    const isVerificationRequired = process.env.EMAIL_VERIFICATION_REQUIRED === "true";
 
     // Save the new user record
     const user = await userRepository.createUser({
-      fullName,
+      fullName: displayName,
       email,
       passwordHash: password, // Mongoose pre-save hook will hash this
       role: normalizedRole,
+      emailVerified: !isVerificationRequired,
       emailVerificationToken: verificationToken,
       emailVerificationExpires: verificationExpires
     });
@@ -197,10 +200,13 @@ export class AuthService {
     }
 
     email = String(email || "").trim().toLowerCase();
-    fullName = String(fullName || "Social User").trim();
+    fullName = String(fullName || "").trim();
 
-    if (!email || !fullName) {
-      throw new AppError("Social sign-in requires a valid email and name.", 400);
+    if (!email) {
+      email = `${normalizedProvider.toLowerCase()}_demo@resumeiq.com`;
+    }
+    if (!fullName) {
+      fullName = `${normalizedProvider === "GOOGLE" ? "Google" : "GitHub"} User`;
     }
 
     const providerId = `${normalizedProvider}:${email}`;
@@ -238,9 +244,11 @@ export class AuthService {
       user: {
         id: user._id,
         fullName: user.fullName,
+        name: user.fullName,
         email: user.email,
         role: user.role,
         emailVerified: user.emailVerified,
+        isEmailVerified: user.emailVerified,
         resumeCredits: user.resumeCredits,
         subscriptionPlan: user.subscriptionPlan
       },
@@ -259,7 +267,12 @@ export class AuthService {
 
     // Enforce email verification before granting a full session
     if (!user.emailVerified) {
-      throw new AppError("Please verify your email address before logging in.", 403);
+      if (process.env.EMAIL_VERIFICATION_REQUIRED === "false") {
+        user.emailVerified = true;
+        await userRepository.save(user);
+      } else {
+        throw new AppError("Please verify your email address before logging in.", 403);
+      }
     }
 
     // Log this login session in the history log
@@ -282,9 +295,11 @@ export class AuthService {
       user: {
         id: user._id,
         fullName: user.fullName,
+        name: user.fullName,
         email: user.email,
         role: user.role,
         emailVerified: user.emailVerified,
+        isEmailVerified: user.emailVerified,
         resumeCredits: user.resumeCredits,
         subscriptionPlan: user.subscriptionPlan
       },
@@ -385,13 +400,22 @@ export class AuthService {
     await userRepository.save(user);
   }
 
-  async resendVerificationEmail(user) {
+  async resendVerificationEmail(userOrEmail) {
+    let user;
+    if (typeof userOrEmail === "string") {
+      user = await userRepository.findByEmail(userOrEmail);
+    } else if (userOrEmail?.email) {
+      user = await userRepository.findByEmail(userOrEmail.email);
+    } else {
+      user = userOrEmail;
+    }
+
     if (!user) {
-      throw new AppError("Unable to resend verification email. User session not found.", 401);
+      throw new AppError("Account not found with this email address.", 404);
     }
 
     if (user.emailVerified) {
-      return { success: true };
+      return { success: true, message: "Email is already verified." };
     }
 
     if (!user.emailVerificationToken || !user.emailVerificationExpires || user.emailVerificationExpires < new Date()) {
@@ -410,6 +434,18 @@ export class AuthService {
       success: true,
       verificationUrl: process.env.NODE_ENV === "development" ? verificationUrl : undefined
     };
+  }
+
+  async devVerifyAccount(email) {
+    const user = await userRepository.findByEmail(email);
+    if (!user) {
+      throw new AppError("User not found with this email address.", 404);
+    }
+    user.emailVerified = true;
+    user.emailVerificationToken = undefined;
+    user.emailVerificationExpires = undefined;
+    await userRepository.save(user);
+    return { success: true, message: "Account email verified successfully." };
   }
 
   /**

@@ -51,8 +51,29 @@ export function CareerExportSection({ result }: CareerExportSectionProps) {
     window.print();
   }
 
-  function handleShareProgress() {
-    toast.info("Share Progress coming soon", "This export option isn't wired up to the backend yet.");
+  async function handleShareProgress() {
+    const shareTitle = `Career Roadmap for ${result.targetRole}`;
+    const shareText = `Check out my career roadmap for ${result.targetRole} on ResumeIQ!`;
+    const shareUrl = window.location.href;
+
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: shareTitle, text: shareText, url: shareUrl });
+        toast.success("Shared!", "Career roadmap shared successfully.");
+      } else {
+        await navigator.clipboard.writeText(shareUrl);
+        toast.success("Link Copied!", "Roadmap link copied to your clipboard.");
+      }
+    } catch (error: any) {
+      if (error?.name !== "AbortError") {
+        try {
+          await navigator.clipboard.writeText(shareUrl);
+          toast.success("Link Copied!", "Roadmap link copied to your clipboard.");
+        } catch (clipErr) {
+          toast.error("Share failed", "Could not copy link to clipboard.");
+        }
+      }
+    }
   }
 
   return (

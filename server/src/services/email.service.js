@@ -17,7 +17,7 @@ export class EmailService {
     this.smtpPort = smtpPort;
     this.smtpUser = smtpUser;
     this.smtpPass = smtpPass;
-    this.isPlaceholderTransport = !smtpUser || !smtpPass || smtpUser === "dummy_user" || smtpUser === "dummy_smtp_username";
+    this.isPlaceholderTransport = !smtpUser || !smtpPass;
     this.allowFallback = process.env.NODE_ENV !== "production";
 
     if (!this.isPlaceholderTransport) {

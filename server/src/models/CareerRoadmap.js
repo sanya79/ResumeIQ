@@ -61,15 +61,29 @@ const careerRoadmapSchema = new mongoose.Schema(
       type: Array,
       default: []
     },
+    skillGapSummary: {
+      type: Object,
+      default: {}
+    },
+    roadmapPlan: {
+      type: Object,
+      default: {}
+    },
     confidence: {
       type: Number,
       default: 1.0
     }
   },
   {
-    timestamps: true
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
   }
 );
+
+careerRoadmapSchema.virtual("id").get(function () {
+  return this._id.toHexString();
+});
 
 export const CareerRoadmap = mongoose.model("CareerRoadmap", careerRoadmapSchema);
 export default CareerRoadmap;

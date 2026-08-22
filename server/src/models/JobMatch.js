@@ -29,6 +29,14 @@ const jobMatchSchema = new mongoose.Schema(
       type: Number,
       required: true
     },
+    semanticScore: {
+      type: Number,
+      default: 75
+    },
+    keywordScore: {
+      type: Number,
+      default: 75
+    },
     matchedKeywords: {
       type: Array,
       default: []
@@ -36,6 +44,14 @@ const jobMatchSchema = new mongoose.Schema(
     missingKeywords: {
       type: Array,
       default: []
+    },
+    skillOverlap: {
+      type: Array,
+      default: []
+    },
+    experienceGap: {
+      type: String,
+      default: ""
     },
     categoryBreakdown: {
       type: Array,
@@ -76,9 +92,15 @@ const jobMatchSchema = new mongoose.Schema(
     }
   },
   {
-    timestamps: true
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
   }
 );
+
+jobMatchSchema.virtual("id").get(function () {
+  return this._id.toHexString();
+});
 
 export const JobMatch = mongoose.model("JobMatch", jobMatchSchema);
 export default JobMatch;

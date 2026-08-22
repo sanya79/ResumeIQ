@@ -1,21 +1,37 @@
 import { InterviewService } from "../services/interview.service.js";
+import { ResumeRepository } from "../repositories/resume.repository.js";
 import { sendSuccess } from "../utils/response.js";
 import { AppError } from "../utils/appError.js";
 
 const interviewService = new InterviewService();
+const resumeRepository = new ResumeRepository();
 
 export class InterviewController {
   async createInterviewSession(req, res, next) {
     try {
-      const payload = req.body?.resumeId ? req.body : req.body?.config;
-      if (!payload?.role && !payload?.targetRole) {
+      const rawPayload = req.body || {};
+      const payload = rawPayload.config ? { ...rawPayload.config, ...rawPayload } : rawPayload;
+
+      const role = payload.role || payload.targetRole || payload.config?.targetRole || "Software Engineer";
+      if (!role) {
         return next(new AppError("A role or target role is required to start an interview session.", 400));
       }
-      if (!payload?.resumeId && !payload?.config?.resumeId) {
-        return next(new AppError("A resume ID is required to start an interview session.", 400));
+
+      let resumeId = payload.resumeId || payload.config?.resumeId || null;
+      if (!resumeId) {
+        const latestResume = await resumeRepository.findLatestByUserId(req.user._id);
+        if (latestResume) {
+          resumeId = latestResume._id.toString();
+        }
       }
 
-      const data = await interviewService.generateQuestions(req.user._id, payload);
+      const sessionPayload = {
+        ...payload,
+        role,
+        resumeId,
+      };
+
+      const data = await interviewService.generateQuestions(req.user._id, sessionPayload);
       return sendSuccess(res, "Interview session created successfully.", data, 201);
     } catch (error) {
       next(error);

@@ -336,8 +336,9 @@ export function CinematicCanvas({ activeScene }: CinematicCanvasProps) {
           ctx.shadowBlur = 0;
         }
 
+        const radius = Math.max(0.1, item.p.size * (fov / Math.max(1, fov + item.sz)));
         ctx.beginPath();
-        ctx.arc(item.sx, item.sy, item.p.size * (fov / (fov + item.sz)), 0, Math.PI * 2);
+        ctx.arc(item.sx, item.sy, radius, 0, Math.PI * 2);
         ctx.fill();
       }
 

@@ -1,8 +1,5 @@
-import dotenv from "dotenv";
+import "dotenv/config";
 import path from "path";
-
-// Configure dotenv to read variables from .env file
-dotenv.config();
 
 import app from "./app.js";
 import { connectDb } from "./config/db.js";

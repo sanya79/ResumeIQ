@@ -1,41 +1,18 @@
-import { useEffect, useState } from "react";
+import { API_BASE_URL } from "@/utils/constants";
 import { Button } from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
 import { useAuthStore } from "@/stores/authStore";
-import { getAuthConfig } from "@/services/auth.api";
 
 export function SocialAuthButtons() {
-  const socialLogin = useAuthStore((s) => s.socialLogin);
   const isLoading = useAuthStore((s) => s.isLoading);
-  const [config, setConfig] = useState<{ googleClientId: string; githubClientId: string } | null>(null);
 
-  useEffect(() => {
-    getAuthConfig()
-      .then(setConfig)
-      .catch((err) => console.error("Error loading social auth config:", err));
-  }, []);
-
-  const handleSocialClick = async (provider: "google" | "github") => {
-    const googleId = config?.googleClientId;
-    const githubId = config?.githubClientId;
+  const handleSocialClick = (provider: "google" | "github") => {
     const redirectUri = `${window.location.origin}/login`;
-
-    if (provider === "google" && googleId) {
-      const scope = "email profile openid";
-      const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${googleId}&redirect_uri=${encodeURIComponent(
-        redirectUri
-      )}&response_type=code&scope=${encodeURIComponent(scope)}&state=google`;
-      window.location.href = authUrl;
-    } else if (provider === "github" && githubId) {
-      const scope = "user:email";
-      const authUrl = `https://github.com/login/oauth/authorize?client_id=${githubId}&redirect_uri=${encodeURIComponent(
-        redirectUri
-      )}&scope=${encodeURIComponent(scope)}&state=github`;
-      window.location.href = authUrl;
-    } else {
-      // Fallback to mock social login
-      await socialLogin(provider);
-    }
+    const state = provider; // Pass provider as state for callback identification
+    const targetUrl = API_BASE_URL.startsWith("http")
+      ? `${API_BASE_URL}/auth/${provider}?state=${state}&redirect_uri=${encodeURIComponent(redirectUri)}`
+      : `${window.location.origin}${API_BASE_URL}/auth/${provider}?state=${state}&redirect_uri=${encodeURIComponent(redirectUri)}`;
+    window.location.href = targetUrl;
   };
 
   return (

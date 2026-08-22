@@ -1,6 +1,6 @@
-import { useState, memo } from "react";
+import { useState, useEffect, memo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Bell, Moon, Search as SearchIcon, ChevronDown, LogOut, Settings, UserRound } from "lucide-react";
+import { Bell, Moon, Sun, Search as SearchIcon, ChevronDown, LogOut, Settings, UserRound } from "lucide-react";
 import { Avatar } from "@/components/ui/Avatar";
 import { Dropdown, type DropdownItem } from "@/components/ui/Dropdown";
 import { Tooltip } from "@/components/ui/Tooltip";
@@ -20,9 +20,28 @@ const notifications = [
  * these controls share the TopBar's `actions` slot and layout rhythm. */
 export const UserMenu = memo(function UserMenu({ user }: { user: User | null }) {
   const [notifOpen, setNotifOpen] = useState(false);
+  const [theme, setTheme] = useState<"dark" | "light">(() => {
+    return (localStorage.getItem("theme") as "dark" | "light") || "dark";
+  });
+
   const logout = useAuthStore((s) => s.logout);
   const toast = useToast();
   const unreadCount = notifications.filter((n) => n.unread).length;
+
+  useEffect(() => {
+    if (theme === "light") {
+      document.documentElement.classList.add("light");
+    } else {
+      document.documentElement.classList.remove("light");
+    }
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  function toggleTheme() {
+    const nextTheme = theme === "dark" ? "light" : "dark";
+    setTheme(nextTheme);
+    toast.success(`${nextTheme === "light" ? "Light" : "Dark"} mode activated`, `Switched interface theme to ${nextTheme} mode.`);
+  }
 
   const menuItems: DropdownItem[] = [
     { label: "Profile", value: "profile", icon: <UserRound size={15} /> },
@@ -105,14 +124,14 @@ export const UserMenu = memo(function UserMenu({ user }: { user: User | null }) 
         </AnimatePresence>
       </div>
 
-      <Tooltip content="Light mode — coming soon">
+      <Tooltip content={theme === "dark" ? "Switch to Light mode" : "Switch to Dark mode"}>
         <button
           type="button"
           aria-label="Toggle theme"
-          onClick={() => toast.info("Light mode coming soon", "ResumeIQ is dark-mode only for now.")}
-          className="hidden h-10 w-10 items-center justify-center rounded-xl text-foreground-secondary transition-colors hover:bg-white/[0.06] hover:text-foreground sm:inline-flex"
+          onClick={toggleTheme}
+          className="inline-flex h-10 w-10 items-center justify-center rounded-xl text-foreground-secondary transition-colors hover:bg-white/[0.06] hover:text-foreground"
         >
-          <Moon size={17} />
+          {theme === "dark" ? <Moon size={17} /> : <Sun size={17} className="text-amber-400" />}
         </button>
       </Tooltip>
 

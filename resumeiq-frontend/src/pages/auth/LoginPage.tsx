@@ -14,6 +14,9 @@ import { validateEmail, validateLoginPassword } from "@/features/auth/validation
 import { useToast } from "@/hooks/useToast";
 import { useAuthStore } from "@/stores/authStore";
 
+import { STORAGE_KEYS } from "@/utils/constants";
+import { resendVerificationEmail, devVerifyAccount } from "@/services/auth.api";
+
 interface FormState {
   email: string;
   password: string;
@@ -27,13 +30,16 @@ interface FormErrors {
 
 function getAuthErrorMessage(error: unknown, fallback: string): string {
   if (typeof error === "object" && error !== null) {
-    const response = (error as { response?: { data?: { message?: string; errors?: Array<{ message?: string }> } } }).response;
+    const response = (error as { response?: { data?: { message?: string; error?: string; errors?: Array<{ message?: string; msg?: string }> } } }).response;
+    if (Array.isArray(response?.data?.errors) && response.data.errors.length > 0) {
+      const joined = response.data.errors.map((item) => item?.message || item?.msg).filter(Boolean).join(". ");
+      if (joined) return joined;
+    }
     if (typeof response?.data?.message === "string" && response.data.message.trim()) {
       return response.data.message;
     }
-    if (Array.isArray(response?.data?.errors)) {
-      const joined = response.data.errors.map((item) => item?.message).filter(Boolean).join(" \n");
-      if (joined) return joined;
+    if (typeof response?.data?.error === "string" && response.data.error.trim()) {
+      return response.data.error;
     }
   }
 
@@ -54,20 +60,90 @@ export function LoginPage() {
   const [searchParams] = useSearchParams();
   const code = searchParams.get("code");
   const state = searchParams.get("state");
+  const tokenParam = searchParams.get("token");
+  const refreshTokenParam = searchParams.get("refreshToken");
+  const errorParam = searchParams.get("error");
   const [socialLoading, setSocialLoading] = useState(false);
 
   const [form, setForm] = useState<FormState>({ email: "", password: "", rememberMe: false });
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const [resendingEmail, setResendingEmail] = useState(false);
+  const [verifyingDev, setVerifyingDev] = useState(false);
+
+  const isUnverifiedError =
+    loginMutation.isError &&
+    getAuthErrorMessage(loginMutation.error, "").toLowerCase().includes("verify");
+
+  async function handleResendVerification() {
+    if (!form.email) {
+      toast.error("Email required", "Please enter your email address above.");
+      return;
+    }
+    setResendingEmail(true);
+    try {
+      const res = await resendVerificationEmail(form.email);
+      toast.success("Verification Email Dispatched", res.message);
+    } catch (err) {
+      toast.error("Resend Failed", getAuthErrorMessage(err, "Couldn't resend verification email."));
+    } finally {
+      setResendingEmail(false);
+    }
+  }
+
+  async function handleDevVerify() {
+    if (!form.email) {
+      toast.error("Email required", "Please enter your email address above.");
+      return;
+    }
+    setVerifyingDev(true);
+    try {
+      await devVerifyAccount(form.email);
+      toast.success("Account Verified!", "Email address verified successfully. Logging you in...");
+      await loginMutation.mutateAsync({ email: form.email, password: form.password, rememberMe: form.rememberMe });
+      const redirectTo = (location.state as { from?: Location })?.from?.pathname ?? "/dashboard";
+      navigate(redirectTo, { replace: true });
+    } catch (err) {
+      toast.error("Verification Failed", getAuthErrorMessage(err, "Couldn't verify account."));
+    } finally {
+      setVerifyingDev(false);
+    }
+  }
 
   useEffect(() => {
-    if (code && state) {
+    const socialFallback = searchParams.get("social_fallback");
+    if (tokenParam) {
+      setSocialLoading(true);
+      localStorage.setItem(STORAGE_KEYS.accessToken, tokenParam);
+      if (refreshTokenParam) {
+        localStorage.setItem(STORAGE_KEYS.refreshToken, refreshTokenParam);
+      }
+      useAuthStore.setState({ token: tokenParam, isAuthenticated: true });
+      useAuthStore
+        .getState()
+        .refreshUser()
+        .then(() => {
+          toast.success("Welcome back!", "Signed in successfully.");
+          navigate("/dashboard", { replace: true });
+        })
+        .catch((err) => {
+          toast.error("Sign-in error", getAuthErrorMessage(err, "Failed to load user profile."));
+          navigate("/login", { replace: true });
+        })
+        .finally(() => {
+          setSocialLoading(false);
+        });
+    } else if (socialFallback === "google" || socialFallback === "github") {
+      handleSocialCallback(socialFallback as "google" | "github", "");
+    } else if (errorParam) {
+      toast.error("Sign-in failed", errorParam === "OAuthFailed" ? "Social authentication failed or was cancelled." : errorParam);
+    } else if (code && state) {
       const provider = state === "google" || state === "github" ? state : null;
       if (provider) {
         handleSocialCallback(provider, code);
       }
     }
-  }, [code, state]);
+  }, [tokenParam, refreshTokenParam, errorParam, code, state, searchParams]);
 
   async function handleSocialCallback(provider: "google" | "github", authCode: string) {
     setSocialLoading(true);
@@ -175,14 +251,34 @@ export function LoginPage() {
 
         <AnimatePresence>
           {loginMutation.isError && (
-            <motion.p
+            <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="rounded-lg bg-danger/10 px-3 py-2 text-xs text-danger"
+              className="flex flex-col gap-2 rounded-lg bg-danger/10 p-3 text-xs text-danger"
             >
-              {getAuthErrorMessage(loginMutation.error, "Couldn't log in. Please try again.")}
-            </motion.p>
+              <p>{getAuthErrorMessage(loginMutation.error, "Couldn't log in. Please try again.")}</p>
+              {isUnverifiedError && (
+                <div className="mt-1 flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={handleResendVerification}
+                    disabled={resendingEmail}
+                    className="rounded bg-accent-purple/20 px-2.5 py-1 text-xs font-semibold text-accent-purple hover:bg-accent-purple/30 transition-colors"
+                  >
+                    {resendingEmail ? "Sending..." : "📧 Resend Verification Email"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleDevVerify}
+                    disabled={verifyingDev}
+                    className="rounded bg-accent-emerald/20 px-2.5 py-1 text-xs font-semibold text-accent-emerald hover:bg-accent-emerald/30 transition-colors"
+                  >
+                    {verifyingDev ? "Verifying..." : "⚡ Verify & Log In Now"}
+                  </button>
+                </div>
+              )}
+            </motion.div>
           )}
         </AnimatePresence>
 
@@ -195,6 +291,28 @@ export function LoginPage() {
               Log in
             </>
           )}
+        </Button>
+
+        <Button
+          type="button"
+          variant="secondary"
+          size="md"
+          disabled={loginMutation.isPending || socialLoading}
+          onClick={async () => {
+            setSocialLoading(true);
+            try {
+              await socialLogin("google");
+              toast.success("Welcome Demo User!", "Signed in with demo account.");
+              navigate("/dashboard", { replace: true });
+            } catch (err: any) {
+              toast.error("Demo Sign-In Failed", getAuthErrorMessage(err, "Couldn't sign in with demo account."));
+            } finally {
+              setSocialLoading(false);
+            }
+          }}
+          className="w-full"
+        >
+          ⚡ Try Demo Account
         </Button>
       </form>
 

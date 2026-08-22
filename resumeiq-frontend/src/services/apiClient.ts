@@ -89,12 +89,18 @@ apiClient.interceptors.response.use(
     try {
       // Plain axios call (not `apiClient`) so this never re-enters these
       // same interceptors. Endpoint shape assumed — see auth.api.ts note.
-      const { data } = await axios.post<{ accessToken: string }>(`${API_BASE_URL}/auth/refresh`, {
+      const { data: resData } = await axios.post<any>(`${API_BASE_URL}/auth/refresh`, {
         refreshToken,
-      });
-      localStorage.setItem(STORAGE_KEYS.accessToken, data.accessToken);
-      resolvePending(data.accessToken);
-      originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
+      }, { withCredentials: true });
+      const newAccessToken = resData?.data?.accessToken || resData?.accessToken;
+      const newRefreshToken = resData?.data?.refreshToken || resData?.refreshToken;
+      if (!newAccessToken) throw new Error("No token returned on refresh");
+      localStorage.setItem(STORAGE_KEYS.accessToken, newAccessToken);
+      if (newRefreshToken) {
+        localStorage.setItem(STORAGE_KEYS.refreshToken, newRefreshToken);
+      }
+      resolvePending(newAccessToken);
+      originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
       return apiClient(originalRequest);
     } catch (refreshError) {
       resolvePending(null);

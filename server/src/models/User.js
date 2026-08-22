@@ -42,7 +42,8 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: ["CANDIDATE", "RECRUITER", "ADMIN"],
-      default: "CANDIDATE"
+      default: "CANDIDATE",
+      set: (v) => (v ? v.toUpperCase() : v)
     },
     emailVerified: {
       type: Boolean,
