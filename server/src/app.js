@@ -78,10 +78,20 @@ app.use("/api/v1", routes);
 
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
 
-// 7. Static Frontend Serving (if built alongside backend)
-const frontendDistPath = path.resolve(process.cwd(), "../resumeiq-frontend/dist");
-if (fs.existsSync(frontendDistPath)) {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// 7. Static Frontend Serving (finds dist whether started from root or server dir)
+const possibleDistPaths = [
+  path.resolve(process.cwd(), "resumeiq-frontend/dist"),
+  path.resolve(process.cwd(), "../resumeiq-frontend/dist"),
+  path.resolve(__dirname, "../../resumeiq-frontend/dist"),
+];
+const frontendDistPath = possibleDistPaths.find((p) => fs.existsSync(p));
+
+if (frontendDistPath) {
   app.use(express.static(frontendDistPath));
   app.get("*", (req, res, next) => {
     if (req.originalUrl.startsWith("/api")) return next();
