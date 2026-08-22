@@ -8,10 +8,12 @@ const userRepository = new UserRepository();
 
 const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
 
+const defaultBackendUrl = process.env.NODE_ENV === "production" ? "https://resumeiq-backend-tlbw.onrender.com" : "http://localhost:5000";
+
 // Google Strategy - Always register, with fallback dummy values if needed
 const googleClientId = process.env.GOOGLE_CLIENT_ID || "dummy-google-id";
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET || "dummy-google-secret";
-const googleCallbackUrl = process.env.GOOGLE_CALLBACK_URL || "http://localhost:5000/api/v1/auth/google/callback";
+const googleCallbackUrl = process.env.GOOGLE_CALLBACK_URL || `${defaultBackendUrl}/api/v1/auth/google/callback`;
 
 passport.use("google", new GoogleStrategy(
   {
@@ -69,7 +71,7 @@ passport.use("google", new GoogleStrategy(
 // GitHub Strategy - Always register, with fallback dummy values if needed
 const githubClientId = process.env.GITHUB_CLIENT_ID || "dummy-github-id";
 const githubClientSecret = process.env.GITHUB_CLIENT_SECRET || "dummy-github-secret";
-const githubCallbackUrl = process.env.GITHUB_CALLBACK_URL || "http://localhost:5000/api/v1/auth/github/callback";
+const githubCallbackUrl = process.env.GITHUB_CALLBACK_URL || `${defaultBackendUrl}/api/v1/auth/github/callback`;
 
 passport.use("github", new GitHubStrategy(
   {
