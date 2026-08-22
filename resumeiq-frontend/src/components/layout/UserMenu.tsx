@@ -1,4 +1,5 @@
 import { useState, useEffect, memo } from "react";
+import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { Bell, Moon, Sun, Search as SearchIcon, ChevronDown, LogOut, Settings, UserRound } from "lucide-react";
 import { Avatar } from "@/components/ui/Avatar";
@@ -7,6 +8,7 @@ import { Tooltip } from "@/components/ui/Tooltip";
 import { useAuthStore } from "@/stores/authStore";
 import { useToast } from "@/hooks/useToast";
 import { cn } from "@/utils/cn";
+import { getUserDisplayName } from "@/utils/userUtils";
 import type { User } from "@/types";
 
 const notifications = [
@@ -24,6 +26,7 @@ export const UserMenu = memo(function UserMenu({ user }: { user: User | null }) 
     return (localStorage.getItem("theme") as "dark" | "light") || "dark";
   });
 
+  const navigate = useNavigate();
   const logout = useAuthStore((s) => s.logout);
   const toast = useToast();
   const unreadCount = notifications.filter((n) => n.unread).length;
@@ -53,8 +56,8 @@ export const UserMenu = memo(function UserMenu({ user }: { user: User | null }) 
     if (value === "logout") {
       logout();
       toast.info("Logged out", "Come back soon.");
-    } else {
-      toast.info("Coming soon", "This section is still being built.");
+    } else if (value === "profile" || value === "settings") {
+      navigate("/profile");
     }
   }
 
@@ -134,16 +137,15 @@ export const UserMenu = memo(function UserMenu({ user }: { user: User | null }) 
           {theme === "dark" ? <Moon size={17} /> : <Sun size={17} className="text-amber-400" />}
         </button>
       </Tooltip>
-
       <Dropdown
         align="right"
         items={menuItems}
         onSelect={handleSelect}
         trigger={
           <span className="flex items-center gap-2 rounded-xl py-1 pl-1 pr-2 transition-colors hover:bg-white/[0.06]">
-            <Avatar name={user?.name ?? "Guest User"} src={user?.avatarUrl} size="sm" />
+            <Avatar name={getUserDisplayName(user)} src={user?.avatarUrl} size="sm" />
             <span className="hidden text-left leading-tight md:block">
-              <span className="block text-sm font-medium text-foreground">{user?.name ?? "Guest"}</span>
+              <span className="block text-sm font-medium text-foreground">{getUserDisplayName(user)}</span>
               <span className="block text-xs text-foreground-secondary">{user?.role ?? "candidate"}</span>
             </span>
             <ChevronDown size={14} className="hidden text-foreground-secondary md:block" />

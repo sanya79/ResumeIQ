@@ -13,10 +13,11 @@ import { AtsIntelligencePage } from "@/pages/ats/AtsIntelligencePage";
 import { JobMatchingPage } from "@/pages/matching/JobMatchingPage";
 import { CareerRoadmapPage } from "@/pages/career/CareerRoadmapPage";
 import { GitHubPortfolioPage } from "@/pages/portfolio/GitHubPortfolioPage";
+import { LeetCodePortfolioPage } from "@/pages/portfolio/LeetCodePortfolioPage";
 import { InterviewPage } from "@/pages/interview/InterviewPage";
 import { AnalyticsPage } from "@/pages/analytics/AnalyticsPage";
 import { HistoryPage } from "@/pages/history/HistoryPage";
-import { SettingsPage } from "@/pages/settings/SettingsPage";
+import { ProfilePage } from "@/pages/profile/ProfilePage";
 import { RecruiterDashboardPage } from "@/pages/recruiter/RecruiterDashboardPage";
 import { UnauthorizedPage } from "@/pages/errors/UnauthorizedPage";
 import { NotFoundPage } from "@/pages/errors/NotFoundPage";
@@ -68,10 +69,12 @@ export const router = createBrowserRouter([
           { path: "/matching", element: <JobMatchingPage /> },
           { path: "/skill-gap", element: <CareerRoadmapPage /> },
           { path: "/portfolio/github", element: <GitHubPortfolioPage /> },
+          { path: "/portfolio/leetcode", element: <LeetCodePortfolioPage /> },
           { path: "/interview", element: <InterviewPage /> },
           { path: "/analytics", element: <AnalyticsPage /> },
           { path: "/history", element: <HistoryPage /> },
-          { path: "/settings", element: <SettingsPage /> },
+          { path: "/settings", element: <ProfilePage /> },
+          { path: "/profile", element: <ProfilePage /> },
         ],
       },
     ],

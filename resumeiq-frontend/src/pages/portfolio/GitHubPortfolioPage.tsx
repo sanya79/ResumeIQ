@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Github, Sparkles, Search, Code2, FolderGit2 } from "lucide-react";
+import { Github, Sparkles, Search, Code2, FolderGit2, Star, GitFork, ExternalLink } from "lucide-react";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { GradientBackground } from "@/components/animations/GradientBackground";
 import { ParticleField } from "@/components/animations/ParticleField";
@@ -12,9 +12,20 @@ import { Input } from "@/components/ui/Input";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ErrorState } from "@/components/ui/ErrorState";
+import { Badge } from "@/components/ui/Badge";
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
 import { apiClient } from "@/services/apiClient";
 import type { ApiResponse } from "@/types";
+
+interface GitHubRepository {
+  name: string;
+  description: string;
+  language: string;
+  stars: number;
+  forks: number;
+  url: string;
+  updatedAt: string;
+}
 
 interface GitHubAnalysis {
   repoQualityScore: number;
@@ -24,6 +35,7 @@ interface GitHubAnalysis {
   projectDiversity: number;
   contributionSummary: string;
   portfolioScore: number;
+  repositories?: GitHubRepository[];
 }
 
 export function GitHubPortfolioPage() {
@@ -33,6 +45,7 @@ export function GitHubPortfolioPage() {
   const [error, setError] = useState<string | null>(null);
 
   const chartsData = useMemo(() => analysis?.languageDistribution ?? [], [analysis]);
+  const repositories = useMemo(() => analysis?.repositories ?? [], [analysis]);
 
   async function handleConnect() {
     if (!githubUsername.trim()) return;
@@ -65,7 +78,7 @@ export function GitHubPortfolioPage() {
             Review your <span className="text-gradient">developer portfolio</span>
           </h1>
           <p className="max-w-2xl text-sm text-foreground-secondary sm:text-base">
-            Connect a public GitHub profile to get a quick view of portfolio quality, activity, and language spread.
+            Connect a public GitHub profile to get a detailed view of repositories, portfolio quality, activity, and language spread.
           </p>
         </FadeIn>
 
@@ -98,7 +111,7 @@ export function GitHubPortfolioPage() {
         )}
 
         {!analysis && !loading && (
-          <EmptyState icon={<Sparkles size={22} />} title="No profile analyzed yet" description="Enter a GitHub username to unlock a portfolio scorecard and charts." />
+          <EmptyState icon={<Sparkles size={22} />} title="No profile analyzed yet" description="Enter a GitHub username to unlock a portfolio scorecard, repositories list, and language charts." />
         )}
 
         {analysis && (
@@ -110,6 +123,53 @@ export function GitHubPortfolioPage() {
                 <MetricCard label="Readme score" value={analysis.readmeScore} description="How well the profile is documented" />
               </div>
             </AnalyticsCard>
+
+            {/* Repositories Catalog Grid */}
+            <GlassCard className="flex flex-col gap-5 p-6 border border-white/15">
+              <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                <div className="flex items-center gap-2.5">
+                  <FolderGit2 size={20} className="text-accent-purple" />
+                  <div>
+                    <h3 className="font-bold text-foreground">Public Repositories ({repositories.length})</h3>
+                    <p className="text-xs text-foreground-secondary">Detailed list of analyzed public code repositories</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {repositories.map((repo, idx) => (
+                  <div key={idx} className="flex flex-col justify-between rounded-2xl border border-white/10 bg-white/[0.03] p-4 hover:border-accent-purple/40 hover:bg-white/[0.06] transition-all group">
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between gap-2">
+                        <h4 className="font-bold text-foreground text-sm flex items-center gap-1.5 group-hover:text-accent-cyan transition-colors truncate">
+                          <FolderGit2 size={14} className="shrink-0 text-accent-purple" /> {repo.name}
+                        </h4>
+                        <a
+                          href={repo.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-foreground-secondary hover:text-foreground p-1 transition-colors"
+                          title="Open on GitHub"
+                        >
+                          <ExternalLink size={14} />
+                        </a>
+                      </div>
+                      <p className="text-xs text-foreground-secondary line-clamp-2 leading-relaxed">
+                        {repo.description}
+                      </p>
+                    </div>
+
+                    <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs text-foreground-secondary">
+                      <Badge tone="purple" className="text-[10px] font-semibold">{repo.language}</Badge>
+                      <div className="flex items-center gap-3">
+                        <span className="flex items-center gap-1 text-amber-400 font-semibold"><Star size={12} /> {repo.stars}</span>
+                        <span className="flex items-center gap-1 text-accent-cyan font-semibold"><GitFork size={12} /> {repo.forks}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </GlassCard>
 
             <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
               <AnalyticsCard title="Contribution activity" subtitle="How active and broad the public profile appears">
@@ -175,3 +235,5 @@ export function GitHubPortfolioPage() {
     </PageContainer>
   );
 }
+
+export default GitHubPortfolioPage;

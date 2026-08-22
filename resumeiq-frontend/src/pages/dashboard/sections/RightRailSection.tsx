@@ -1,6 +1,7 @@
 import { Lightbulb, Quote, Bell, CalendarClock } from "lucide-react";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { WidgetTile } from "../components/WidgetTile";
+import { useLatestResume } from "@/features/resume/hooks";
 
 /** Small "weather-widget" style rail — ambient, low-emphasis context that
  * sits alongside the main dashboard column. */
@@ -15,6 +16,8 @@ export function RightRailSection({
   };
   isLoading?: boolean;
 }) {
+  const { data: latestResume } = useLatestResume();
+  const atsScore = latestResume?.atsScorecard?.overallScore ?? null;
   const aiTip = data?.aiTip ?? "";
   const careerQuote = data?.careerQuote ?? { quote: "", author: "" };
   const upcomingInterview = data?.upcomingInterview ?? { role: "", company: "", date: "" };
@@ -33,8 +36,13 @@ export function RightRailSection({
       </WidgetTile>
 
       <WidgetTile icon={<Bell size={14} />} label="Recent notification" accent="pink">
-        Your resume scored <span className="font-semibold text-foreground">87/100</span> on its latest ATS pass —
-        up 8% from last time.
+        {atsScore !== null ? (
+          <>
+            Your resume scored <span className="font-semibold text-foreground">{atsScore}/100</span> on its latest ATS analysis pass.
+          </>
+        ) : (
+          "Upload your resume to perform your first ATS compatibility analysis pass."
+        )}
       </WidgetTile>
 
       <WidgetTile icon={<CalendarClock size={14} />} label="Upcoming interview" accent="emerald">

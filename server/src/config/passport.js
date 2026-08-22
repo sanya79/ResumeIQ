@@ -21,8 +21,16 @@ passport.use("google", new GoogleStrategy(
   },
   async (accessToken, refreshToken, profile, done) => {
     try {
-      const email = profile.emails?.[0]?.value;
-      const fullName = profile.displayName || `${profile.name?.givenName || ""} ${profile.name?.familyName || ""}`.trim() || "Google User";
+      const email = profile.emails?.[0]?.value || "";
+      let fullName = profile.displayName || `${profile.name?.givenName || ""} ${profile.name?.familyName || ""}`.trim();
+      if (!fullName || fullName.toLowerCase() === "google" || fullName.toLowerCase() === "google user") {
+        if (email && email.includes("@")) {
+          const prefix = email.split("@")[0].replace(/[._\-\d]+/g, " ").trim();
+          fullName = prefix ? prefix.split(" ").map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ") : "Candidate User";
+        } else {
+          fullName = "Candidate User";
+        }
+      }
       const avatar = profile.photos?.[0]?.value || "";
       const providerId = `GOOGLE:${profile.id}`;
 

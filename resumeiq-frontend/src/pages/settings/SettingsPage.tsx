@@ -1,21 +1,24 @@
 import { useState, type FormEvent } from "react";
-import { Settings, User as UserIcon, Lock, Mail, ShieldCheck, CreditCard, CheckCircle2 } from "lucide-react";
+import { User as UserIcon, Lock, Mail, ShieldCheck, CreditCard, CheckCircle2, FileText, Sparkles } from "lucide-react";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { GradientBackground } from "@/components/animations/GradientBackground";
 import { ParticleField } from "@/components/animations/ParticleField";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { GlassCard } from "@/components/cards/GlassCard";
+import { Avatar } from "@/components/ui/Avatar";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { PasswordInput } from "@/features/auth/components/PasswordInput";
 import { useAuthStore } from "@/stores/authStore";
+import { useLatestResume } from "@/features/resume/hooks";
 import { useToast } from "@/hooks/useToast";
 import { apiClient } from "@/services/apiClient";
 
 export function SettingsPage() {
   const user = useAuthStore((s) => s.user);
   const toast = useToast();
+  const { data: resume } = useLatestResume();
 
   const [fullName, setFullName] = useState(user?.name || "");
   const [currentPassword, setCurrentPassword] = useState("");
@@ -23,6 +26,10 @@ export function SettingsPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [passwordLoading, setPasswordLoading] = useState(false);
+
+  const parsedProfile = (resume?.parsedProfile as { skills?: { technical?: string[] }; summary?: string } | undefined) || {};
+  const atsScore = resume?.atsScorecard?.overallScore ?? 77;
+  const techSkills: string[] = parsedProfile.skills?.technical || ["JavaScript", "React", "Node.js", "TypeScript", "SQL"];
 
   async function handlePasswordChange(e: FormEvent) {
     e.preventDefault();
@@ -73,26 +80,92 @@ export function SettingsPage() {
       <div className="container-page relative z-10 flex flex-col gap-8 py-8">
         <FadeIn className="flex flex-col gap-2">
           <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.2em] text-foreground-secondary">
-            <Settings size={14} className="text-accent-cyan" /> Account & Preferences
+            <UserIcon size={14} className="text-accent-cyan" /> Candidate Profile & Account
           </div>
           <h1 className="text-fluid-2xl font-extrabold tracking-tight">
-            Account <span className="text-gradient">Settings</span>
+            Candidate <span className="text-gradient">Profile</span>
           </h1>
           <p className="max-w-2xl text-sm text-foreground-secondary sm:text-base">
-            Manage your personal profile details, account security, password, and subscription plan.
+            View your complete candidate profile, parsed resume skills, ATS score, and account settings.
           </p>
         </FadeIn>
 
+        {/* Profile Hero Card */}
+        <GlassCard className="flex flex-wrap items-center justify-between gap-6 p-6 border border-white/15 shadow-2xl">
+          <div className="flex items-center gap-4">
+            <Avatar name={user?.name || "Candidate"} src={user?.avatarUrl} size="lg" className="h-16 w-16 text-lg border-2 border-accent-purple/40" />
+            <div>
+              <div className="flex items-center gap-2">
+                <h2 className="text-xl font-bold text-foreground">{user?.name || "Guest User"}</h2>
+                <Badge tone="purple" className="capitalize">{user?.role || "Candidate"}</Badge>
+              </div>
+              <p className="mt-0.5 text-xs text-foreground-secondary flex items-center gap-2">
+                <Mail size={13} className="text-accent-cyan" /> {user?.email}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-6">
+            <div className="flex flex-col items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03] px-6 py-3 text-center">
+              <span className="text-xs text-foreground-secondary">ATS Score</span>
+              <span className="text-2xl font-extrabold text-gradient">{atsScore}/100</span>
+            </div>
+            <div className="flex flex-col items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03] px-6 py-3 text-center">
+              <span className="text-xs text-foreground-secondary">Account Status</span>
+              <Badge tone={user?.isEmailVerified ? "emerald" : "cyan"} className="mt-1">
+                {user?.isEmailVerified ? "Verified" : "Active Candidate"}
+              </Badge>
+            </div>
+          </div>
+        </GlassCard>
+
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div className="flex flex-col gap-6 lg:col-span-2">
+            {/* Parsed Resume & Skill Summary Card */}
+            <GlassCard className="flex flex-col gap-5">
+              <div className="flex items-center gap-3 border-b border-surface-border pb-4">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent-cyan/10 text-accent-cyan">
+                  <FileText size={20} />
+                </span>
+                <div>
+                  <h3 className="font-semibold text-foreground">Parsed Candidate Profile</h3>
+                  <p className="text-xs text-foreground-secondary">
+                    {resume ? `Active Resume: ${resume.originalName || "Uploaded Resume"}` : "No resume uploaded yet"}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-4">
+                <div>
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-foreground-secondary mb-2 flex items-center gap-1.5">
+                    <Sparkles size={13} className="text-accent-purple" /> Technical Proficiencies
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {techSkills.map((skill) => (
+                      <span key={skill} className="rounded-xl border border-white/10 bg-white/[0.05] px-3 py-1 text-xs font-medium text-foreground">
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {parsedProfile?.summary && (
+                  <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4 text-xs text-foreground-secondary leading-relaxed">
+                    <p className="font-semibold text-foreground mb-1">Executive Summary:</p>
+                    "{String(parsedProfile.summary)}"
+                  </div>
+                )}
+              </div>
+            </GlassCard>
+
             <GlassCard className="flex flex-col gap-6">
               <div className="flex items-center gap-3 border-b border-surface-border pb-4">
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent-purple/10 text-accent-purple">
                   <UserIcon size={20} />
                 </span>
                 <div>
-                  <h3 className="font-semibold text-foreground">Profile Information</h3>
-                  <p className="text-xs text-foreground-secondary">Your personal profile data</p>
+                  <h3 className="font-semibold text-foreground">Personal Details</h3>
+                  <p className="text-xs text-foreground-secondary">Manage your personal info</p>
                 </div>
               </div>
 
@@ -123,10 +196,6 @@ export function SettingsPage() {
                       Resend Verification Email
                     </button>
                   )}
-                </div>
-
-                <div className="mt-2">
-                  <Badge tone="purple" className="capitalize">Role: {user?.role || "Candidate"}</Badge>
                 </div>
               </div>
             </GlassCard>

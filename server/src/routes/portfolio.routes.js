@@ -8,5 +8,6 @@ const controller = new PortfolioController();
 router.use(protect);
 router.post("/github/connect", controller.connectGitHub);
 router.get("/github/:username/analysis", controller.getGitHubAnalysis);
+router.post("/leetcode/connect", controller.connectLeetCode);
 
 export default router;

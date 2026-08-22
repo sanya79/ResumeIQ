@@ -117,6 +117,15 @@ export class GitHubPortfolioService {
       projectDiversity: Math.round(projectDiversity),
       contributionSummary,
       portfolioScore: Math.round(portfolioScore),
+      repositories: targetRepos.slice(0, 12).map((repo) => ({
+        name: repo.name,
+        description: repo.description || "Public developer repository",
+        language: repo.language || "Code / Web",
+        stars: repo.stargazers_count || 0,
+        forks: repo.forks_count || 0,
+        url: repo.html_url || `https://github.com/${username}/${repo.name}`,
+        updatedAt: repo.updated_at ? new Date(repo.updated_at).toLocaleDateString() : "Recently",
+      })),
     };
   }
 }
