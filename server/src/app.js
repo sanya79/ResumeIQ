@@ -19,9 +19,11 @@ const app = express();
 app.use(helmet());
 
 // 2. Configure Cross-Origin Resource Sharing (CORS)
-const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+const rawFrontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+const frontendUrl = rawFrontendUrl.replace(/\/$/, "");
 const allowedOrigins = [
   frontendUrl,
+  "https://resumeiq-frontend1.onrender.com",
   "http://localhost:5173",
   "http://localhost:5174",
   "http://127.0.0.1:5173",
