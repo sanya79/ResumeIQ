@@ -74,15 +74,28 @@ app.use("/api", apiLimiter);
 // 6. Mount Application Routes
 app.use("/api/v1", routes);
 
-// 7. Health check endpoint
-app.get("/", (req, res) => {
-  return sendSuccess(res, "ResumeIQ API is running");
-});
+import fs from "fs";
+import path from "path";
 
-// 8. Fallback route for unmapped paths (404)
-app.all("*", (req, res, next) => {
-  next(new AppError(`Cannot find requested route ${req.originalUrl} on this server.`, 404));
-});
+// 7. Static Frontend Serving (if built alongside backend)
+const frontendDistPath = path.resolve(process.cwd(), "../resumeiq-frontend/dist");
+if (fs.existsSync(frontendDistPath)) {
+  app.use(express.static(frontendDistPath));
+  app.get("*", (req, res, next) => {
+    if (req.originalUrl.startsWith("/api")) return next();
+    res.sendFile(path.join(frontendDistPath, "index.html"));
+  });
+} else {
+  // Health check endpoint fallback
+  app.get("/", (req, res) => {
+    return sendSuccess(res, "ResumeIQ API is running");
+  });
+
+  // Fallback route for unmapped paths (404)
+  app.all("*", (req, res, next) => {
+    next(new AppError(`Cannot find requested route ${req.originalUrl} on this server.`, 404));
+  });
+}
 
 // 8. Global Error Handler Middleware
 app.use(errorMiddleware);
