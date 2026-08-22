@@ -30,8 +30,7 @@ export const connectDb = async () => {
 
     await mongoose.connect(mongoUri, options);
   } catch (error) {
-    console.error("[Database] Initial MongoDB connection failed:", error);
-    process.exit(1); // Exit server process if initial database connection fails
+    console.error("[Database] Initial MongoDB connection failed. Please check MONGO_URI and MongoDB Atlas IP Whitelist (0.0.0.0/0):", error.message);
   }
 };
 

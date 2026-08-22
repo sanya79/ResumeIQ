@@ -38,10 +38,14 @@ const startServerOnPort = (port) => {
   });
 };
 
-// Initialize MongoDB and start Express listener
+// Initialize Express listener first (so Render binds port immediately), then connect to MongoDB
 const startServer = async () => {
-  await connectDb();
   startServerOnPort(preferredPort);
+  try {
+    await connectDb();
+  } catch (err) {
+    logger.error(`[Database] Connection failed: ${err.message}`);
+  }
 };
 
 startServer();
