@@ -1,10 +1,14 @@
 import { FadeIn } from "@/components/animations/FadeIn";
 import { useAuth } from "@/hooks/useAuth";
+import { useLatestResume } from "@/features/resume/hooks";
+import { getUserFirstName } from "@/utils/userUtils";
 
 /** Page-load greeting — first thing rendered in the dashboard's scroll area. */
 export function WelcomeSection() {
   const { user } = useAuth();
-  const firstName = user?.name?.split(" ")[0] ?? "there";
+  const { data: resume } = useLatestResume();
+  const resumeName = (resume?.parsedProfile as { fullName?: string } | undefined)?.fullName;
+  const firstName = getUserFirstName(user, resumeName);
 
   return (
     <FadeIn>

@@ -226,18 +226,25 @@ function deriveInsightGroups(latestResume) {
 }
 
 function deriveResumeScoreHistory(latestResume, recentResumes) {
-  const history = recentResumes && recentResumes.length > 0
-    ? recentResumes
-        .slice(0, 6)
-        .reverse()
-        .map((resume, index) => ({
-          month: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"][index] || `M${index + 1}`,
-          score: Math.max(50, Number(resume?.atsScorecard?.overallScore || 60) + index),
-        }))
-    : DEFAULT_OVERVIEW.resumeScoreHistory;
+  if (recentResumes && recentResumes.length > 0) {
+    return recentResumes
+      .slice(0, 6)
+      .reverse()
+      .map((resume, index) => {
+        const monthLabel = resume.createdAt ? new Date(resume.createdAt).toLocaleString("default", { month: "short" }) : `M${index + 1}`;
+        const realScore = Number(resume?.atsScorecard?.overallScore) || 75;
+        return {
+          month: monthLabel,
+          score: realScore,
+        };
+      });
+  }
 
-  const finalScore = latestResume?.atsScorecard?.overallScore ?? history[history.length - 1]?.score ?? 87;
-  return history.length > 0 ? history.map((entry, index) => ({ ...entry, score: index === history.length - 1 ? finalScore : entry.score })) : DEFAULT_OVERVIEW.resumeScoreHistory;
+  const currentScore = Number(latestResume?.atsScorecard?.overallScore) || 75;
+  return [
+    { month: "Initial", score: Math.max(50, currentScore - 5) },
+    { month: "Latest", score: currentScore },
+  ];
 }
 
 export async function buildAnalyticsOverview(userId) {
