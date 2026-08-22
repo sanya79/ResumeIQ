@@ -73,8 +73,19 @@ app.use(mongoSanitize()); // Blocks query parameter selector modifications
 // 5. Global API Rate Limiter
 app.use("/api", apiLimiter);
 
-// 6. Mount Application Routes
+// 6. Favicon 204 Handler (prevents 404 log noise)
+app.get("/favicon.ico", (req, res) => res.status(204).end());
+
+// 7. Mount Application Routes (supports /api/v1, /api, and direct /auth, /resumes, etc.)
 app.use("/api/v1", routes);
+app.use("/api", routes);
+app.use((req, res, next) => {
+  const isApiRoute = ["/auth", "/resumes", "/career", "/matching", "/interview", "/ats", "/portfolio", "/analytics"].some((prefix) => req.path.startsWith(prefix));
+  if (isApiRoute) {
+    return routes(req, res, next);
+  }
+  next();
+});
 
 import fs from "fs";
 import path from "path";
