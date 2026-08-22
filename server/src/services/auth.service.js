@@ -265,9 +265,9 @@ export class AuthService {
       throw new AppError("Invalid email or password. Access denied.", 401);
     }
 
-    // Enforce email verification before granting a full session
+    // Enforce email verification before granting a full session (auto-verify if EMAIL_VERIFICATION_REQUIRED is not explicitly 'true')
     if (!user.emailVerified) {
-      if (process.env.EMAIL_VERIFICATION_REQUIRED === "false") {
+      if (process.env.EMAIL_VERIFICATION_REQUIRED !== "true") {
         user.emailVerified = true;
         await userRepository.save(user);
       } else {

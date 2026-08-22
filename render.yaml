@@ -24,3 +24,5 @@ services:
         value: production
       - key: FRONTEND_URL
         value: https://resumeiq-frontend1.onrender.com
+      - key: EMAIL_VERIFICATION_REQUIRED
+        value: "false"
