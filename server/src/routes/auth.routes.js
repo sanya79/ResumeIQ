@@ -29,12 +29,16 @@ router.post("/verify-email", controller.verifyEmail);
 router.post("/resend-verification", controller.resendVerificationEmail);
 router.post("/dev-verify-account", controller.devVerifyAccount);
 
+// Helper to check if OAuth client IDs are valid production credentials
+const isRealGoogleId = (id) => Boolean(id && !id.startsWith("dummy") && !id.includes("your_google") && id.includes(".apps.googleusercontent.com"));
+const isRealGithubId = (id) => Boolean(id && !id.startsWith("dummy") && !id.includes("your_github") && id.length >= 10);
+
 // Passport OAuth Routes
 router.get("/google", (req, res, next) => {
   const redirectUri = req.query.redirect_uri || `${process.env.FRONTEND_URL || "http://localhost:5173"}/login`;
   const googleClientId = process.env.GOOGLE_CLIENT_ID || "";
   
-  if (!googleClientId || googleClientId.startsWith("dummy")) {
+  if (!isRealGoogleId(googleClientId)) {
     return res.redirect(`${redirectUri}?social_fallback=google`);
   }
 
@@ -65,7 +69,7 @@ router.get("/github", (req, res, next) => {
   const redirectUri = req.query.redirect_uri || `${process.env.FRONTEND_URL || "http://localhost:5173"}/login`;
   const githubClientId = process.env.GITHUB_CLIENT_ID || "";
 
-  if (!githubClientId || githubClientId.startsWith("dummy")) {
+  if (!isRealGithubId(githubClientId)) {
     return res.redirect(`${redirectUri}?social_fallback=github`);
   }
 
