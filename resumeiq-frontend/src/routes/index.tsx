@@ -14,6 +14,9 @@ import { JobMatchingPage } from "@/pages/matching/JobMatchingPage";
 import { CareerRoadmapPage } from "@/pages/career/CareerRoadmapPage";
 import { GitHubPortfolioPage } from "@/pages/portfolio/GitHubPortfolioPage";
 import { InterviewPage } from "@/pages/interview/InterviewPage";
+import { AnalyticsPage } from "@/pages/analytics/AnalyticsPage";
+import { HistoryPage } from "@/pages/history/HistoryPage";
+import { SettingsPage } from "@/pages/settings/SettingsPage";
 import { RecruiterDashboardPage } from "@/pages/recruiter/RecruiterDashboardPage";
 import { UnauthorizedPage } from "@/pages/errors/UnauthorizedPage";
 import { NotFoundPage } from "@/pages/errors/NotFoundPage";
@@ -22,8 +25,8 @@ import { GuestRoute } from "./GuestRoute";
 
 /**
  * Route tree. Dashboard, Resume Analysis, ATS Intelligence, Job Matching,
- * Career Roadmap (Skill Gap Analysis), and Interview Preparation are all
- * wired in.
+ * Career Roadmap (Skill Gap Analysis), Interview Preparation, Analytics,
+ * History, and Settings are all wired in.
  */
 export const router = createBrowserRouter([
   { path: "/", element: <LandingPage /> },
@@ -66,6 +69,9 @@ export const router = createBrowserRouter([
           { path: "/skill-gap", element: <CareerRoadmapPage /> },
           { path: "/portfolio/github", element: <GitHubPortfolioPage /> },
           { path: "/interview", element: <InterviewPage /> },
+          { path: "/analytics", element: <AnalyticsPage /> },
+          { path: "/history", element: <HistoryPage /> },
+          { path: "/settings", element: <SettingsPage /> },
         ],
       },
     ],

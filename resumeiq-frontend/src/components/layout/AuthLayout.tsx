@@ -5,48 +5,6 @@ import { FeatureChecklist } from "@/features/auth/components/FeatureChecklist";
 import { AuthIllustration } from "@/features/auth/components/AuthIllustration";
 import { LoginPage } from "@/pages/auth/LoginPage";
 import { RegisterPage } from "@/pages/auth/RegisterPage";
-import { cn } from "@/utils/cn";
-
-function AuthFlipCard() {
-  const location = useLocation();
-  const isRegister = location.pathname === "/register";
-
-  return (
-    <div className="relative w-full max-w-md" style={{ perspective: 1200 }}>
-      <motion.div
-        animate={{ rotateY: isRegister ? 180 : 0 }}
-        transition={{ duration: 0.6, ease: [0.2, 0.8, 0.2, 1] }}
-        style={{ transformStyle: "preserve-3d" }}
-        className="w-full relative"
-      >
-        {/* Front Face: Login */}
-        <div
-          className={cn(
-            "w-full backface-hidden",
-            isRegister ? "absolute inset-0 pointer-events-none opacity-0" : "relative opacity-100"
-          )}
-          style={{ transition: "opacity 0.2s ease" }}
-        >
-          <LoginPage />
-        </div>
-
-        {/* Back Face: Register */}
-        <div
-          className={cn(
-            "w-full backface-hidden",
-            isRegister ? "relative opacity-100" : "absolute inset-0 pointer-events-none opacity-0"
-          )}
-          style={{
-            transform: "rotateY(180deg)",
-            transition: "opacity 0.2s ease",
-          }}
-        >
-          <RegisterPage />
-        </div>
-      </motion.div>
-    </div>
-  );
-}
 
 /**
  * Split-screen shell for login/register/forgot-password/reset-password.
@@ -55,6 +13,7 @@ function AuthFlipCard() {
 export function AuthLayout() {
   const location = useLocation();
   const isAuthFlipRoute = ["/login", "/register"].includes(location.pathname);
+  const authForm = location.pathname === "/register" ? <RegisterPage /> : <LoginPage />;
 
   return (
     <div className="grid min-h-screen grid-cols-1 lg:grid-cols-2">
@@ -86,7 +45,7 @@ export function AuthLayout() {
 
       <div className="relative flex items-center justify-center bg-transparent px-6 py-16">
         <div className="w-full max-w-md">
-          {isAuthFlipRoute ? <AuthFlipCard /> : <Outlet />}
+          {isAuthFlipRoute ? authForm : <Outlet />}
         </div>
       </div>
     </div>

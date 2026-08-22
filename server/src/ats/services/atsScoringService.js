@@ -1,44 +1,74 @@
-import { readFile } from "node:fs/promises";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { AtsEngine } from "../index.js";
+import { LocalResumeParserService } from "../../services/resumeParser.service.js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const atsEngine = new AtsEngine();
+const parserService = new LocalResumeParserService();
 
 export class AtsScoringService {
-  async scoreResumeText(resumeText, jobDescription) {
-    const normalizedText = (resumeText || "").toLowerCase();
-    const normalizedJobDescription = (jobDescription || "").toLowerCase();
+  /**
+   * Evaluates resume text against ATS standards and optional job description/role.
+   * @param {string|Object} resumeText Raw resume text string or parsed resume object.
+   * @param {string} [jobDescription=""] Optional target job description text.
+   * @param {string} [targetRole=""] Optional target role identifier.
+   */
+  async scoreResumeText(resumeText, jobDescription = "", targetRole = "") {
+    let parsedData;
+    if (typeof resumeText === "object" && resumeText !== null) {
+      parsedData = resumeText;
+    } else {
+      parsedData = parserService.parse(resumeText || "", "uploaded_resume.pdf");
+    }
 
-    const formattingScore = this._scoreFormatting(normalizedText);
-    const keywordScore = this._scoreKeywords(normalizedText, normalizedJobDescription);
-    const sectionsScore = this._scoreSections(normalizedText);
-    const readabilityScore = this._scoreReadability(normalizedText);
+    const evaluation = await atsEngine.evaluate(parsedData, {
+      jobDescription,
+      targetRole,
+    });
+
+    const findCategoryScore = (id, defaultScore = 80) => {
+      const item = (evaluation.breakdown || []).find((b) => b.id === id);
+      if (!item) return defaultScore;
+      return item.maxScore > 0 ? Math.round((item.score / item.maxScore) * 100) : defaultScore;
+    };
+
+    const findCategoryReasons = (id) => {
+      const item = (evaluation.breakdown || []).find((b) => b.id === id);
+      if (!item) return [];
+      const list = [];
+      if (item.reason) list.push(item.reason);
+      if (Array.isArray(item.evidence)) list.push(...item.evidence);
+      if (Array.isArray(item.suggestions)) list.push(...item.suggestions);
+      return list;
+    };
+
+    const formattingScore = findCategoryScore("formatting_quality", 84);
+    const keywordScore = findCategoryScore("keyword_relevance", 76);
+    const sectionsScore = findCategoryScore("section_completeness", 80);
+    const readabilityScore = findCategoryScore("readability_quality", 82);
 
     const breakdown = {
       formatting: {
-        score: formattingScore.score,
-        reasons: formattingScore.reasons,
+        score: formattingScore,
+        reasons: findCategoryReasons("formatting_quality"),
       },
       keywords: {
-        score: keywordScore.score,
-        reasons: keywordScore.reasons,
+        score: keywordScore,
+        reasons: findCategoryReasons("keyword_relevance"),
       },
       sections: {
-        score: sectionsScore.score,
-        reasons: sectionsScore.reasons,
+        score: sectionsScore,
+        reasons: findCategoryReasons("section_completeness"),
       },
       readability: {
-        score: readabilityScore.score,
-        reasons: readabilityScore.reasons,
+        score: readabilityScore,
+        reasons: findCategoryReasons("readability_quality"),
       },
     };
 
-    const overall = Math.round(
-      (formattingScore.score + keywordScore.score + sectionsScore.score + readabilityScore.score) / 4
-    );
+    const overall = evaluation.overallScore;
+    const improvementSuggestions = evaluation.top10Improvements?.length
+      ? evaluation.top10Improvements
+      : this._buildSuggestions(breakdown);
 
-    const improvementSuggestions = this._buildSuggestions(breakdown);
     const compatibilityReport = this._buildCompatibilityReport(overall, breakdown);
 
     return {
@@ -46,99 +76,8 @@ export class AtsScoringService {
       breakdown,
       compatibilityReport,
       improvementSuggestions,
+      scorecard: evaluation,
     };
-  }
-
-  _scoreFormatting(text) {
-    const reasons = [];
-    let score = 84;
-
-    if (text.includes("two-column") || text.includes("multi-column") || text.includes("columns")) {
-      score -= 12;
-      reasons.push("Multi-column layout detected");
-    }
-
-    if (text.includes("table") || text.includes("sidebar")) {
-      score -= 8;
-      reasons.push("Dense table or sidebar content detected");
-    }
-
-    if (text.includes("experience") && text.includes("skills")) {
-      reasons.push("Section balance looks reasonable");
-    }
-
-    if (score < 70) {
-      reasons.push("Formatting needs simplification for ATS parsing");
-    }
-
-    return { score: Math.max(0, Math.min(100, score)), reasons };
-  }
-
-  _scoreKeywords(text, jobDescription) {
-    const reasons = [];
-    let score = 76;
-
-    const requiredTerms = ["react", "node", "docker", "aws", "kubernetes", "typescript"];
-    const matchedTerms = requiredTerms.filter((term) => text.includes(term) || jobDescription.includes(term));
-
-    if (matchedTerms.length < requiredTerms.length) {
-      const missing = requiredTerms.filter((term) => !matchedTerms.includes(term));
-      score -= missing.length * 5;
-      reasons.push(`Missing ${missing.slice(0, 3).join(", ")}`);
-    }
-
-    if (matchedTerms.length >= 3) {
-      reasons.push("Core technical keywords are present");
-    }
-
-    if (jobDescription) {
-      reasons.push("Job description keywords were considered");
-    }
-
-    return { score: Math.max(0, Math.min(100, score)), reasons };
-  }
-
-  _scoreSections(text) {
-    const reasons = [];
-    let score = 80;
-
-    const sectionSignals = ["experience", "education", "skills", "projects", "summary"];
-    const presentSections = sectionSignals.filter((section) => text.includes(section));
-
-    if (presentSections.length < 3) {
-      score -= 10;
-      reasons.push("Resume sections are incomplete or hard to detect");
-    } else {
-      reasons.push("Core section headers are present");
-    }
-
-    if (!text.includes("summary")) {
-      reasons.push("Missing a professional summary");
-    }
-
-    return { score: Math.max(0, Math.min(100, score)), reasons };
-  }
-
-  _scoreReadability(text) {
-    const reasons = [];
-    let score = 82;
-
-    const wordCount = text.split(/\s+/).filter(Boolean).length;
-    if (wordCount > 900) {
-      score -= 10;
-      reasons.push("Readability is too dense for ATS-first formatting");
-    } else if (wordCount < 120) {
-      score -= 12;
-      reasons.push("Resume content is too brief to convey impact");
-    } else {
-      reasons.push("Readability looks acceptable");
-    }
-
-    if (text.includes("bullet") || text.includes("•")) {
-      reasons.push("Bulleted content improves scanability");
-    }
-
-    return { score: Math.max(0, Math.min(100, score)), reasons };
   }
 
   _buildSuggestions(breakdown) {
@@ -180,3 +119,4 @@ export class AtsScoringService {
 }
 
 export default AtsScoringService;
+

@@ -65,6 +65,7 @@ function unwrapAuthSession(payload: ApiEnvelope<BackendAuthSession>): AuthSessio
     user: normalizeUser(payload.data.user),
     accessToken: payload.data.accessToken,
     refreshToken: payload.data.refreshToken,
+    verificationUrl: payload.data.verificationUrl,
   };
 }
 
@@ -145,8 +146,8 @@ export async function verifyEmail(token: string): Promise<{ message: string }> {
   return data;
 }
 
-export async function resendVerificationEmail(): Promise<{ message: string; verificationUrl?: string }> {
-  const { data } = await apiClient.post<ApiEnvelope<{ verificationUrl?: string }>>("/auth/resend-verification");
+export async function resendVerificationEmail(email?: string): Promise<{ message: string; verificationUrl?: string }> {
+  const { data } = await apiClient.post<ApiEnvelope<{ verificationUrl?: string }>>("/auth/resend-verification", { email });
   if (data.data?.verificationUrl) {
     sessionStorage.setItem("dev_verification_url", data.data.verificationUrl);
   }
@@ -154,6 +155,11 @@ export async function resendVerificationEmail(): Promise<{ message: string; veri
     message: data.message || "Verification email has been resent.",
     verificationUrl: data.data?.verificationUrl
   };
+}
+
+export async function devVerifyAccount(email: string): Promise<{ message: string }> {
+  const { data } = await apiClient.post<{ message: string }>("/auth/dev-verify-account", { email });
+  return data;
 }
 
 export async function getAuthConfig(): Promise<{ googleClientId: string; githubClientId: string }> {

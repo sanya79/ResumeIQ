@@ -230,7 +230,8 @@ export class CareerService {
       },
     };
 
-    return await careerRepository.createRoadmap(roadmapData);
+    const createdRoadmap = await careerRepository.createRoadmap(roadmapData);
+    return createdRoadmap.toJSON();
   }
 
   async updateStepStatus(userId, resultId, stepId, status) {
@@ -273,13 +274,33 @@ export class CareerService {
   }
 
   _mapTargetRoleToDbKey(roleName) {
-    const norm = roleName.toLowerCase();
-    if (norm.includes("frontend") || norm.includes("ui") || norm.includes("ux") || norm.includes("design")) return "frontend";
-    if (norm.includes("backend")) return "backend";
-    if (norm.includes("full stack") || norm.includes("fullstack")) return "fullstack";
-    if (norm.includes("machine learning") || norm.includes("ml") || norm.includes("ai")) return "ai_engineer";
-    if (norm.includes("data scientist") || norm.includes("data analyst") || norm.includes("data science")) return "ml_engineer";
-    if (norm.includes("devops") || norm.includes("cloud") || norm.includes("security") || norm.includes("infrastructure")) return "devops";
+    const norm = (roleName || "").toLowerCase();
+    if (norm.includes("react native") || norm.includes("flutter") || norm.includes("ios") || norm.includes("android") || norm.includes("mobile")) return "mobile";
+    if (norm.includes("frontend") || norm.includes("front-end")) return "frontend";
+    if (norm.includes("backend") || norm.includes("back-end")) return "backend";
+    if (norm.includes("fullstack") || norm.includes("full-stack") || norm.includes("full stack")) return "fullstack";
+    if (norm.includes("ai engineer") || norm.includes("artificial intelligence") || norm.includes("llm") || norm.includes("genai")) return "ai_engineer";
+    if (norm.includes("machine learning") || norm.includes("ml engineer")) return "ml_engineer";
+    if (norm.includes("data scientist") || norm.includes("data science")) return "data_scientist";
+    if (norm.includes("data engineer")) return "data_engineer";
+    if (norm.includes("data analyst") || norm.includes("business intelligence") || norm.includes("bi ")) return "data_analyst";
+    if (norm.includes("devops")) return "devops";
+    if (norm.includes("cloud architect") || norm.includes("cloud engineer")) return "cloud_architect";
+    if (norm.includes("cybersecurity") || norm.includes("security analyst") || norm.includes("penetration")) return "cybersecurity";
+    if (norm.includes("site reliability") || norm.includes("sre")) return "sre";
+    if (norm.includes("qa") || norm.includes("test automation") || norm.includes("quality assurance")) return "qa_engineer";
+    if (norm.includes("architect")) return "software_architect";
+    if (norm.includes("product manager") || norm.includes("product owner")) return "product_manager";
+    if (norm.includes("project manager") || norm.includes("scrum master")) return "project_manager";
+    if (norm.includes("ui") || norm.includes("ux") || norm.includes("designer")) return "ui_ux_designer";
+    if (norm.includes("business analyst")) return "business_analyst";
+    if (norm.includes("marketing") || norm.includes("seo")) return "digital_marketing";
+    if (norm.includes("content") || norm.includes("copywriter") || norm.includes("writer")) return "content_writer";
+    if (norm.includes("hr") || norm.includes("recruiter") || norm.includes("human resource")) return "hr_manager";
+    if (norm.includes("finance") || norm.includes("financial")) return "financial_analyst";
+    if (norm.includes("sales") || norm.includes("account executive")) return "sales_manager";
+    if (norm.includes("operations")) return "operations_manager";
+    if (norm.includes("embedded") || norm.includes("microcontroller") || norm.includes("rtos")) return "embedded_engineer";
     return "fullstack";
   }
 

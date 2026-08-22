@@ -88,27 +88,41 @@ export class MatchingService {
       }
     ];
 
-    // 3. Skill gap categories
+    // 3. Dynamic Skill gap categories
     const skillGap = [
       {
-        id: "skill_gap_lang",
-        category: "Programming Languages",
-        current: Math.min(100, matchScore + 10),
+        id: "skill_gap_core",
+        category: "Core Domain Skills & Stack",
+        current: Math.max(20, Math.min(100, matchScore + 5)),
         required: 90,
-        missingItems: missingKeywords.slice(0, 2).map(k => k.term)
+        missingItems: missingKeywords.slice(0, 3).map(k => k.term)
       },
       {
-        id: "skill_gap_fw",
-        category: "Frameworks & Databases",
-        current: Math.min(100, matchScore - 5),
+        id: "skill_gap_tools",
+        category: "Frameworks, Tools & Databases",
+        current: Math.max(15, Math.min(100, matchScore - 4)),
         required: 85,
-        missingItems: missingKeywords.slice(2, 4).map(k => k.term)
+        missingItems: missingKeywords.slice(3, 6).map(k => k.term)
+      },
+      {
+        id: "skill_gap_practices",
+        category: "Architecture & Industry Practices",
+        current: Math.max(25, Math.min(100, matchScore + 2)),
+        required: 85,
+        missingItems: missingKeywords.slice(6, 8).map(k => k.term)
+      },
+      {
+        id: "skill_gap_soft",
+        category: "Agile, Collaboration & Leadership",
+        current: Math.max(40, Math.min(100, matchScore + 12)),
+        required: 80,
+        missingItems: []
       }
     ];
 
     // 4. Experience match
     const candidateYears = this._heuristicallyExtractYears(resumeTextLower);
-    const requiredYears = this._heuristicallyExtractYears(jobDescription.toLowerCase()) || 3;
+    const requiredYears = this._heuristicallyExtractYears(jdText.toLowerCase()) || 3;
     const experienceMatch = {
       requiredYears,
       candidateYears: candidateYears || requiredYears + (Math.random() > 0.5 ? 1 : -1),
@@ -192,7 +206,8 @@ export class MatchingService {
       isSaved: false
     };
 
-    return await matchingRepository.createMatch(matchData);
+    const createdMatch = await matchingRepository.createMatch(matchData);
+    return createdMatch.toJSON();
   }
 
   async saveJobDescription(userId, payload) {
@@ -210,7 +225,7 @@ export class MatchingService {
   async getHistory(userId) {
     const records = await matchingRepository.findHistoryByUserId(userId);
     return records.map(r => ({
-      id: r._id,
+      id: r._id.toString(),
       jobTitle: r.jobTitle,
       company: r.company,
       matchScore: r.matchScore,
@@ -224,7 +239,7 @@ export class MatchingService {
     if (!record) {
       throw new AppError("Match details not found.", 404);
     }
-    return record;
+    return record.toJSON();
   }
 
   async saveComparison(id, userId) {
@@ -233,7 +248,8 @@ export class MatchingService {
       throw new AppError("Match comparison not found.", 404);
     }
     record.isSaved = true;
-    return await matchingRepository.save(record);
+    const saved = await matchingRepository.save(record);
+    return saved.toJSON();
   }
 
   async deleteComparison(id, userId) {

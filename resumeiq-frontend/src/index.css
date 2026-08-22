@@ -41,6 +41,19 @@
   --sidebar-ring: 171 100% 41%;
 }
 
+html.light {
+  --background: 210 40% 98%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --sidebar-background: 210 40% 96%;
+  --sidebar-foreground: 215.4 16.3% 30%;
+}
+
 @layer base {
   * {
     @apply border-surface-border;
@@ -54,6 +67,11 @@
     @apply bg-background text-foreground font-sans antialiased;
     background-color: #020206;
     background-attachment: fixed;
+  }
+
+  html.light body {
+    background-color: #f8fafc !important;
+    color: #0f172a !important;
   }
 
   ::selection {

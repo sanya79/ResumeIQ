@@ -7,11 +7,20 @@ import { AppError } from "../utils/appError.js";
  * Manages access token creation, refresh token rotation, and cookie configurations.
  */
 export class TokenService {
-  constructor() {
-    this.accessTokenSecret = process.env.JWT_SECRET || "production_access_jwt_secret_token_key_6366f1_22d3ee";
-    this.refreshTokenSecret = process.env.JWT_REFRESH_SECRET || "production_refresh_jwt_secret_token_key_4f46e5_10b981";
-    this.accessTokenExpiry = process.env.JWT_EXPIRES_IN || "15m";
-    this.refreshTokenExpiry = process.env.JWT_REFRESH_EXPIRES_IN || "7d";
+  get accessTokenSecret() {
+    return process.env.JWT_SECRET || "production_access_jwt_secret_token_key_6366f1_22d3ee";
+  }
+
+  get refreshTokenSecret() {
+    return process.env.JWT_REFRESH_SECRET || "production_refresh_jwt_secret_token_key_4f46e5_10b981";
+  }
+
+  get accessTokenExpiry() {
+    return process.env.JWT_EXPIRES_IN || "15m";
+  }
+
+  get refreshTokenExpiry() {
+    return process.env.JWT_REFRESH_EXPIRES_IN || "7d";
   }
 
   /**

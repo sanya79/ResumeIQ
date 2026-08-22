@@ -88,6 +88,26 @@ export class AuthController {
     }
   }
 
+  async oauthCallback(req, res, next) {
+    try {
+      const user = req.user;
+      if (!user) {
+        return res.redirect(`${process.env.FRONTEND_URL || "http://localhost:5173"}/login?error=AuthenticationFailed`);
+      }
+
+      const accessToken = tokenService.generateAccessToken(user);
+      const refreshToken = tokenService.generateRefreshToken(user);
+
+      await tokenService.saveRefreshToken(user, refreshToken);
+      tokenService.setCookie(res, refreshToken);
+
+      const redirectUrl = `${process.env.FRONTEND_URL || "http://localhost:5173"}/login?token=${accessToken}&refreshToken=${refreshToken}`;
+      return res.redirect(redirectUrl);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async logout(req, res, next) {
     try {
       const refreshToken = req.cookies.refreshToken || req.body.refreshToken;
@@ -168,14 +188,31 @@ export class AuthController {
 
   async resendVerificationEmail(req, res, next) {
     try {
-      const result = await authService.resendVerificationEmail(req.user);
+      const email = req.body?.email || req.user?.email;
+      if (!email) {
+        return next(new AppError("Please provide an email address.", 400));
+      }
+      const result = await authService.resendVerificationEmail(email);
       if (result && result.success) {
-        return sendSuccess(res, "Verification email has been resent.", {
+        return sendSuccess(res, result.message || "Verification email has been resent.", {
           verificationUrl: result.verificationUrl
         });
       }
 
       return sendSuccess(res, "Unable to resend verification email at this time. Please try again later.", null, 500);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async devVerifyAccount(req, res, next) {
+    try {
+      const email = req.body?.email;
+      if (!email) {
+        return next(new AppError("Please provide an email address.", 400));
+      }
+      const result = await authService.devVerifyAccount(email);
+      return sendSuccess(res, result.message || "Account email verified successfully.");
     } catch (error) {
       next(error);
     }
@@ -203,6 +240,7 @@ export class AuthController {
       email: req.user.email,
       role: req.user.role,
       emailVerified: req.user.emailVerified,
+      isEmailVerified: req.user.emailVerified,
       resumeCredits: req.user.resumeCredits,
       subscriptionPlan: req.user.subscriptionPlan,
       createdAt: req.user.createdAt

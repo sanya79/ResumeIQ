@@ -24,9 +24,14 @@ interface AuthState {
 }
 
 function extractErrorMessage(error: unknown, fallback: string): string {
-  if (typeof error === "object" && error !== null && "response" in error) {
-    const response = (error as { response?: { data?: { message?: string } } }).response;
+  if (typeof error === "object" && error !== null) {
+    const response = (error as { response?: { data?: { message?: string; error?: string; errors?: Array<{ message?: string; msg?: string }> } } }).response;
+    if (Array.isArray(response?.data?.errors) && response.data.errors.length > 0) {
+      const messages = response.data.errors.map((item) => item?.message || item?.msg).filter(Boolean);
+      if (messages.length > 0) return messages.join(". ");
+    }
     if (response?.data?.message) return response.data.message;
+    if (response?.data?.error) return response.data.error;
   }
   return fallback;
 }
@@ -58,6 +63,9 @@ export const useAuthStore = create<AuthState>()(
         try {
           const session = await authApi.register(payload);
           if (session.user.isEmailVerified === false) {
+            if ((session as any).verificationUrl) {
+              sessionStorage.setItem("dev_verification_url", (session as any).verificationUrl);
+            }
             localStorage.removeItem(STORAGE_KEYS.accessToken);
             localStorage.removeItem(STORAGE_KEYS.refreshToken);
             set({ user: session.user, token: null, isAuthenticated: false, isLoading: false });
@@ -105,7 +113,7 @@ export const useAuthStore = create<AuthState>()(
           const user = await authApi.getCurrentUser();
           set({ user, isAuthenticated: true, isLoading: false });
         } catch (error) {
-          set({ isLoading: false });
+          get().clearSession();
           throw error;
         }
       },

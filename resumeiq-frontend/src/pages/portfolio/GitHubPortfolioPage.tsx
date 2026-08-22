@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Github, Sparkles, Search } from "lucide-react";
+import { Github, Sparkles, Search, Code2, FolderGit2 } from "lucide-react";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { GradientBackground } from "@/components/animations/GradientBackground";
 import { ParticleField } from "@/components/animations/ParticleField";
@@ -78,7 +78,8 @@ export function GitHubPortfolioPage() {
             <Input
               value={githubUsername}
               onChange={(event) => setGithubUsername(event.target.value)}
-              placeholder="e.g. octocat"
+              onKeyDown={(e) => e.key === "Enter" && handleConnect()}
+              placeholder="e.g. sanya79"
               className="max-w-xl"
             />
             <Button variant="gradient" onClick={handleConnect} disabled={loading}>
@@ -120,32 +121,52 @@ export function GitHubPortfolioPage() {
               </AnalyticsCard>
 
               <AnalyticsCard title="Language distribution" subtitle="Top languages across non-fork repositories">
-                <div className="h-72">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie data={chartsData} dataKey="value" nameKey="name" innerRadius={60} outerRadius={100} paddingAngle={2}>
-                        {chartsData.map((entry, index) => (
-                          <Cell key={`${entry.name}-${index}`} fill={["#8B5CF6", "#22D3EE", "#34D399", "#F59E0B", "#F472B6", "#60A5FA"][index % 6]} />
-                        ))}
-                      </Pie>
-                      <Tooltip />
-                    </PieChart>
-                  </ResponsiveContainer>
+                <div className="h-72 flex items-center justify-center">
+                  {chartsData.length > 0 ? (
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie data={chartsData} dataKey="value" nameKey="name" innerRadius={60} outerRadius={100} paddingAngle={2}>
+                          {chartsData.map((entry, index) => (
+                            <Cell key={`${entry.name}-${index}`} fill={["#8B5CF6", "#22D3EE", "#34D399", "#F59E0B", "#F472B6", "#60A5FA"][index % 6]} />
+                          ))}
+                        </Pie>
+                        <Tooltip contentStyle={{ backgroundColor: "#0F172A", borderColor: "rgba(255,255,255,0.1)", borderRadius: "8px", color: "#F8FAFC" }} />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center gap-2 text-center p-6 border border-dashed border-white/10 rounded-2xl bg-white/[0.01]">
+                      <Code2 size={32} className="text-foreground-secondary/50" />
+                      <p className="text-sm font-semibold text-foreground">No language data available</p>
+                      <p className="text-xs text-foreground-secondary max-w-xs">
+                        Public repositories with tagged code languages will appear here once pushed to GitHub.
+                      </p>
+                    </div>
+                  )}
                 </div>
               </AnalyticsCard>
             </div>
 
             <AnalyticsCard title="Repository spread" subtitle="A simple breakdown of the most common languages">
-              <div className="h-72">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={chartsData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.08)" />
-                    <XAxis dataKey="name" tick={{ fill: "#9CA3AF", fontSize: 12 }} />
-                    <YAxis tick={{ fill: "#9CA3AF", fontSize: 12 }} />
-                    <Tooltip />
-                    <Bar dataKey="value" radius={[8, 8, 0, 0]} fill="#8B5CF6" />
-                  </BarChart>
-                </ResponsiveContainer>
+              <div className="h-72 flex items-center justify-center">
+                {chartsData.length > 0 ? (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={chartsData}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.08)" />
+                      <XAxis dataKey="name" tick={{ fill: "#9CA3AF", fontSize: 12 }} />
+                      <YAxis tick={{ fill: "#9CA3AF", fontSize: 12 }} />
+                      <Tooltip contentStyle={{ backgroundColor: "#0F172A", borderColor: "rgba(255,255,255,0.1)", borderRadius: "8px", color: "#F8FAFC" }} />
+                      <Bar dataKey="value" radius={[8, 8, 0, 0]} fill="#8B5CF6" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="flex flex-col items-center justify-center gap-2 text-center p-6 border border-dashed border-white/10 rounded-2xl bg-white/[0.01]">
+                    <FolderGit2 size={32} className="text-foreground-secondary/50" />
+                    <p className="text-sm font-semibold text-foreground">No repository spread available</p>
+                    <p className="text-xs text-foreground-secondary max-w-xs">
+                      Public non-forked repositories will show language distribution breakdown here.
+                    </p>
+                  </div>
+                )}
               </div>
             </AnalyticsCard>
           </FadeIn>

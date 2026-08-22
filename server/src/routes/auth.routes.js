@@ -11,6 +11,8 @@ import {
   changePasswordValidator
 } from "../validators/auth.validator.js";
 
+import passport from "passport";
+
 const router = Router();
 const controller = new AuthController();
 
@@ -24,10 +26,73 @@ router.post("/forgot-password", authLimiter, forgotPasswordValidator, validateFi
 router.post("/reset-password", authLimiter, resetPasswordValidator, validateFields, controller.resetPassword);
 router.get("/verify-email", controller.verifyEmail);
 router.post("/verify-email", controller.verifyEmail);
+router.post("/resend-verification", controller.resendVerificationEmail);
+router.post("/dev-verify-account", controller.devVerifyAccount);
+
+// Passport OAuth Routes
+router.get("/google", (req, res, next) => {
+  const redirectUri = req.query.redirect_uri || `${process.env.FRONTEND_URL || "http://localhost:5173"}/login`;
+  const googleClientId = process.env.GOOGLE_CLIENT_ID || "";
+  
+  if (!googleClientId || googleClientId.startsWith("dummy")) {
+    return res.redirect(`${redirectUri}?social_fallback=google`);
+  }
+
+  passport.authenticate("google", { 
+    scope: ["profile", "email"],
+    state: "google",
+    session: false,
+    accessType: "offline"
+  })(req, res, next);
+});
+
+router.get(
+  "/google/callback",
+  (req, res, next) => {
+    passport.authenticate("google", { session: false }, (err, user, info) => {
+      if (err || !user) {
+        const redirectUri = `${process.env.FRONTEND_URL || "http://localhost:5173"}/login`;
+        return res.redirect(`${redirectUri}?social_fallback=google`);
+      }
+      req.user = user;
+      next();
+    })(req, res, next);
+  },
+  controller.oauthCallback
+);
+
+router.get("/github", (req, res, next) => {
+  const redirectUri = req.query.redirect_uri || `${process.env.FRONTEND_URL || "http://localhost:5173"}/login`;
+  const githubClientId = process.env.GITHUB_CLIENT_ID || "";
+
+  if (!githubClientId || githubClientId.startsWith("dummy")) {
+    return res.redirect(`${redirectUri}?social_fallback=github`);
+  }
+
+  passport.authenticate("github", { 
+    scope: ["user:email"],
+    state: "github",
+    session: false
+  })(req, res, next);
+});
+
+router.get(
+  "/github/callback",
+  (req, res, next) => {
+    passport.authenticate("github", { session: false }, (err, user, info) => {
+      if (err || !user) {
+        const redirectUri = `${process.env.FRONTEND_URL || "http://localhost:5173"}/login`;
+        return res.redirect(`${redirectUri}?social_fallback=github`);
+      }
+      req.user = user;
+      next();
+    })(req, res, next);
+  },
+  controller.oauthCallback
+);
 
 // Protected routes (Require JWT access token validation)
 router.use(protect);
-router.post("/resend-verification", controller.resendVerificationEmail);
 
 router.post("/logout", controller.logout);
 router.post("/change-password", changePasswordValidator, validateFields, controller.changePassword);

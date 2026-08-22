@@ -83,7 +83,7 @@ export function TargetRoleSelector({ options, value, onChange, disabled }: Targe
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -6, scale: 0.98 }}
             transition={{ duration: 0.15 }}
-            className="absolute z-40 mt-2 w-full glass-strong rounded-xl p-2 shadow-card"
+            className="absolute left-0 top-full z-50 mt-2 w-full rounded-xl border border-white/20 bg-slate-900/95 p-3 shadow-2xl backdrop-blur-xl"
           >
             <SearchBar
               autoFocus

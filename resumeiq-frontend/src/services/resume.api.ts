@@ -144,3 +144,42 @@ export async function downloadOptimizedResumePdf(id: string, jobTitle?: string):
   link.click();
   URL.revokeObjectURL(url);
 }
+
+export async function fetchReportPdfBlob(id: string): Promise<Blob> {
+  const response = await apiClient.get(`/resumes/${id}/report-pdf`, {
+    responseType: "blob",
+  });
+
+  const dataType = response.data?.type || "";
+  if (dataType.includes("application/json")) {
+    const text = await response.data.text();
+    try {
+      const json = JSON.parse(text);
+      throw new Error(json.message || "Failed to generate PDF report");
+    } catch (err: any) {
+      throw new Error(err.message || "Failed to generate PDF report");
+    }
+  }
+
+  const contentType = typeof response.headers["content-type"] === "string"
+    ? response.headers["content-type"]
+    : "application/pdf";
+  return new Blob([response.data], { type: contentType });
+}
+
+export async function downloadReportPdf(id: string, originalName: string = "resume"): Promise<void> {
+  const blob = await fetchReportPdfBlob(id);
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  const sanitizedName = (originalName || "resume")
+    .replace(/\.[^.]+$/, "")
+    .replace(/[^a-z0-9_-]+/gi, "_");
+  link.download = `${sanitizedName}_ATS_Report.pdf`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+

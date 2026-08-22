@@ -1,6 +1,7 @@
 import { ResumeRepository } from "../repositories/resume.repository.js";
 import { PipelineService } from "../services/pipeline.service.js";
 import { PdfService } from "../services/pdf.service.js";
+import { AtsScoringService } from "../ats/services/atsScoringService.js";
 import { MockLLMOptimizerService } from "../services/llmOptimizer.service.js";
 import { MockLLMChatService } from "../services/llmChat.service.js";
 import { MockEmbeddingService } from "../services/embedding.service.js";
@@ -293,9 +294,18 @@ export class ResumeController {
         snippets.push({ title: "Resume context", text: resume.rawText?.slice(0, 800) || "No resume content found." });
       }
 
+      const fullResumeContext = {
+        rawText: resume.rawText || "",
+        parsedProfile: resume.parsedProfile || {},
+        atsScorecard: resume.atsScorecard || {},
+        comparisonSummary: resume.comparisonSummary || "",
+        originalName: resume.originalName || "",
+      };
+
       const response = await chatService.generateReply({
         message,
         contextSnippets: snippets,
+        fullResumeContext,
         conversationHistory: conversationHistory.slice(-6),
       });
 
@@ -315,12 +325,61 @@ export class ResumeController {
   async downloadReportPdf(req, res, next) {
     try {
       const resume = await resumeRepository.findByIdAndUser(req.params.id, req.user._id);
-      if (!resume || !resume.atsScorecard) {
-        return next(new AppError("Requested resume or scorecard not found.", 404));
+      if (!resume) {
+        return next(new AppError("Requested resume not found or access unauthorized.", 404));
+      }
+
+      let scorecard = resume.atsScorecard;
+      if (!scorecard || !scorecard.overallScore) {
+        const scoringService = new AtsScoringService();
+        const analysis = await scoringService.scoreResumeText(resume.rawText || "", "");
+        scorecard = {
+          overallScore: analysis.overall,
+          estimatedImprovedScore: Math.min(100, analysis.overall + 8),
+          atsVersion: "ats-v1",
+          strengths: (analysis.breakdown.formatting.reasons || [])
+            .concat(analysis.breakdown.keywords.reasons || [])
+            .slice(0, 4)
+            .map((r) => (typeof r === "string" ? { name: r, message: r } : r)),
+          weakAreas: (analysis.improvementSuggestions || [])
+            .slice(0, 4)
+            .map((s) => (typeof s === "string" ? { name: s, message: s } : s)),
+          top10Improvements: analysis.improvementSuggestions || [],
+          breakdown: [
+            {
+              id: "formatting",
+              name: "Formatting",
+              score: analysis.breakdown.formatting.score,
+              maxScore: 100,
+              reason: (analysis.breakdown.formatting.reasons || []).join("; ") || "Formatting structure evaluated.",
+            },
+            {
+              id: "keywords",
+              name: "Keywords",
+              score: analysis.breakdown.keywords.score,
+              maxScore: 100,
+              reason: (analysis.breakdown.keywords.reasons || []).join("; ") || "Keyword relevance analyzed.",
+            },
+            {
+              id: "sections",
+              name: "Sections",
+              score: analysis.breakdown.sections.score,
+              maxScore: 100,
+              reason: (analysis.breakdown.sections.reasons || []).join("; ") || "Section completeness checked.",
+            },
+            {
+              id: "readability",
+              name: "Readability",
+              score: analysis.breakdown.readability.score,
+              maxScore: 100,
+              reason: (analysis.breakdown.readability.reasons || []).join("; ") || "Readability score calculated.",
+            },
+          ],
+        };
       }
 
       const pdfService = new PdfService();
-      pdfService.generateAtsReport(res, resume.atsScorecard, resume.originalName);
+      pdfService.generateAtsReport(res, scorecard, resume.originalName || "resume");
     } catch (error) {
       next(error);
     }

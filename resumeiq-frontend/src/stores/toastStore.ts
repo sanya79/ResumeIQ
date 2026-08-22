@@ -7,6 +7,7 @@ export interface ToastItem {
   title: string;
   description?: string;
   variant: ToastVariant;
+  duration?: number;
 }
 
 interface ToastState {
@@ -20,6 +21,17 @@ interface ToastState {
 export const useToastStore = create<ToastState>((set) => ({
   toasts: [],
   push: (toast) =>
-    set((s) => ({ toasts: [...s.toasts, { ...toast, id: crypto.randomUUID() }] })),
+    set((s) => {
+      // Prevent exact duplicate notifications from stacking up
+      const isDuplicate = s.toasts.some(
+        (t) => t.title === toast.title && t.description === toast.description
+      );
+      if (isDuplicate) return s;
+
+      const newItem: ToastItem = { ...toast, id: crypto.randomUUID() };
+      // Keep max 3 toasts visible at a time
+      return { toasts: [...s.toasts, newItem].slice(-3) };
+    }),
   dismiss: (id) => set((s) => ({ toasts: s.toasts.filter((t) => t.id !== id) })),
 }));
+

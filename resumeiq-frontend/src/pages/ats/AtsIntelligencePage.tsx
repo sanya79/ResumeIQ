@@ -141,7 +141,7 @@ export function AtsIntelligencePage() {
 
         {!isLoading && !isError && analysis && (
           <FadeIn className="flex flex-col gap-10">
-            <ScoreHeroSection scorecard={analysis.scorecard} previousScore={previousScorecard?.overallScore ?? null} />
+            <ScoreHeroSection scorecard={analysis.scorecard} previousScore={previousScorecard?.overallScore ?? null} resumeId={activeResumeId} />
 
             <section>
               <SectionHeading title="Score Breakdown" subtitle="Every rule the ATS engine scores this resume on" />

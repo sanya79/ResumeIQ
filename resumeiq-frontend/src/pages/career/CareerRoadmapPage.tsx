@@ -172,7 +172,7 @@ export function CareerRoadmapPage() {
               </p>
             </div>
 
-            <GlassCard className="flex flex-col gap-4">
+            <GlassCard className="flex flex-col gap-4 !overflow-visible">
               <div>
                 <h3 className="text-sm font-semibold text-foreground">Target Role</h3>
                 <p className="mt-0.5 text-xs text-foreground-secondary">

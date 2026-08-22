@@ -21,6 +21,9 @@ import { InterviewConfigPanel } from "@/features/interview/components/InterviewC
 import { QuestionGenTimeline } from "@/features/interview/components/QuestionGenTimeline";
 import { QuestionPanel } from "@/features/interview/components/QuestionPanel";
 import { AnswerEditor } from "@/features/interview/components/AnswerEditor";
+import { WebcamVoicePanel } from "@/features/interview/components/WebcamVoicePanel";
+import { SystemCheckModal } from "@/features/interview/components/SystemCheckModal";
+import { ProctorGuard } from "@/features/interview/components/ProctorGuard";
 import { EvaluationScoresPanel } from "@/features/interview/components/EvaluationScoresPanel";
 import { FeedbackPanel } from "@/features/interview/components/FeedbackPanel";
 import { InterviewHistoryTimeline } from "@/features/interview/components/InterviewHistoryTimeline";
@@ -46,7 +49,7 @@ const defaultConfig: InterviewConfig = {
   timed: false,
 };
 
-type Stage = "config" | "questions" | "live" | "report";
+type Stage = "config" | "system_check" | "live" | "report";
 
 function describeApiError(error: unknown, fallbackTitle: string): { title: string; description: string } {
   const withResponse = error as { response?: { status?: number; data?: { message?: string } }; request?: unknown };
@@ -71,6 +74,7 @@ export function InterviewPage() {
   const [stage, setStage] = useState<Stage>("config");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const [voiceTranscript, setVoiceTranscript] = useState("");
   const [currentEvaluation, setCurrentEvaluation] = useState<AnswerEvaluation | null>(null);
   const [report, setReport] = useState<PerformanceReport | null>(null);
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -82,7 +86,11 @@ export function InterviewPage() {
   const recommendationsQuery = useRecommendedPractice();
 
   const session = generateQuestions.data;
-  const questions: InterviewQuestion[] = session?.question ? [session.question] : [];
+  const questions: InterviewQuestion[] = (session?.questions && session.questions.length > 0)
+    ? session.questions
+    : session?.question
+      ? [session.question]
+      : [];
   const currentQuestion = questions[currentIndex] ?? null;
   const isLastQuestion = currentIndex >= questions.length - 1;
 
@@ -92,10 +100,15 @@ export function InterviewPage() {
         setSessionId(result.session.id);
         setCurrentIndex(0);
         setElapsedSeconds(0);
+        setVoiceTranscript("");
         setCurrentEvaluation(null);
-        setStage("live");
+        setStage("system_check");
       },
     });
+  }
+
+  function handleStartLiveInterview() {
+    setStage("live");
   }
 
   function handleSubmitAnswer(answerText: string) {
@@ -105,9 +118,6 @@ export function InterviewPage() {
       {
         onSuccess: (result) => {
           setCurrentEvaluation(result.evaluation);
-          if (result.nextQuestion) {
-            setCurrentIndex((i) => i + 1);
-          }
         },
       }
     );
@@ -116,8 +126,12 @@ export function InterviewPage() {
   function handleNextOrFinish() {
     setCurrentEvaluation(null);
     setElapsedSeconds(0);
+    setVoiceTranscript("");
     if (isLastQuestion) {
       if (!sessionId) return;
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
       completeSession.mutate(sessionId, {
         onSuccess: (result) => {
           setReport(result);
@@ -129,6 +143,19 @@ export function InterviewPage() {
     }
   }
 
+  function handleEndSessionEarly() {
+    if (!sessionId) return;
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+    }
+    completeSession.mutate(sessionId, {
+      onSuccess: (result) => {
+        setReport(result);
+        setStage("report");
+      },
+    });
+  }
+
   function handleRestart() {
     generateQuestions.reset();
     setSessionId(null);
@@ -137,6 +164,7 @@ export function InterviewPage() {
     setCurrentEvaluation(null);
     setReport(null);
     setElapsedSeconds(0);
+    setVoiceTranscript("");
   }
 
   return (
@@ -144,13 +172,23 @@ export function InterviewPage() {
       <GradientBackground className="opacity-50" />
       <ParticleField count={16} className="opacity-60" />
 
+      {stage === "live" && <ProctorGuard />}
+
+      {stage === "system_check" && (
+        <SystemCheckModal
+          targetRole={config.targetRole}
+          onStartInterview={handleStartLiveInterview}
+          onCancel={() => setStage("config")}
+        />
+      )}
+
       <div className="container-page relative z-10 flex flex-col gap-8 py-10">
         <FadeIn className="text-center">
           <h1 className="text-fluid-2xl font-bold tracking-tight">
-            AI <span className="text-gradient bg-gradient-lg animate-gradient-move">Interview Preparation</span>
+            AI <span className="text-gradient bg-gradient-lg animate-gradient-move">Proctored Interview Studio</span>
           </h1>
           <p className="mt-2 text-sm text-foreground-secondary">
-            Practice interviews powered by AI and improve your confidence.
+            Secure AI mock interviews with camera proctoring, voice speech-to-text, and question navigation.
           </p>
         </FadeIn>
 
@@ -198,23 +236,43 @@ export function InterviewPage() {
           {stage === "live" && currentQuestion && (
             <motion.div key="live" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="flex flex-col gap-6">
               {!currentEvaluation ? (
-                <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-                  <QuestionPanel
-                    question={currentQuestion}
-                    index={currentIndex}
-                    total={Math.max(1, questions.length)}
-                    onPrevious={() => setCurrentIndex((i) => Math.max(0, i - 1))}
-                    onNext={() => setCurrentIndex((i) => Math.min(questions.length - 1, i + 1))}
-                    onEnd={handleRestart}
-                    onElapsedChange={setElapsedSeconds}
-                  />
-                  <AnswerEditor
-                    questionId={currentQuestion.id}
-                    onSubmit={handleSubmitAnswer}
-                    isSubmitting={submitAnswer.isPending}
-                  />
+                <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+                  <div className="xl:col-span-1">
+                    <WebcamVoicePanel
+                      currentTranscript={voiceTranscript}
+                      onTranscriptUpdate={setVoiceTranscript}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-6 xl:col-span-2">
+                    <QuestionPanel
+                      question={currentQuestion}
+                      index={currentIndex}
+                      total={Math.max(1, questions.length)}
+                      onPrevious={() => {
+                        setVoiceTranscript("");
+                        setCurrentIndex((i) => Math.max(0, i - 1));
+                      }}
+                      onNext={() => {
+                        setVoiceTranscript("");
+                        setCurrentIndex((i) => Math.min(questions.length - 1, i + 1));
+                      }}
+                      onSelectIndex={(idx) => {
+                        setVoiceTranscript("");
+                        setCurrentIndex(idx);
+                      }}
+                      onEnd={handleEndSessionEarly}
+                      onElapsedChange={setElapsedSeconds}
+                    />
+                    <AnswerEditor
+                      questionId={currentQuestion.id}
+                      onSubmit={handleSubmitAnswer}
+                      isSubmitting={submitAnswer.isPending}
+                      externalText={voiceTranscript}
+                      onTextChange={setVoiceTranscript}
+                    />
+                  </div>
                   {submitAnswer.isError && (
-                    <div className="xl:col-span-2">
+                    <div className="xl:col-span-3">
                       <ErrorState {...describeApiError(submitAnswer.error, "Evaluation failed")} onRetry={() => submitAnswer.reset()} />
                     </div>
                   )}

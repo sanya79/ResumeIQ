@@ -34,6 +34,7 @@ import type {
 export interface GenerateQuestionsResult {
   session: InterviewSessionSummary;
   question: InterviewQuestion | null;
+  questions?: InterviewQuestion[];
 }
 
 export async function createInterviewSession(
