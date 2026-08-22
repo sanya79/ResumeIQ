@@ -1,0 +1,7 @@
+{
+  "name": "resumeiq",
+  "private": true,
+  "scripts": {
+    "build": "npm install --prefix resumeiq-frontend && npm run build --prefix resumeiq-frontend"
+  }
+}
