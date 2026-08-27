@@ -36,7 +36,7 @@ export function AppLayout() {
   const title = getPageTitle(pathname);
 
   return (
-    <div className="relative flex min-h-screen bg-background text-foreground">
+    <div className="relative flex min-h-screen bg-black/40 text-foreground backdrop-blur-[2px]">
       <Sidebar
         items={primaryNavItems}
         header={

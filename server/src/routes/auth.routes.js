@@ -29,21 +29,25 @@ router.post("/verify-email", controller.verifyEmail);
 router.post("/resend-verification", controller.resendVerificationEmail);
 router.post("/dev-verify-account", controller.devVerifyAccount);
 
-// Helper to check if OAuth client IDs are valid production credentials
-const isRealGoogleId = (id) => Boolean(id && !id.startsWith("dummy") && !id.includes("your_google") && id.includes(".apps.googleusercontent.com"));
-const isRealGithubId = (id) => Boolean(id && !id.startsWith("dummy") && !id.includes("your_github") && id.length >= 10);
-
-const getDefaultFrontendUrl = () => {
-  const fallback = process.env.NODE_ENV === "production" ? "https://resumeiq-frontend1.onrender.com" : "http://localhost:5173";
-  return (process.env.FRONTEND_URL || fallback).replace(/\/$/, "");
+// Helper to get client redirect base URL
+const getRedirectBase = (req) => {
+  if (req.query.redirect_uri) return req.query.redirect_uri;
+  const referer = req.headers.referer || req.headers.origin;
+  if (referer) {
+    try {
+      const url = new URL(referer);
+      return `${url.origin}/login`;
+    } catch {}
+  }
+  return `${process.env.FRONTEND_URL || "http://localhost:5173"}/login`;
 };
 
 // Passport OAuth Routes
 router.get("/google", (req, res, next) => {
-  const redirectUri = req.query.redirect_uri || `${getDefaultFrontendUrl()}/login`;
+  const redirectUri = getRedirectBase(req);
   const googleClientId = process.env.GOOGLE_CLIENT_ID || "";
   
-  if (!isRealGoogleId(googleClientId)) {
+  if (!googleClientId || googleClientId.startsWith("dummy") || googleClientId.startsWith("your_")) {
     return res.redirect(`${redirectUri}?social_fallback=google`);
   }
 
@@ -60,7 +64,7 @@ router.get(
   (req, res, next) => {
     passport.authenticate("google", { session: false }, (err, user, info) => {
       if (err || !user) {
-        const redirectUri = `${getDefaultFrontendUrl()}/login`;
+        const redirectUri = getRedirectBase(req);
         return res.redirect(`${redirectUri}?social_fallback=google`);
       }
       req.user = user;
@@ -71,10 +75,10 @@ router.get(
 );
 
 router.get("/github", (req, res, next) => {
-  const redirectUri = req.query.redirect_uri || `${getDefaultFrontendUrl()}/login`;
+  const redirectUri = getRedirectBase(req);
   const githubClientId = process.env.GITHUB_CLIENT_ID || "";
 
-  if (!isRealGithubId(githubClientId)) {
+  if (!githubClientId || githubClientId.startsWith("dummy") || githubClientId.startsWith("your_")) {
     return res.redirect(`${redirectUri}?social_fallback=github`);
   }
 
@@ -90,7 +94,7 @@ router.get(
   (req, res, next) => {
     passport.authenticate("github", { session: false }, (err, user, info) => {
       if (err || !user) {
-        const redirectUri = `${getDefaultFrontendUrl()}/login`;
+        const redirectUri = getRedirectBase(req);
         return res.redirect(`${redirectUri}?social_fallback=github`);
       }
       req.user = user;

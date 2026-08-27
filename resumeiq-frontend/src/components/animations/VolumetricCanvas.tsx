@@ -77,8 +77,7 @@ export function VolumetricCanvas() {
 
     // Loop logic
     const tick = () => {
-      ctx.fillStyle = "#020206"; // Base dark space color
-      ctx.fillRect(0, 0, width, height);
+      ctx.clearRect(0, 0, width, height);
 
       // 1. Draw volumetric nebulae (soft blur blobs)
       for (const neb of nebulae) {

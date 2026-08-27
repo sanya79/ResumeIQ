@@ -25,11 +25,27 @@ export function Navbar({ logoHref = "/", actions, links = [], className }: Navba
 
         {links.length > 0 && (
           <nav className="hidden md:flex items-center gap-8 text-xs font-mono tracking-[0.18em] uppercase text-white/60">
-            {links.map((link) => (
-              <Link key={link.href} to={link.href} className="hover:text-primary transition-colors">
-                {link.label}
-              </Link>
-            ))}
+            {links.map((link) => {
+              const isAnchor = link.href.startsWith("#");
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={(e) => {
+                    if (isAnchor) {
+                      const el = document.querySelector(link.href);
+                      if (el) {
+                        e.preventDefault();
+                        el.scrollIntoView({ behavior: "smooth" });
+                      }
+                    }
+                  }}
+                  className="hover:text-primary transition-colors cursor-pointer"
+                >
+                  {link.label}
+                </a>
+              );
+            })}
           </nav>
         )}
 

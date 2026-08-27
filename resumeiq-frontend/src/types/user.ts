@@ -3,6 +3,7 @@ export type UserRole = "recruiter" | "candidate" | "admin";
 export interface User {
   id: string;
   name: string;
+  fullName?: string;
   email: string;
   role: UserRole;
   avatarUrl?: string;

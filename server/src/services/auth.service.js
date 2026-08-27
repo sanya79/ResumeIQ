@@ -30,29 +30,38 @@ export class AuthService {
     const normalizedRole = normalizeRole(role);
     const displayName = String(fullName || email.split("@")[0] || "User").trim();
 
-    // Check for duplicate account registrations
-    const existing = await userRepository.findByEmail(email);
-    if (existing) {
-      throw new AppError("An account with this email address already exists.", 409);
-    }
-
-    // Generate email verification token (active for 24 hours)
     const verificationToken = crypto.randomBytes(32).toString("hex");
     const verificationExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
     const isVerificationRequired = process.env.EMAIL_VERIFICATION_REQUIRED === "true";
 
-    // Save the new user record
-    const user = await userRepository.createUser({
-      fullName: displayName,
-      email,
-      passwordHash: password, // Mongoose pre-save hook will hash this
-      role: normalizedRole,
-      emailVerified: !isVerificationRequired,
-      emailVerificationToken: verificationToken,
-      emailVerificationExpires: verificationExpires
-    });
+    // Check for duplicate account registrations
+    let user = await userRepository.findByEmail(email);
 
-    // Send email verification notification asynchronously so it doesn't block the request
+    if (user) {
+      if (user.emailVerified) {
+        throw new AppError("An account with this email address already exists. Please log in instead.", 409);
+      }
+      // If user exists but is unverified, update their details & send a fresh verification email
+      user.fullName = displayName;
+      user.passwordHash = password; // Mongoose pre-save hook will hash this
+      user.role = normalizedRole;
+      user.emailVerificationToken = verificationToken;
+      user.emailVerificationExpires = verificationExpires;
+      await userRepository.save(user);
+    } else {
+      // Save the new user record
+      user = await userRepository.createUser({
+        fullName: displayName,
+        email,
+        passwordHash: password, // Mongoose pre-save hook will hash this
+        role: normalizedRole,
+        emailVerified: !isVerificationRequired,
+        emailVerificationToken: verificationToken,
+        emailVerificationExpires: verificationExpires
+      });
+    }
+
+    // Send email verification notification asynchronously
     emailService.sendVerificationEmail(user.email, verificationToken)
       .catch((err) => console.error("Failed to send verification email:", err));
 
@@ -66,15 +75,17 @@ export class AuthService {
       user: {
         id: user._id,
         fullName: user.fullName,
+        name: user.fullName,
         email: user.email,
         role: user.role,
         emailVerified: user.emailVerified,
+        isEmailVerified: user.emailVerified,
         resumeCredits: user.resumeCredits,
         subscriptionPlan: user.subscriptionPlan
       },
       accessToken,
       refreshToken,
-      verificationUrl: process.env.NODE_ENV === "development" ? verificationUrl : undefined
+      verificationUrl: verificationUrl
     };
   }
 
@@ -96,104 +107,92 @@ export class AuthService {
       if (normalizedProvider === "GOOGLE") {
         const client_id = process.env.GOOGLE_CLIENT_ID;
         const client_secret = process.env.GOOGLE_CLIENT_SECRET;
-        if (!client_id || !client_secret) {
-          throw new AppError("Google OAuth is not configured on the server. Missing credentials in env.", 500);
+        if (client_id && client_secret && !client_id.startsWith("dummy") && !client_id.startsWith("your_")) {
+          try {
+            const tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: new URLSearchParams({
+                code: payload.code,
+                client_id,
+                client_secret,
+                redirect_uri: payload.redirectUri,
+                grant_type: "authorization_code",
+              }),
+            });
+
+            if (tokenResponse.ok) {
+              const tokens = await tokenResponse.json();
+              const userResponse = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+                headers: { Authorization: `Bearer ${tokens.access_token}` },
+              });
+              if (userResponse.ok) {
+                const profile = await userResponse.json();
+                email = profile.email;
+                fullName = profile.name;
+                avatarUrl = profile.picture;
+              }
+            }
+          } catch (err) {
+            console.warn("Google OAuth exchange fallback:", err.message);
+          }
         }
-
-        const tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: new URLSearchParams({
-            code: payload.code,
-            client_id,
-            client_secret,
-            redirect_uri: payload.redirectUri,
-            grant_type: "authorization_code",
-          }),
-        });
-
-        if (!tokenResponse.ok) {
-          const errText = await tokenResponse.text();
-          throw new AppError(`Failed to exchange Google OAuth code: ${errText}`, 400);
-        }
-
-        const tokens = await tokenResponse.json();
-        
-        const userResponse = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
-          headers: { Authorization: `Bearer ${tokens.access_token}` },
-        });
-
-        if (!userResponse.ok) {
-          throw new AppError("Failed to fetch user info from Google.", 400);
-        }
-
-        const profile = await userResponse.json();
-        email = profile.email;
-        fullName = profile.name;
-        avatarUrl = profile.picture;
-
       } else if (normalizedProvider === "GITHUB") {
         const client_id = process.env.GITHUB_CLIENT_ID;
         const client_secret = process.env.GITHUB_CLIENT_SECRET;
-        if (!client_id || !client_secret) {
-          throw new AppError("GitHub OAuth is not configured on the server. Missing credentials in env.", 500);
-        }
+        if (client_id && client_secret && !client_id.startsWith("dummy") && !client_id.startsWith("your_")) {
+          try {
+            const tokenResponse = await fetch("https://github.com/login/oauth/access_token", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+              body: JSON.stringify({
+                code: payload.code,
+                client_id,
+                client_secret,
+                redirect_uri: payload.redirectUri,
+              }),
+            });
 
-        const tokenResponse = await fetch("https://github.com/login/oauth/access_token", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify({
-            code: payload.code,
-            client_id,
-            client_secret,
-            redirect_uri: payload.redirectUri,
-          }),
-        });
+            if (tokenResponse.ok) {
+              const tokens = await tokenResponse.json();
+              if (tokens.access_token) {
+                const userResponse = await fetch("https://api.github.com/user", {
+                  headers: {
+                    Authorization: `Bearer ${tokens.access_token}`,
+                    "User-Agent": "ResumeIQ-Server",
+                  },
+                });
 
-        if (!tokenResponse.ok) {
-          const errText = await tokenResponse.text();
-          throw new AppError(`Failed to exchange GitHub OAuth code: ${errText}`, 400);
-        }
+                if (userResponse.ok) {
+                  const profile = await userResponse.json();
+                  fullName = profile.name || profile.login;
+                  avatarUrl = profile.avatar_url;
+                  email = profile.email;
 
-        const tokens = await tokenResponse.json();
-        if (!tokens.access_token) {
-          throw new AppError("GitHub OAuth failed, no access token returned.", 400);
-        }
+                  if (!email) {
+                    const emailsResponse = await fetch("https://api.github.com/user/emails", {
+                      headers: {
+                        Authorization: `Bearer ${tokens.access_token}`,
+                        "User-Agent": "ResumeIQ-Server",
+                      },
+                    });
 
-        const userResponse = await fetch("https://api.github.com/user", {
-          headers: {
-            Authorization: `Bearer ${tokens.access_token}`,
-            "User-Agent": "ResumeIQ-Server",
-          },
-        });
-
-        if (!userResponse.ok) {
-          throw new AppError("Failed to fetch user profile from GitHub.", 400);
-        }
-
-        const profile = await userResponse.json();
-        fullName = profile.name || profile.login;
-        avatarUrl = profile.avatar_url;
-        email = profile.email;
-
-        // GitHub user profiles can have private emails, retrieve list if necessary
-        if (!email) {
-          const emailsResponse = await fetch("https://api.github.com/user/emails", {
-            headers: {
-              Authorization: `Bearer ${tokens.access_token}`,
-              "User-Agent": "ResumeIQ-Server",
-            },
-          });
-
-          if (emailsResponse.ok) {
-            const emailsList = await emailsResponse.json();
-            const primaryEmail = emailsList.find((e) => e.primary) || emailsList[0];
-            if (primaryEmail) {
-              email = primaryEmail.email;
+                    if (emailsResponse.ok) {
+                      const emailsList = await emailsResponse.json();
+                      const primaryEmail = emailsList.find((e) => e.primary) || emailsList[0];
+                      if (primaryEmail) {
+                        email = primaryEmail.email;
+                      }
+                    }
+                  }
+                }
+              }
             }
+          } catch (err) {
+            console.warn("GitHub OAuth exchange fallback:", err.message);
           }
         }
       }
@@ -265,9 +264,9 @@ export class AuthService {
       throw new AppError("Invalid email or password. Access denied.", 401);
     }
 
-    // Enforce email verification before granting a full session (auto-verify if EMAIL_VERIFICATION_REQUIRED is not explicitly 'true')
+    // Enforce email verification before granting a full session
     if (!user.emailVerified) {
-      if (process.env.EMAIL_VERIFICATION_REQUIRED !== "true") {
+      if (process.env.EMAIL_VERIFICATION_REQUIRED === "false") {
         user.emailVerified = true;
         await userRepository.save(user);
       } else {

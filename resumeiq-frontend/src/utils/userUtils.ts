@@ -9,7 +9,7 @@ import type { User } from "@/types";
 export function getUserDisplayName(user: User | null | undefined, resumeProfileName?: string): string {
   if (!user) return "Candidate User";
 
-  const rawName = user.name?.trim() || "";
+  const rawName = (user.name || user.fullName)?.trim() || "";
   const lower = rawName.toLowerCase();
   const isGeneric = !rawName || lower === "google" || lower === "google user" || lower === "github" || lower === "github user" || lower === "user" || lower === "guest user";
 
@@ -25,9 +25,23 @@ export function getUserDisplayName(user: User | null | undefined, resumeProfileN
   // 2. Derive from candidate email prefix
   if (user.email && user.email.includes("@")) {
     const emailPrefix = user.email.split("@")[0];
-    const cleaned = emailPrefix.replace(/[._\-\d]+/g, " ").trim();
-    if (cleaned.length > 1) {
-      return cleaned
+    // Remove numbers and typical course/dept codes like cs, aiml, it, etc.
+    const parts = emailPrefix
+      .split(/[._-]+/)
+      .filter((part) => !/^(cs|aiml|it|ece|ee|me|ce|\d+)$/i.test(part) && part.length > 0);
+
+    if (parts.length > 0) {
+      const formatted = parts
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(" ");
+      if (formatted.trim().length > 1) {
+        return formatted;
+      }
+    }
+
+    const fallbackCleaned = emailPrefix.replace(/[._\-\d]+/g, " ").trim();
+    if (fallbackCleaned.length > 1) {
+      return fallbackCleaned
         .split(" ")
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
         .join(" ");
@@ -38,7 +52,7 @@ export function getUserDisplayName(user: User | null | undefined, resumeProfileN
 }
 
 /**
- * Returns candidate's first name for greetings like "Welcome back, Rahul"
+ * Returns candidate's first name for greetings like "Welcome back, Sanya"
  */
 export function getUserFirstName(user: User | null | undefined, resumeProfileName?: string): string {
   const fullName = getUserDisplayName(user, resumeProfileName);

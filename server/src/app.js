@@ -19,11 +19,9 @@ const app = express();
 app.use(helmet());
 
 // 2. Configure Cross-Origin Resource Sharing (CORS)
-const rawFrontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
-const frontendUrl = rawFrontendUrl.replace(/\/$/, "");
+const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
 const allowedOrigins = [
   frontendUrl,
-  "https://resumeiq-frontend1.onrender.com",
   "http://localhost:5173",
   "http://localhost:5174",
   "http://127.0.0.1:5173",
@@ -73,52 +71,18 @@ app.use(mongoSanitize()); // Blocks query parameter selector modifications
 // 5. Global API Rate Limiter
 app.use("/api", apiLimiter);
 
-// 6. Favicon 204 Handler (prevents 404 log noise)
-app.get("/favicon.ico", (req, res) => res.status(204).end());
-
-// 7. Mount Application Routes (supports /api/v1, /api, and direct /auth, /resumes, etc.)
+// 6. Mount Application Routes
 app.use("/api/v1", routes);
-app.use("/api", routes);
-app.use((req, res, next) => {
-  const isApiRoute = ["/auth", "/resumes", "/career", "/matching", "/interview", "/ats", "/portfolio", "/analytics"].some((prefix) => req.path.startsWith(prefix));
-  if (isApiRoute) {
-    return routes(req, res, next);
-  }
-  next();
+
+// 7. Health check endpoint
+app.get("/", (req, res) => {
+  return sendSuccess(res, "ResumeIQ API is running");
 });
 
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// 7. Static Frontend Serving (finds dist whether started from root or server dir)
-const possibleDistPaths = [
-  path.resolve(process.cwd(), "resumeiq-frontend/dist"),
-  path.resolve(process.cwd(), "../resumeiq-frontend/dist"),
-  path.resolve(__dirname, "../../resumeiq-frontend/dist"),
-];
-const frontendDistPath = possibleDistPaths.find((p) => fs.existsSync(p));
-
-if (frontendDistPath) {
-  app.use(express.static(frontendDistPath));
-  app.get("*", (req, res, next) => {
-    if (req.originalUrl.startsWith("/api")) return next();
-    res.sendFile(path.join(frontendDistPath, "index.html"));
-  });
-} else {
-  // Health check endpoint fallback
-  app.get("/", (req, res) => {
-    return sendSuccess(res, "ResumeIQ API is running");
-  });
-
-  // Fallback route for unmapped paths (404)
-  app.all("*", (req, res, next) => {
-    next(new AppError(`Cannot find requested route ${req.originalUrl} on this server.`, 404));
-  });
-}
+// 8. Fallback route for unmapped paths (404)
+app.all("*", (req, res, next) => {
+  next(new AppError(`Cannot find requested route ${req.originalUrl} on this server.`, 404));
+});
 
 // 8. Global Error Handler Middleware
 app.use(errorMiddleware);
