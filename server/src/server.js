@@ -5,10 +5,9 @@ import app from "./app.js";
 import { connectDb } from "./config/db.js";
 import logger from "./utils/logger.js";
 
-// Handle uncaught exceptions before server starts up
+// Handle uncaught exceptions gracefully without crashing server
 process.on("uncaughtException", (err) => {
-  logger.error(`UNCAUGHT EXCEPTION! Shutting down server... \nError: ${err.message} \nStack: ${err.stack}`);
-  process.exit(1);
+  logger.error(`[Server Error] Uncaught Exception: ${err?.message || err}`, { stack: err?.stack });
 });
 
 const preferredPort = Number(process.env.PORT || 5000);
@@ -26,26 +25,18 @@ const startServerOnPort = (port) => {
       return;
     }
 
-    logger.error(`SERVER STARTUP ERROR! Shutting down... \nError: ${error.message} \nStack: ${error.stack}`);
-    process.exit(1);
+    logger.error(`[Server Error] Startup error: ${error?.message || error}`, { stack: error?.stack });
   });
 
   process.on("unhandledRejection", (err) => {
-    logger.error(`UNHANDLED PROMISE REJECTION! Shutting down server... \nError: ${err.message} \nStack: ${err.stack}`);
-    server.close(() => {
-      process.exit(1);
-    });
+    logger.error(`[Server Error] Unhandled Promise Rejection: ${err?.message || err}`, { stack: err?.stack });
   });
 };
 
-// Initialize Express listener first (so Render binds port immediately), then connect to MongoDB
+// Initialize MongoDB and start Express listener
 const startServer = async () => {
+  await connectDb();
   startServerOnPort(preferredPort);
-  try {
-    await connectDb();
-  } catch (err) {
-    logger.error(`[Database] Connection failed: ${err.message}`);
-  }
 };
 
 startServer();

@@ -1,9 +1,0 @@
-{
-  "name": "resumeiq",
-  "private": true,
-  "scripts": {
-    "build": "npm install --prefix resumeiq-frontend && npm run build --prefix resumeiq-frontend",
-    "start": "npm run preview --prefix resumeiq-frontend -- --host 0.0.0.0 --port $PORT",
-    "preview": "npm run preview --prefix resumeiq-frontend -- --host 0.0.0.0 --port $PORT"
-  }
-}

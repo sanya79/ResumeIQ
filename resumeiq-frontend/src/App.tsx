@@ -3,6 +3,7 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "@/routes";
 import { ToastContainer } from "@/components/ui/Toast";
 import { useAuthStore } from "@/stores/authStore";
+import { SpotlightBackground } from "@/components/animations/SpotlightBackground";
 import { VolumetricCanvas } from "@/components/animations/VolumetricCanvas";
 
 /**
@@ -25,6 +26,7 @@ export default function App() {
 
   return (
     <>
+      <SpotlightBackground />
       <VolumetricCanvas />
       <RouterProvider router={router} />
       <ToastContainer />
