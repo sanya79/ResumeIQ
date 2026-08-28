@@ -113,7 +113,11 @@ export class MatchingController {
   async downloadGeneratedResumePdf(req, res, next) {
     try {
       const match = await matchingService.getDetails(req.params.id, req.user._id);
-      pdfService.generateTailoredResume(res, match);
+      let resume = null;
+      if (match.resumeId) {
+        resume = await resumeRepository.findByIdAndUser(match.resumeId, req.user._id);
+      }
+      pdfService.generateTailoredResume(res, match, resume);
     } catch (error) {
       next(error);
     }
