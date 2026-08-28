@@ -3,6 +3,7 @@ import { GlassCard } from "@/components/cards/GlassCard";
 import { Button } from "@/components/ui/Button";
 import { useToast } from "@/hooks/useToast";
 import { downloadGeneratedResumePdf, downloadOptimizedResumePdf } from "@/services/matching.api";
+import { downloadReportPdf } from "@/services/resume.api";
 import { useSaveMatchComparison } from "../hooks";
 import type { MatchResult } from "@/types";
 
@@ -40,7 +41,18 @@ export function ActionPanel({ match, onAnalyzeAnother }: ActionPanelProps) {
     }
   }
 
-  function handleExportReport() {
+  async function handleExportReport() {
+    try {
+      if (match.resumeId) {
+        toast.info("Generating Report PDF...", "Downloading your professional evaluation report PDF.");
+        await downloadReportPdf(match.resumeId, match.jobTitle || "Job_Match_Report");
+        toast.success("PDF Report Exported", "Your match report PDF was downloaded successfully.");
+        return;
+      }
+    } catch {
+      /* fallback to JSON export below */
+    }
+
     const blob = new Blob([JSON.stringify(match, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
